@@ -6,6 +6,7 @@
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
+
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
@@ -266,7 +267,7 @@ th {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-
+  
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
@@ -900,7 +901,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
@@ -4161,6 +4162,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
+  font-family:'Quicksand',inherit;
   background-color: #f8f8f8;
   border-color: #e7e7e7;
 }
@@ -4620,6 +4622,7 @@ a.badge:focus {
   margin-left: 3px;
 }
 .jumbotron {
+  font-family: 'Quicksand', cursive;
   padding: 30px 15px;
   margin-bottom: 30px;
   color: inherit;
@@ -4655,6 +4658,7 @@ a.badge:focus {
   }
   .jumbotron h1,
   .jumbotron .h1 {
+    font-family: 'Righteous', cursive;
     font-size: 63px;
   }
 }
@@ -5591,7 +5595,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: normal;
   line-height: 1.4;
@@ -5699,7 +5703,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Quicksand", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.42857143;
