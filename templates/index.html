@@ -36,12 +36,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">EVE Online PIProfits.com</a>
-           <div class="btn">Jita</div>
-           <div class="btn">Amarr</div>
-           <div class="btn">Rens</div>
-           <div class="btn">Oursulaert</div>
-           <div class="btn">Dodixie</div>
+          <a class="navbar-brand" href="{{url_for('index')}}">EvePIProfits.com</a>
+           <div class="btn"><a href="{{url_for('jita')}}">Jita</a></div>
+           <div class="btn"><a href="{{url_for('amarr')}}">Amarr</a></div>
+           <div class="btn"><a href="{{url_for('rens')}}">Rens</a></div>
+           <div class="btn"><a href="{{url_for('oursulaert')}}">Oursulaert</a></div>
+           <div class="btn"><a href="{{url_for('dodixie')}}">Dodixie</a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 
@@ -55,7 +55,7 @@
     <div class="jumbotron">
       <div class="container">
       {% block title %}
-        <h1>PI Profits</h1>
+        <h1>EVE PI Profits</h1>
         <p>Planetary interaction profitability across New Eden</p>
       {% endblock %}
       </div>
