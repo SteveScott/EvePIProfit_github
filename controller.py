@@ -1,5 +1,11 @@
 from flask import Flask, render_template, url_for
+from flask_sqlalchemy import SQLAlchemy
+import os, flask, sqlalchemy
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLalchemy(app)
+
 
 @app.route('/')
 @app.route('/index')

@@ -1,11 +1,14 @@
 click==6.6
 Flask==0.11.1
+Flask-SQLAlchemy==2.1
 gunicorn==19.6.0
 itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 pbr==1.10.0
+psycopg2==2.6.2
 six==1.10.0
+SQLAlchemy==1.1.1
 stevedore==1.17.1
 virtualenv==15.0.3
 virtualenv-clone==0.2.6
