@@ -1,11 +1,12 @@
+import os, flask, sqlalchemy
 from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
-import os, flask, sqlalchemy
+
+os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-db = SQLalchemy(app)
-
+db = SQLAlchemy(app)
 
 @app.route('/')
 @app.route('/index')
@@ -24,9 +25,9 @@ def amarr():
 def rens():
 	return render_template('rens.html')
 
-@app.route('/oursulaert')
-def oursulaert():
-	return render_template('oursulaert.html')
+#@app.route('/oursulaert')
+#def oursulaert():
+#	return render_template('oursulaert.html')
 
 @app.route('/dodixie')
 def dodixie():
