@@ -32,7 +32,7 @@ def jita():
 	cur = con.cursor()
 	cur.execute("SELECT * FROM temp_jita")
 	entries = cur.fetchall()
-	return render_template('jita.html',entries)
+	return render_template('jita.html', entries=entries)
 
 @app.route('/amarr')
 def amarr():
