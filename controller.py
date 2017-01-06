@@ -32,7 +32,7 @@ def jita():
 	cur = con.cursor()
 	cur.execute("SELECT * FROM temp_jita")
 	entries = cur.fetchall()
-	return render_template('jita.html', entries=entries)
+	return render_template('jita.html',entries)
 
 @app.route('/amarr')
 def amarr():
@@ -51,5 +51,5 @@ def dodixie():
 	return render_template('dodixie.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=os.environ.get('PORT', '8080'))
+    app.run(debug=True, port=os.environ.get('PORT', 8080))
     #app.run(debug=True)

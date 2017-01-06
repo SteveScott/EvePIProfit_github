@@ -43,14 +43,58 @@ con.commit()
 
 
 #get each price and put it in the database
-
+'''
 for i in eveLists.systemList:
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()
         cur.execute('INSERT INTO PRICE_TEMP VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+'''
 
+i = 30000142
+cur=con.cursor()
+cur.execute('TRUNCATE TABLE TEMP_JITA')
+cur.close()
+for j in eveLists.itemList:
+    tempPrice = fetchSellPrice(i,j)
+    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+    cur = con.cursor()
+    cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    cur.close()
+
+i = 30002187
+cur=con.cursor()
+cur.execute('TRUNCATE TABLE TEMP_AMARR')
+cur.close()
+for j in eveLists.itemList:
+    tempPrice = fetchSellPrice(i,j)
+    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+    cur = con.cursor()
+    cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    cur.close()
+
+i = 30002510
+cur=con.cursor()
+cur.execute('TRUNCATE TABLE TEMP_RENS')
+cur.close()
+for j in eveLists.itemList:
+    tempPrice = fetchSellPrice(i,j)
+    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+    cur = con.cursor()
+    cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    cur.close()
+
+i = 30002659
+cur=con.cursor()
+cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
+cur.close()
+for j in eveLists.itemList:
+    tempPrice = fetchSellPrice(i,j)
+    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+    cur = con.cursor()
+    cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    cur.close()
 
 '''
 cur = con.cursor()
