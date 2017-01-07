@@ -1,4 +1,7 @@
-
+th, td {
+    padding: 5px;
+    text-align: center;
+}
 
 /* ==========================================================================
    Author's custom styles
