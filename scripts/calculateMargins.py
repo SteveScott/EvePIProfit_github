@@ -96,13 +96,10 @@ for i in eveLists.systemList:
     for j in eveLists.itemList:
         CalculateProfit(i, j)
 
-'''
-#instead of deleting and re-adding the table, let's modify the existing table
-#below is the delete and re-add code
     cur = con.cursor()
     cur.execute('DROP TABLE {0}'.format(databaseName))
     cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
     cur.close()
-'''
+
 if con:
     con.commit()
