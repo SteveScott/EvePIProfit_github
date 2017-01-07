@@ -31,8 +31,7 @@ def index():
 def jita():
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
-    #cur.execute("SELECT * FROM temp_jita, name WHERE temp_jita.itemid = name.id")
-    cur.execute("SELECT * from name")
+    cur.execute("SELECT * FROM temp_jita, name WHERE temp_jita.itemid = name.id")
     entries = cur.fetchall()
     return render_template('jita.html',entries=entries)
 
