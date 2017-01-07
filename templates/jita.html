@@ -4,21 +4,20 @@
 {% endblock %}
 {% block content %}
 <table>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Percent Profit</th>
-    <th>Profit</th>
-    <th>Datetime</th>
-
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Percent Profit</th>
+        <th>Profit</th>
+        <th>Datetime</th>
+    </tr>
     {% for entry in entries %}
     <tr>
         <td>{{entry[0]}}</td>
-        <td>{{entry[3]}}</td
+        <td>{{entry[3]}}</td>
         <td>{{entry[7]}}</td>
         <td>{{entry[4]}}</td>
         <td>{{entry[6]}}</td>
-
-
     </tr>
     {% endfor %}
 </table>
