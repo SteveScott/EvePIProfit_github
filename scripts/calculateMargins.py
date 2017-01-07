@@ -100,6 +100,7 @@ for i in eveLists.systemList:
     cur.execute('DROP TABLE {0}'.format(databaseName))
     cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
     cur.close()
+    con.commit()
 
 if con:
     con.commit()
