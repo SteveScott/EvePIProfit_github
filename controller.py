@@ -31,7 +31,7 @@ def index():
 def jita():
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
-    cur.execute("SELECT * FROM name, temp_jita WHERE itemid = id")
+    cur.execute("SELECT name, price, profit, profitmargin, mytime FROM name, temp_jita WHERE itemid = id")
     entries = cur.fetchall()
     return render_template('jita.html',entries=entries)
 

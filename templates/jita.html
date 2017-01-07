@@ -7,8 +7,8 @@
     <tr>
         <th>Name</th>
         <th>Price</th>
-        <th>Percent Profit</th>
         <th>Profit</th>
+        <th>Profit Margin</th>
         <th>Datetime</th>
     </tr>
     {% for entry in entries %}
@@ -18,12 +18,6 @@
         <td>{{entry[2]}}</td>
         <td>{{entry[3]}}</td>
         <td>{{entry[4]}}</td>
-        <td>{{entry[5]}}</td>
-        <td>{{entry[6]}}</td>
-        <td>{{entry[7]}}</td>
-        <td>{{entry[8]}}</td>
-        <td>{{entry[9]}}</td>
-        <td>{{entry[10]}}</td>
     </tr>
     {% endfor %}
 </table>
