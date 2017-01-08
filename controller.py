@@ -37,11 +37,18 @@ def jita():
 
 @app.route('/amarr')
 def amarr():
-	return render_template('amarr.html')
+    cur = con.cursor()
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_amarr WHERE itemid = id")
+    entries = cur.fetchall()
+    return render_template('amarr.html',entries=entries)
 
 @app.route('/rens')
 def rens():
-	return render_template('rens.html')
+    cur = con.cursor()
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_rens WHERE itemid = id")
+    entries = cur.fetchall()
+    return render_template('rens.html',entries=entries)
+
 
 #@app.route('/oursulaert')
 #def oursulaert():
@@ -49,7 +56,11 @@ def rens():
 
 @app.route('/dodixie')
 def dodixie():
-	return render_template('dodixie.html')
+    cur = con.cursor()
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_dodixie WHERE itemid = id")
+    entries = cur.fetchall()
+    return render_template('dodixie.html',entries=entries)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=os.environ.get('PORT', '8080'))

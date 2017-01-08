@@ -2,3 +2,23 @@
 {% block title %}
 <h1>Dodixie</h1>
 {% endblock %}
+{% block content %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Profit</th>
+        <th>Profit Margin</th>
+        <th>Datetime</th>
+    </tr>
+    {% for entry in entries %}
+    <tr>
+        <td>{{entry[0]}}</td>
+        <td>{{entry[1]}}</td>
+        <td>{{entry[2]}}</td>
+        <td>{{entry[3]}}</td>
+        <td>{{entry[4]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
