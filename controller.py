@@ -1,29 +1,39 @@
-import os, flask, sqlalchemy
-from flask import Flask, render_template, url_for
-from flask_sqlalchemy import SQLAlchemy
-import psycopg2
-import urlparse
-import apscheduler
 import atexit
+import os
 import time
+import urlparse
+import sys
 
+import psycopg2
+
+from flask import Flask, render_template
+from scripts import updatePrices
+from scripts import calculateMargins
+###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 def print_date_time():
+    print('Updating Tables')
+    updatePrices.main()
+    #execfile(scripts/updatePrices.py)
+    print('Updating Margins')
+    calculateMargins.main()
+    #execfile(scripts/calculateMargins.py)
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
 scheduler = BackgroundScheduler()
 scheduler.start()
 scheduler.add_job(
     func=print_date_time, # your function here
-    trigger=IntervalTrigger(seconds=3),
+    trigger=IntervalTrigger(minutes=360),
     id='doingsmth_job',
     name='Print date and time every five seconds',
     replace_existing=True)
 
 atexit.register(lambda: scheduler.shutdown())
 
+###end scheduler
 
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
@@ -39,9 +49,6 @@ con = psycopg2.connect(
 
 
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-db = SQLAlchemy(app)
 
 @app.route('/')
 @app.route('/index')

@@ -4,7 +4,7 @@ import datetime
 import psycopg2
 import os
 import urlparse
-import eveLists
+import scripts.eveLists
 
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
@@ -84,23 +84,24 @@ def ClearTemp():
 
 
 ###Main###
-for i in eveLists.systemList:
-    ClearTemp()
-    databaseName = eveLists.DatabaseDict[i]
-###added after broke. need to repoppulate price_temp with system data
-    cur=con.cursor()
-    cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
-    cur.close()
+def main():
+    for i in scripts.eveLists.systemList:
+        ClearTemp()
+        databaseName = scripts.eveLists.DatabaseDict[i]
+    ###added after broke. need to repoppulate price_temp with system data
+        cur=con.cursor()
+        cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
+        cur.close()
 
-####
-    for j in eveLists.itemList:
-        CalculateProfit(i, j)
+    ####
+        for j in scripts.eveLists.itemList:
+            CalculateProfit(i, j)
 
-    cur = con.cursor()
-    cur.execute('DROP TABLE {0}'.format(databaseName))
-    cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
-    cur.close()
-    con.commit()
+        cur = con.cursor()
+        cur.execute('DROP TABLE {0}'.format(databaseName))
+        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
+        cur.close()
+        con.commit()
 
-if con:
-    con.commit()
+    if con:
+        con.commit()

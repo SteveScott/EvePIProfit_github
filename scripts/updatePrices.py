@@ -4,7 +4,7 @@ import datetime
 import psycopg2
 import os
 import urlparse
-import eveLists
+import scripts.eveLists
 
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 urlparse.uses_netloc.append("postgres")
@@ -33,80 +33,80 @@ def fetchSellPrice(thisSystem, thisItem):
 #print thisItem
 #print fetchSellPrice(thisSystem,thisItem)
 #print datetime.datetime.now()
+def main():
+    ###clear the database
+    cur=con.cursor()
+    cur.execute('TRUNCATE TABLE PRICE_TEMP')
+    cur.close()
+    con.commit()
 
-###clear the database
-cur=con.cursor()
-cur.execute('TRUNCATE TABLE PRICE_TEMP')
-cur.close()
-con.commit()
 
 
+    #get each price and put it in the database
+    '''
+    for i in eveLists.systemList:
+        for j in eveLists.itemList:
+            tempPrice = fetchSellPrice(i,j)
+            print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+            cur = con.cursor()
+            cur.execute('INSERT INTO PRICE_TEMP VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    '''
 
-#get each price and put it in the database
-'''
-for i in eveLists.systemList:
-    for j in eveLists.itemList:
+    i = 30000142
+    cur=con.cursor()
+    cur.execute('TRUNCATE TABLE TEMP_JITA')
+    cur.close()
+    for j in scripts.eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()
-        cur.execute('INSERT INTO PRICE_TEMP VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
-'''
+        cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.close()
 
-i = 30000142
-cur=con.cursor()
-cur.execute('TRUNCATE TABLE TEMP_JITA')
-cur.close()
-for j in eveLists.itemList:
-    tempPrice = fetchSellPrice(i,j)
-    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
-    cur = con.cursor()
-    cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    i = 30002187
+    cur=con.cursor()
+    cur.execute('TRUNCATE TABLE TEMP_AMARR')
     cur.close()
+    for j in scripts.eveLists.itemList:
+        tempPrice = fetchSellPrice(i,j)
+        print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+        cur = con.cursor()
+        cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.close()
 
-i = 30002187
-cur=con.cursor()
-cur.execute('TRUNCATE TABLE TEMP_AMARR')
-cur.close()
-for j in eveLists.itemList:
-    tempPrice = fetchSellPrice(i,j)
-    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
-    cur = con.cursor()
-    cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    i = 30002510
+    cur=con.cursor()
+    cur.execute('TRUNCATE TABLE TEMP_RENS')
     cur.close()
+    for j in scripts.eveLists.itemList:
+        tempPrice = fetchSellPrice(i,j)
+        print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+        cur = con.cursor()
+        cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.close()
 
-i = 30002510
-cur=con.cursor()
-cur.execute('TRUNCATE TABLE TEMP_RENS')
-cur.close()
-for j in eveLists.itemList:
-    tempPrice = fetchSellPrice(i,j)
-    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
-    cur = con.cursor()
-    cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+    i = 30002659
+    cur=con.cursor()
+    cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
     cur.close()
+    for j in scripts.eveLists.itemList:
+        tempPrice = fetchSellPrice(i,j)
+        print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+        cur = con.cursor()
+        cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.close()
 
-i = 30002659
-cur=con.cursor()
-cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
-cur.close()
-for j in eveLists.itemList:
-    tempPrice = fetchSellPrice(i,j)
-    print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+    '''
     cur = con.cursor()
-    cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
-    cur.close()
+    cur.execute('SELECT id FROM name')
+    rows = cur.fetchall()
+    itemList = []
+    for row in rows:
+        itemList.append(row[0])
 
-'''
-cur = con.cursor()
-cur.execute('SELECT id FROM name')
-rows = cur.fetchall()
-itemList = []
-for row in rows:
-    itemList.append(row[0])
+    print itemList
+    '''
 
-print itemList
-'''
-
-if con:
-    con.commit()
-    con.close()
+    if con:
+        con.commit()
+        con.close()
