@@ -28,7 +28,7 @@ scheduler.add_job(
     func=print_date_time, # your function here
     trigger=IntervalTrigger(minutes=360),
     id='doingsmth_job',
-    name='Print date and time every five seconds',
+    name='Update tables and recalculate profit margins every 6 hours',
     replace_existing=True)
 
 atexit.register(lambda: scheduler.shutdown())
