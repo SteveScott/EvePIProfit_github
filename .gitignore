@@ -48,4 +48,4 @@ Temporary Items
 
 #virtual environment
 /venv
-/gitIgnore
+/gitIgnore .env
