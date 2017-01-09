@@ -1,8 +1,9 @@
 
 $(document).ready(function() {
     $('#mainTable').DataTable( {
-        "paging":   false,
+        "paging":   true,
         "ordering": true,
-        "info":     false
+        "info":     true
+        "order": [[4, "asc"]]
     } );
 } );
