@@ -3,6 +3,27 @@ from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 import urlparse
+import apscheduler
+import atexit
+import time
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+
+def print_date_time():
+    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(
+    func=print_date_time, # your function here
+    trigger=IntervalTrigger(seconds=3),
+    id='doingsmth_job',
+    name='Print date and time every five seconds',
+    replace_existing=True)
+
+atexit.register(lambda: scheduler.shutdown())
+
 
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
@@ -63,5 +84,6 @@ def dodixie():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=os.environ.get('PORT', 8080))
+
+    app.run(debug=True, port=os.environ.get('PORT', 5000))
     #app.run(debug=True)
