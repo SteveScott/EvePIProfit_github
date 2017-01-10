@@ -14,19 +14,18 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 def print_date_time():
-    print('Updating Tables')
-    updatePrices.main()
-    #execfile(scripts/updatePrices.py)
-    print('Updating Margins')
-    calculateMargins.main()
-    #execfile(scripts/calculateMargins.py)
+    #print('Updating Tables')
+    #updatePrices.main()
+    #print('Updating Margins')
+    #calculateMargins.main()
+
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
 scheduler = BackgroundScheduler()
 scheduler.start()
 scheduler.add_job(
     func=print_date_time, # your function here
-    trigger=IntervalTrigger(hours=6),
+    trigger=IntervalTrigger(minutes=1),
     id='doingsmth_job',
     name='Update tables and recalculate profit margins every 6 hours',
     replace_existing=True)
