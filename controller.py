@@ -14,10 +14,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 def print_date_time():
-    #print('Updating Tables')
-    #updatePrices.main()
-    #print('Updating Margins')
-    #calculateMargins.main()
+    print('Updating Tables')
+    updatePrices.main()
+    print('Updating Margins')
+    calculateMargins.main()
 
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
@@ -25,7 +25,7 @@ scheduler = BackgroundScheduler()
 scheduler.start()
 scheduler.add_job(
     func=print_date_time, # your function here
-    trigger=IntervalTrigger(minutes=1),
+    trigger=IntervalTrigger(hours=6),
     id='doingsmth_job',
     name='Update tables and recalculate profit margins every 6 hours',
     replace_existing=True)
@@ -91,5 +91,5 @@ def dodixie():
 
 if __name__ == "__main__":
 
-    app.run(debug=True, port=os.environ.get('PORT', 5000))
+    app.run(debug=True, port=os.environ.get('PORT', 5000), use_reloader=False)
     #app.run(debug=True)
