@@ -8,12 +8,15 @@ import scripts.eveLists
 from scripts import connection
 
 
-def LookupPrice(item, cur):
-    print(item)
-    cur.execute('SELECT PRICE FROM PRICE_TEMP WHERE ITEMID = %s', [item])
+def LookupPrice(item, con):
+    cur = con.cursor()
+    cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s', [item])
     answer = cur.fetchall()
+    cur.close()
+    con.commit()
+    print(answer)
     if len(answer) > 0:
-        print('The lookup price answer is %s', answer[0][0])
+        #print('The lookup price answer is %s', answer[0][0])
         return answer[0][0]
     else:
         #print('the answer has length 0.')
@@ -49,11 +52,11 @@ def CalculateProfit(system1, item1) :
 
     if len(tempList) > 0:
         try:
-            netCost = ((LookupPrice(p1, cur)*q1 + LookupPrice(p2, cur)*q2 + LookupPrice(p3, cur)*q3) / q0)
-            salePrice = LookupPrice(item1, cur)
+            netCost = ((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
+            salePrice = LookupPrice(item1, con)
             netProfit = salePrice - netCost
             percentProfit = ((salePrice - netCost) * 100) / netCost
-            print item1, LookupPrice(item1, cur),((LookupPrice(p1, cur)*q1 + LookupPrice(p2, cur)*q2 + LookupPrice(p3, cur)*q3) / q0)
+            print item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
         except ZeroDivisionError:
             netProfit = 0
             percentProfit = 0
@@ -95,14 +98,14 @@ def main():
         cur = con.cursor()
         cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
         cur.close()
+        con.commit()
 
-    ####
         for j in scripts.eveLists.itemList:
             CalculateProfit(i, j)
 
         cur = con.cursor()
         cur.execute('DROP TABLE {0}'.format(databaseName))
-        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
+        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP'.format(databaseName))
         cur.close()
         con.commit()
         con.close()

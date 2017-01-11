@@ -57,6 +57,7 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
+        con.commit()
     '''
     i = 30002187
     cur=con.cursor()
