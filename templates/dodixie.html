@@ -3,7 +3,8 @@
 <h1>Dodixie</h1>
 {% endblock %}
 {% block content %}
-<table>
+<table id="mainTable" class="table table-striped">
+    <thead>
     <tr>
         <th>Name</th>
         <th>Price</th>
@@ -11,6 +12,8 @@
         <th>Profit Margin</th>
         <th>Datetime</th>
     </tr>
+    </thead>
+    <tbody>
     {% for entry in entries %}
     <tr>
         <td>{{entry[0]}}</td>
@@ -20,5 +23,6 @@
         <td>{{entry[4]}}</td>
     </tr>
     {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

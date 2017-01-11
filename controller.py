@@ -9,6 +9,7 @@ import psycopg2
 from flask import Flask, render_template
 from scripts import updatePrices
 from scripts import calculateMargins
+from scripts import PushToPerm
 ###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -18,6 +19,8 @@ def print_date_time():
     updatePrices.main()
     print('Updating Margins')
     calculateMargins.main()
+    print('Pushing to Perm')
+    PushToPerm.main()
 
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
