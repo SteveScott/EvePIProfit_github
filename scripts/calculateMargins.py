@@ -5,32 +5,23 @@ import psycopg2
 import os
 import urlparse
 import scripts.eveLists
+from scripts import connection
 
-os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
-urlparse.uses_netloc.append("postgres")
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
-
-con = psycopg2.connect(
-    database=url.path[1:],
-    user=url.username,
-    password=url.password,
-    host=url.hostname,
-    port=url.port
-)
-
-def LookupPrice(item):
-    cur = con.cursor()
+def LookupPrice(item, cur):
+    print(item)
     cur.execute('SELECT PRICE FROM PRICE_TEMP WHERE ITEMID = %s', [item])
     answer = cur.fetchall()
-    cur.close()
     if len(answer) > 0:
+        print('The lookup price answer is %s', answer[0][0])
         return answer[0][0]
     else:
+        #print('the answer has length 0.')
         return 0
 
-def CalculateProfit(system1, item1) :
 
+def CalculateProfit(system1, item1) :
+    con = connection.establish_connection()
     cur = con.cursor()
     cur.execute('SELECT * FROM recipe WHERE ID = %s', [item1])
     tempList = cur.fetchall()
@@ -54,42 +45,54 @@ def CalculateProfit(system1, item1) :
         q3 = tempList[0][7]
 
     #produced = # [tempList[1]
-    cur.close
+
 
     if len(tempList) > 0:
         try:
-            netCost = ((LookupPrice(p1)*q1 + LookupPrice(p2)*q2 + LookupPrice(p3)*q3) / q0)
-            salePrice = LookupPrice(item1)
+            netCost = ((LookupPrice(p1, cur)*q1 + LookupPrice(p2, cur)*q2 + LookupPrice(p3, cur)*q3) / q0)
+            salePrice = LookupPrice(item1, cur)
             netProfit = salePrice - netCost
             percentProfit = ((salePrice - netCost) * 100) / netCost
-            print item1, LookupPrice(item1),((LookupPrice(p1)*q1 + LookupPrice(p2)*q2 + LookupPrice(p3)*q3) / q0)
+            print item1, LookupPrice(item1, cur),((LookupPrice(p1, cur)*q1 + LookupPrice(p2, cur)*q2 + LookupPrice(p3, cur)*q3) / q0)
         except ZeroDivisionError:
             netProfit = 0
             percentProfit = 0
             print('zero division error, default to 0')
-        cur = con.cursor()
         print item1
         cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s', (netProfit, percentProfit, item1))
         con.commit()
         cur.close()
+        con.close()
 
     else:
-        print('0')
+        try:
+            netProfit = 0
+            percentProfit = 0
+            cur = con.cursor()
+            print('0')
+            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s", (netProfit, percentProfit, item1))
+        except:
+            print('exception')
 
 def ClearTemp():
+    con = connection.establish_connection()
     cur = con.cursor()
     cur.execute('TRUNCATE TABLE price_temp')
     cur.close()
     con.commit()
+    con.close()
 
 
 ###Main###
 def main():
+
+
     for i in scripts.eveLists.systemList:
         ClearTemp()
         databaseName = scripts.eveLists.DatabaseDict[i]
     ###added after broke. need to repoppulate price_temp with system data
-        cur=con.cursor()
+        con = connection.establish_connection()
+        cur = con.cursor()
         cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
         cur.close()
 
@@ -102,6 +105,6 @@ def main():
         cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM price_temp'.format(databaseName))
         cur.close()
         con.commit()
+        con.close()
 
-    if con:
-        con.commit()
+

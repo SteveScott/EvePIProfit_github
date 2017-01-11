@@ -5,18 +5,8 @@ import psycopg2
 import os
 import urlparse
 import scripts.eveLists
+from scripts import connection
 
-os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
-urlparse.uses_netloc.append("postgres")
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
-
-con = psycopg2.connect(
-    database=url.path[1:],
-    user=url.username,
-    password=url.password,
-    host=url.hostname,
-    port=url.port
-)
 
 def fetchSellPrice(thisSystem, thisItem):
     request = Request('http://api.eve-central.com/api/marketstat?' +
@@ -34,8 +24,12 @@ def fetchSellPrice(thisSystem, thisItem):
 #print fetchSellPrice(thisSystem,thisItem)
 #print datetime.datetime.now()
 def main():
+    ###Establish connection
+    con = connection.establish_connection()
+
     ###clear the database
-    cur=con.cursor()
+    cur = con.cursor()
+    print('truncating PRICE_TEMP')
     cur.execute('TRUNCATE TABLE PRICE_TEMP')
     cur.close()
     con.commit()
@@ -53,7 +47,8 @@ def main():
     '''
 
     i = 30000142
-    cur=con.cursor()
+    cur = con.cursor()
+    print('truncating TEMP_JITA')
     cur.execute('TRUNCATE TABLE TEMP_JITA')
     cur.close()
     for j in scripts.eveLists.itemList:
@@ -62,7 +57,7 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
-
+    '''
     i = 30002187
     cur=con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_AMARR')
@@ -95,7 +90,7 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
-
+    '''
     '''
     cur = con.cursor()
     cur.execute('SELECT id FROM name')

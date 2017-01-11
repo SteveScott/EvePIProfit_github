@@ -3,6 +3,7 @@ import os
 import time
 import urlparse
 import sys
+import logging
 
 import psycopg2
 
@@ -13,6 +14,9 @@ from scripts import PushToPerm
 ###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+
+logging.basicConfig(level=10)
+
 
 def print_date_time():
     print('Updating Tables')
@@ -93,6 +97,6 @@ def dodixie():
 
 
 if __name__ == "__main__":
-
+    print('launching app.run')
     app.run(debug=True, port=os.environ.get('PORT', 5000), use_reloader=False)
     #app.run(debug=True)
