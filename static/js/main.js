@@ -12,10 +12,12 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#mainTable').dataTable( {
-        "formatNumber": function (toFormat){
-        return toFormat.toString().replace(
-        /\B(?=(\d{3})+(?!\d))/g, ",");
-        };
         "aaSorting": [[ 4, "asc" ]]
     } );
+    $.fn.digits = function(){
+        return this.each(function(){
+            $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            })
+    }
+    $("span.numbers").digits();
 } );
