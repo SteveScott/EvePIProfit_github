@@ -7,7 +7,7 @@ import logging
 
 import psycopg2
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
@@ -67,7 +67,9 @@ def jita():
     #cur.execute("SELECT * FROM temp_jita")
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_jita WHERE itemid = id")
     entries = cur.fetchall()
-    return render_template('jita.html',entries=entries)
+    cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita')
+    chart = cur.fetchall()
+    return render_template('jita.html',entries=entries, chart=jsonify(chart))
 
 @app.route('/amarr')
 def amarr():
