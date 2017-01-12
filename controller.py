@@ -65,23 +65,23 @@ def index():
 def jita():
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
-    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_jita WHERE itemid = id")
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_jita WHERE itemid = id;")
     entries = cur.fetchall()
-    cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita')
+    cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
     chart = cur.fetchall()
     return render_template('jita.html',entries=entries, chart=jsonify(chart))
 
 @app.route('/amarr')
 def amarr():
     cur = con.cursor()
-    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_amarr WHERE itemid = id")
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_amarr WHERE itemid = id;")
     entries = cur.fetchall()
     return render_template('amarr.html',entries=entries)
 
 @app.route('/rens')
 def rens():
     cur = con.cursor()
-    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_rens WHERE itemid = id")
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_rens WHERE itemid = id;")
     entries = cur.fetchall()
     return render_template('rens.html',entries=entries)
 
@@ -93,7 +93,7 @@ def rens():
 @app.route('/dodixie')
 def dodixie():
     cur = con.cursor()
-    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_dodixie WHERE itemid = id")
+    cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_dodixie WHERE itemid = id;")
     entries = cur.fetchall()
     return render_template('dodixie.html',entries=entries)
 
