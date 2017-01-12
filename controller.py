@@ -4,10 +4,11 @@ import time
 import urlparse
 import sys
 import logging
+import json
 
 import psycopg2
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
@@ -69,7 +70,7 @@ def jita():
     entries = cur.fetchall()
     cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
     chart = cur.fetchall()
-    return render_template('jita.html',entries=entries, chart=jsonify(chart))
+    return render_template('jita.html',entries=entries, chart=json.dumps(chart))
 
 @app.route('/amarr')
 def amarr():
