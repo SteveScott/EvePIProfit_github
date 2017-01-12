@@ -69,7 +69,17 @@ def jita():
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_jita WHERE itemid = id;")
     entries = cur.fetchall()
     cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
-    chart = cur.fetchall()
+    persistentData = cur.fetchall()
+
+    chart = []
+
+    for entry in persistentData:
+        chart.append({
+            "itemid": entry[0],
+            "profitmargin": entry[1],
+            "mytime": entry[2]
+        })
+
     return render_template('jita.html',entries=entries, chart=json.dumps(chart))
 
 @app.route('/amarr')
