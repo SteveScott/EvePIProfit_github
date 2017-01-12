@@ -51,16 +51,17 @@ def main():
     print('truncating TEMP_JITA')
     cur.execute('TRUNCATE TABLE TEMP_JITA')
     cur.close()
+
     for j in scripts.eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
-        print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+        print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
         con.commit()
-    '''
+
     i = 30002187
-    cur=con.cursor()
+    cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_AMARR')
     cur.close()
     for j in scripts.eveLists.itemList:
@@ -69,9 +70,10 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
+        con.commit()
 
     i = 30002510
-    cur=con.cursor()
+    cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_RENS')
     cur.close()
     for j in scripts.eveLists.itemList:
@@ -80,9 +82,10 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
+        con.commit()
 
     i = 30002659
-    cur=con.cursor()
+    cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
     cur.close()
     for j in scripts.eveLists.itemList:
@@ -91,17 +94,9 @@ def main():
         cur = con.cursor()
         cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
-    '''
-    '''
-    cur = con.cursor()
-    cur.execute('SELECT id FROM name')
-    rows = cur.fetchall()
-    itemList = []
-    for row in rows:
-        itemList.append(row[0])
+        con.commit
 
-    print itemList
-    '''
+
 
     if con:
         con.commit()

@@ -13,8 +13,7 @@ def LookupPrice(item, con):
     cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s', [item])
     answer = cur.fetchall()
     cur.close()
-    con.commit()
-    print(answer)
+
     if len(answer) > 0:
         #print('The lookup price answer is %s', answer[0][0])
         return answer[0][0]
@@ -72,8 +71,9 @@ def CalculateProfit(system1, item1) :
             netProfit = 0
             percentProfit = 0
             cur = con.cursor()
-            print('0')
+            print('len(tempList) = 0')
             cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s", (netProfit, percentProfit, item1))
+            con.commit
         except:
             print('exception')
 
@@ -104,6 +104,7 @@ def main():
             CalculateProfit(i, j)
 
         cur = con.cursor()
+        cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
         cur.execute('DROP TABLE {0}'.format(databaseName))
         cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP'.format(databaseName))
         cur.close()
