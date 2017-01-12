@@ -74,6 +74,7 @@ def CalculateProfit(system1, item1) :
             print('len(tempList) = 0')
             cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s", (netProfit, percentProfit, item1))
             con.commit
+            con.close()
         except:
             print('exception')
 
