@@ -77,7 +77,7 @@ def jita():
         chart.append({
             "itemid": entry[0],
             "profitmargin": entry[1],
-            "mytime": entry[2]
+            "mytime": str(entry[2])
         })
 
     return render_template('jita.html',entries=entries, chart=json.dumps(chart))
