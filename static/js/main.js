@@ -1,4 +1,4 @@
-/*
+
 $(document).ready(function() {
     $('#mainTable').DataTable( {
         paging:   true,
@@ -7,9 +7,12 @@ $(document).ready(function() {
         aaSorting: [[4, "asc"]]
     } );
 } );
-*/
+
+/*
+
 $(document).ready(function() {
     $('#example').dataTable( {
         "aaSorting": [[ 4, "asc" ]]
     } );
 } );
+*/
