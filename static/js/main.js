@@ -16,8 +16,10 @@ $(document).ready(function() {
         "iDisplayLength": 100,
         "aaSorting": [[ 4, "asc" ]]
     } );
-    var h = 100;
-    var w = 200;
+
+} );
+var h = 100;
+var w = 200;
 
     monthlySales = [
       {"month":10, "sales":20},
@@ -42,4 +44,3 @@ $(document).ready(function() {
         "fill":"none",
         "stroke-width":2,
       })
-} );
