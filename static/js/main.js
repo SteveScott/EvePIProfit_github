@@ -18,6 +18,7 @@ $(document).ready(function() {
     } );
 
 } );
+/*
 var h = 100;
 var w = 200;
 
@@ -44,3 +45,4 @@ var w = 200;
         "fill":"none",
         "stroke-width":2,
       })
+      */
