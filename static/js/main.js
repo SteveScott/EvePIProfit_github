@@ -12,6 +12,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#mainTable').dataTable( {
+        stateSave:true
         "aaSorting": [[ 4, "asc" ]]
     } );
 } );
