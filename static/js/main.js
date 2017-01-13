@@ -13,6 +13,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#mainTable').dataTable( {
         stateSave: true,
+        "iDisplayLength": 100,
         "aaSorting": [[ 4, "asc" ]]
     } );
 } );
