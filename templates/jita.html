@@ -36,6 +36,10 @@
       {"month":50, "sales":15}
     ];
 
+
+    var parseDate = d3.time.format(%Y-%m-%d %H:%M:%S).parse;
+
+
     var lineFun = d3.svg.line()
       .x(function(d) {return d.month*2;})
       .y(function(d) {return h-d.sales;})
@@ -51,6 +55,11 @@
         "fill":"none",
         "stroke-width":2,
       })
+
+    var lineFun2 = d3.svg.line()
+    persistentData.forEach(function(d){
+        d.mytime = parseDate(d.myTime);
+        });
     </script>
 
     </tbody>
