@@ -25,6 +25,7 @@
     </tr>
     {% endfor %}
     <script type="text/javascript">
+    var persistentData = {{chart|safe}};
     var h = 100;
     var w = 200;
 
@@ -66,6 +67,6 @@
 </table>
 
 <script>
-    var persistentData = {{chart|safe}};
+
 </script>
 {% endblock %}
