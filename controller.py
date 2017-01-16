@@ -33,7 +33,7 @@ scheduler = BackgroundScheduler()
 scheduler.start()
 scheduler.add_job(
     func=print_date_time, # your function here
-    trigger=IntervalTrigger(hours=1),
+    trigger=IntervalTrigger(hours=6),
     id='doingsmth_job',
     name='Update tables and recalculate profit margins every 6 hours',
     replace_existing=True)
