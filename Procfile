@@ -1,2 +1,2 @@
 web: gunicorn controller:app
-clock: python clock.py
+clock: python scripts/clock.py
