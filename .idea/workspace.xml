@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c631f93-bc61-4f10-81c0-40133a1218ef" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/clock.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller.py" afterPath="$PROJECT_DIR$/controller.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/updatePrices.py" afterPath="$PROJECT_DIR$/scripts/updatePrices.py" />
     </list>
     <ignored path="EvePIProfit_github.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,14 +25,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="controller.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="controller.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67850465">
-              <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-7.4716983">
+              <caret line="12" column="36" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clock.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/clock.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.09235074">
+              <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -41,20 +49,8 @@
         <entry file="file://$PROJECT_DIR$/scripts/terminate_db_connections.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="calculateMargins.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/calculateMargins.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#46#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -62,7 +58,7 @@
       <file leaf-file-name="updatePrices.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/updatePrices.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.8490567">
+            <state vertical-scroll-proportion="0.0">
               <caret line="56" column="97" selection-start-line="56" selection-start-column="97" selection-end-line="56" selection-end-column="97" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
@@ -74,7 +70,7 @@
       <file leaf-file-name="eveLists.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/eveLists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-67.245285">
+            <state vertical-scroll-proportion="0.0">
               <caret line="108" column="14" selection-start-line="108" selection-start-column="14" selection-end-line="108" selection-end-column="14" />
               <folding />
             </state>
@@ -94,7 +90,7 @@
       <file leaf-file-name="jita.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/jita.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.214285">
+            <state vertical-scroll-proportion="0.0">
               <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
               <folding />
             </state>
@@ -104,7 +100,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.071429">
+            <state vertical-scroll-proportion="0.0">
               <caret line="9" column="44" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
               <folding />
             </state>
@@ -170,13 +166,14 @@
         <option value="$PROJECT_DIR$/templates/jita.html" />
         <option value="$PROJECT_DIR$/scripts/updatePrices.py" />
         <option value="$PROJECT_DIR$/controller.py" />
+        <option value="$PROJECT_DIR$/scripts/clock.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="5892" />
-    <option name="y" value="133" />
-    <option name="width" value="2652" />
+    <option name="x" value="-42" />
+    <option name="y" value="419" />
+    <option name="width" value="1988" />
     <option name="height" value="1418" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -204,7 +201,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -321,6 +317,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -476,10 +473,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="5892" y="133" width="2652" height="1418" extended-state="0" />
+    <frame x="-42" y="419" width="1988" height="1418" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26181254" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35245046" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329097" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -535,13 +532,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -819,7 +809,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="144" selection-start-line="5" selection-start-column="144" selection-end-line="5" selection-end-column="144" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -830,14 +819,6 @@
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/terminate_db_connections.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -867,7 +848,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.071429">
+        <state vertical-scroll-proportion="0.0">
           <caret line="9" column="44" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
           <folding />
         </state>
@@ -875,7 +856,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/jita.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.214285">
+        <state vertical-scroll-proportion="0.0">
           <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
           <folding />
         </state>
@@ -883,7 +864,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/eveLists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-67.245285">
+        <state vertical-scroll-proportion="0.0">
           <caret line="108" column="14" selection-start-line="108" selection-start-column="14" selection-end-line="108" selection-end-column="14" />
           <folding />
         </state>
@@ -891,7 +872,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/updatePrices.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.8490567">
+        <state vertical-scroll-proportion="0.0">
           <caret line="56" column="97" selection-start-line="56" selection-start-column="97" selection-end-line="56" selection-end-column="97" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
@@ -899,13 +880,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/terminate_db_connections.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67850465">
-          <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-7.4716983">
+          <caret line="12" column="36" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/clock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09235074">
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

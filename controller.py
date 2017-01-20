@@ -19,26 +19,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 logging.basicConfig(level=10)
 
 
-def print_date_time():
-    print('Updating Tables')
-    updatePrices.main()
-    print('Updating Margins')
-    calculateMargins.main()
-    print('Pushing to Perm')
-    PushToPerm.main()
 
-    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
-scheduler = BackgroundScheduler()
-scheduler.start()
-scheduler.add_job(
-    func=print_date_time, # your function here
-    trigger=IntervalTrigger(hours=6),
-    id='doingsmth_job',
-    name='Update tables and recalculate profit margins every 6 hours',
-    replace_existing=True)
-
-atexit.register(lambda: scheduler.shutdown())
 
 ###end scheduler
 
