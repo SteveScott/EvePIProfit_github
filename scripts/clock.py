@@ -1,5 +1,6 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-
+from scripts import calculateMargins
+from scripts import updatePrices
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler()
 
