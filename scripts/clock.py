@@ -4,7 +4,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 scheduler = BlockingScheduler()
 
 
-@scheduler.scheduled_job('cron', hour=0,6,12,18)
+@scheduler.scheduled_job('cron', hour='0,6,12,18')
 def print_date_time():
     print('Updating Tables')
     updatePrices.main()
