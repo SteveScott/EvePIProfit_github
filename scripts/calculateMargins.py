@@ -4,8 +4,8 @@ import datetime
 import psycopg2
 import os
 import urlparse
-import scripts.eveLists
-from scripts import connection
+import eveLists
+import connection
 
 
 def LookupPrice(item, con):
@@ -91,9 +91,9 @@ def ClearTemp():
 def main():
 
 
-    for i in scripts.eveLists.systemList:
+    for i in eveLists.systemList:
         ClearTemp()
-        databaseName = scripts.eveLists.DatabaseDict[i]
+        databaseName = eveLists.DatabaseDict[i]
     ###added after broke. need to repoppulate price_temp with system data
         con = connection.establish_connection()
         cur = con.cursor()
@@ -101,7 +101,7 @@ def main():
         cur.close()
         con.commit()
 
-        for j in scripts.eveLists.itemList:
+        for j in eveLists.itemList:
             CalculateProfit(i, j)
 
         cur = con.cursor()

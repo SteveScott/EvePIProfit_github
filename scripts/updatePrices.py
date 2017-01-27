@@ -4,8 +4,8 @@ import datetime
 import psycopg2
 import os
 import urlparse
-import scripts.eveLists
-from scripts import connection
+import eveLists
+import connection
 
 
 def fetchSellPrice(thisSystem, thisItem):
@@ -52,7 +52,7 @@ def main():
     cur.execute('TRUNCATE TABLE TEMP_JITA')
     cur.close()
 
-    for j in scripts.eveLists.itemList:
+    for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()
@@ -64,7 +64,7 @@ def main():
     cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_AMARR')
     cur.close()
-    for j in scripts.eveLists.itemList:
+    for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()
@@ -76,7 +76,7 @@ def main():
     cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_RENS')
     cur.close()
-    for j in scripts.eveLists.itemList:
+    for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()
@@ -88,7 +88,7 @@ def main():
     cur = con.cursor()
     cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
     cur.close()
-    for j in scripts.eveLists.itemList:
+    for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
         print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
         cur = con.cursor()

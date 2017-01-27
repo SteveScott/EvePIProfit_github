@@ -1,10 +1,10 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-from scripts import calculateMargins
-from scripts import updatePrices
-from scripts import PushToPerm
+import calculateMargins
+import updatePrices
+import PushToPerm
 import time
 #changed BackgroundScheduler to BlockingScheduler
-scheduler = BlockingScheduler()
+scheduler = BlockingScheduler(timezone="Iceland")
 
 
 @scheduler.scheduled_job('cron', hour='0,6,12,18')
