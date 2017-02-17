@@ -17,7 +17,7 @@ def print_date_time():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
-@sheduler.scheduled_job('interval', minutes = 3)
+@scheduler.scheduled_job('interval', minutes = 3)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()
