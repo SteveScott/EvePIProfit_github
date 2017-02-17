@@ -56,7 +56,7 @@ def CalculateProfit(system1, item1) :
             netProfit = salePrice - netCost
             percentProfit = ((salePrice - netCost) * 100) / netCost
             print item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
-        except ZeroDivisionError:
+        except :
             netProfit = 0
             percentProfit = 0
             print('zero division error, default to 0')
