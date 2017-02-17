@@ -17,15 +17,15 @@ def print_date_time():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
-@scheduler.scheduled_job('interval', minutes = 3)
-def timed_job():
-    print('Updating Tables')
-    updatePrices.main()
-    print('Updating Margins')
-    calculateMargins.main()
+#@scheduler.scheduled_job('interval', minutes = 3)
+#def timed_job():
+ #   print('Updating Tables')
+  #  updatePrices.main()
+   # print('Updating Margins')
+    #calculateMargins.main()
     #print('Pushing to Perm')
     #PushToPerm.main()
-    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+    #print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
 
 '''
