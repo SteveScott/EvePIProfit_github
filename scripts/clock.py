@@ -13,9 +13,20 @@ def print_date_time():
     updatePrices.main()
     print('Updating Margins')
     calculateMargins.main()
-    print('Pushing to Perm')
-    PushToPerm.main()
+    #print('Pushing to Perm')
+    #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+
+@sheduler.scheduled_job('interval', minutes = 3)
+def timed_job():
+    print('Updating Tables')
+    updatePrices.main()
+    print('Updating Margins')
+    calculateMargins.main()
+    #print('Pushing to Perm')
+    #PushToPerm.main()
+    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+
 
 '''
 scheduler.add_job(
