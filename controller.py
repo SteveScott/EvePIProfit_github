@@ -1,6 +1,7 @@
 import atexit
 import os
 import time
+import urllib
 try:
     from urllib.parse import urlparse
 except ImportError:
@@ -8,6 +9,7 @@ except ImportError:
 import sys
 import logging
 import json
+
 
 import psycopg2
 
@@ -29,7 +31,7 @@ logging.basicConfig(level=10)
 
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
+url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 
 con = psycopg2.connect(
     database=url.path[1:],
