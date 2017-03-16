@@ -1,7 +1,10 @@
 import atexit
 import os
 import time
-import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 import sys
 import logging
 import json

@@ -1,9 +1,8 @@
-from urllib2 import Request, urlopen, URLError
+from urllib import request, error, parse
 import xml.etree.ElementTree as ET
 import datetime
 import psycopg2
 import os
-import urlparse
 import eveLists
 import connection
 
@@ -55,12 +54,12 @@ def CalculateProfit(system1, item1) :
             salePrice = LookupPrice(item1, con)
             netProfit = salePrice - netCost
             percentProfit = ((salePrice - netCost) * 100) / netCost
-            print item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
+            print(item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0))
         except :
             netProfit = 0
             percentProfit = 0
             print('zero division error, default to 0')
-        print item1
+        print(item1)
         cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s', (netProfit, percentProfit, item1))
         con.commit()
         cur.close()
