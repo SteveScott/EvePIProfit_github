@@ -15,3 +15,5 @@ virtualenv-clone==0.2.6
 virtualenvwrapper==4.7.2
 Werkzeug==0.11.11
 APScheduler==3.3.1
+Flask-Mail==0.9.1
+Flask_WTF==0.14.2

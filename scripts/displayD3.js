@@ -1,4 +1,4 @@
-<script type="text/javascript">
+function displayD3(){
     var persistentData = {{chart|safe}};
     var h = 100;
     var w = 200;
@@ -35,4 +35,4 @@
     persistentData.forEach(function(d){
         d.mytime = parseDate(d.myTime);
         });
-    </script>
+}

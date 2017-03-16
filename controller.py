@@ -9,14 +9,17 @@ except ImportError:
 import sys
 import logging
 import json
-
+from gitIgnore import passwords
 
 import psycopg2
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
+from forms import ContactForm
+from flask_mail import Message, Mail
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
+
 ###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -41,9 +44,15 @@ con = psycopg2.connect(
     port=url.port
 )
 
+mail = Mail()
 
 app = Flask(__name__)
-
+app.secret_key = 'qDB5kyrKD8YlscV2JrbKSkdJfndzMgTxN '
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = 'evepiprofit@gmail.com'
+app.config["MAIL_PASSWORD"] = passwords.email()
 @app.route('/')
 @app.route('/index')
 def index():
@@ -94,6 +103,26 @@ def dodixie():
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime FROM name, temp_dodixie WHERE itemid = id;")
     entries = cur.fetchall()
     return render_template('dodixie.html',entries=entries)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('contact.html', form=form)
+        else:
+            msg = Message(form.subject.data, sender='evepiprofits@gmail.com', recipients=['stevescott517@gmail.com', 'evepiprofits@gmail.com'])
+            msg.body ="""
+            From %s <%s>
+            %s
+            """ % (form.name.data, form.email.data, form.message.data)
+            mail.send(msg)
+
+            return render_template('posted.html')
+    elif request.method == 'GET':
+        return render_template('contact.html', form = form)
 
 
 if __name__ == "__main__":
