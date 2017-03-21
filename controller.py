@@ -53,6 +53,7 @@ app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'evepiprofit@gmail.com'
 app.config["MAIL_PASSWORD"] = passwords.email()
+app.config['MAILGUN_KEY'] = passwords.mailgunKey()
 @app.route('/')
 @app.route('/index')
 def index():
@@ -108,17 +109,31 @@ def dodixie():
 def contact():
     form = ContactForm()
 
+    def send_mail(to_address, from_address, subject, plaintext, html):
+        r = requests. \
+            post("https://api.mailgun.net/v2/%s/messages" % app.config['MAILGUN_DOMAIN'],
+                 auth=("api", app.config['MAILGUN_KEY']),
+                 data={
+                     "from": from_address,
+                     "to": to_address,
+                     "subject": subject,
+                     "text": plaintext,
+                     "html": html
+                 }
+                 )
+        return r
+
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
             return render_template('contact.html', form=form)
         else:
-            msg = Message(form.subject.data, sender='evepiprofits@gmail.com', recipients=['stevescott517@gmail.com', 'evepiprofits@gmail.com'])
-            msg.body ="""
-            From %s <%s>
-            %s
-            """ % (form.name.data, form.email.data, form.message.data)
-            mail.send(msg)
+            send_mail(app.config["MAIL_USERNAME"],
+                      form.email.data,
+                      form.subject.data,
+                      form.message.data)
+
+
 
             return render_template('posted.html')
     elif request.method == 'GET':
