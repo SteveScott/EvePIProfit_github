@@ -3,3 +3,5 @@ def email():
 
 def mailgunKey():
     return "key-d76c5da20b647a38e1753284c87a47ae"
+def flaskSecretKey():
+     return 'Cnrk58wCFzMzSPwdBvlEDj1cZP9fqNZRE' #'qDB5kyrKD8YlscV2JrbKSkdJfndzMgTxN'

@@ -1,6 +1,7 @@
 import atexit
 import os
 import time
+import requests
 import urllib
 try:
     from urllib.parse import urlparse
@@ -47,13 +48,14 @@ con = psycopg2.connect(
 mail = Mail()
 
 app = Flask(__name__)
-app.secret_key = 'qDB5kyrKD8YlscV2JrbKSkdJfndzMgTxN '
+app.secret_key = passwords.flaskSecretKey()
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = 'evepiprofit@gmail.com'
+app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
 app.config["MAIL_PASSWORD"] = passwords.email()
 app.config['MAILGUN_KEY'] = passwords.mailgunKey()
+app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
 @app.route('/')
 @app.route('/index')
 def index():
@@ -109,19 +111,21 @@ def dodixie():
 def contact():
     form = ContactForm()
 
-    def send_mail(to_address, from_address, subject, plaintext, html):
-        r = requests. \
-            post("https://api.mailgun.net/v2/%s/messages" % app.config['MAILGUN_DOMAIN'],
-                 auth=("api", app.config['MAILGUN_KEY']),
-                 data={
-                     "from": from_address,
-                     "to": to_address,
-                     "subject": subject,
-                     "text": plaintext,
-                     "html": html
-                 }
-                 )
-        return r
+    def send_mail(to_address, from_address, subject, plaintext):
+
+
+        request = requests.post("https://api.mailgun.net/v2/%s/messages" % app.config['MAILGUN_DOMAIN'],
+             auth=("api", app.config['MAILGUN_KEY']),
+             data={
+                 "from": from_address,
+                 "to": to_address,
+                 "subject": subject,
+                 "text": plaintext,
+                }
+             )
+        return request
+
+
 
     if request.method == 'POST':
         if form.validate() == False:
