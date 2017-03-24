@@ -37,4 +37,4 @@ scheduler.add_job(
     replace_existing=True)
 '''
 scheduler.start()
-#atexit.register(lambda: scheduler.shutdown())
+atexit.register(lambda: scheduler.shutdown())

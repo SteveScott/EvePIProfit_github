@@ -22,7 +22,7 @@ def fetchSellPrice(thisSystem, thisItem):
         data = response.read()
         root = ET.fromstring(data)
         return root[0][0][1][6].text
-    except(URLError, e):
+    except e:
         print('error code:', e)
 
 #print thisItem
