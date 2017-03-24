@@ -13,12 +13,13 @@ sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 def fetchSellPrice(thisSystem, thisItem):
     print("fetching sell price")
+
     request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
                       'typeid=' + str(thisItem) +
                       '&usesystem=' + str(thisSystem))
-    print("price fetched")
+
     try:
-        response = urllib.request.urlopen(request)
+        response = request#urllib.request.urlopen(request)
         data = response.read()
         root = ET.fromstring(data)
         return root[0][0][1][6].text
