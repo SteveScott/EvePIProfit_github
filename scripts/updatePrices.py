@@ -22,8 +22,8 @@ def fetchSellPrice(thisSystem, thisItem):
         data = response.read()
         root = ET.fromstring(data)
         return root[0][0][1][6].text
-    except e:
-        print('error code:', e)
+    except:
+        print("error fetching sell price")
 
 #print thisItem
 #print fetchSellPrice(thisSystem,thisItem)
