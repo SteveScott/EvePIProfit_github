@@ -50,7 +50,7 @@ def main():
     for i in eveLists.systemList:
         for j in eveLists.itemList:
             tempPrice = fetchSellPrice(i,j)
-            print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
+            #print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
             cur = con.cursor()
             cur.execute('INSERT INTO PRICE_TEMP VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
     '''
