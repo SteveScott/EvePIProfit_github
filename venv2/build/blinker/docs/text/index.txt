@@ -1,0 +1,591 @@
+
+Blinker Documentation
+*********************
+
+Blinker provides fast & simple object-to-object and broadcast
+signaling for Python objects.
+
+The core of Blinker is quite small but provides powerful features:
+
+   * a global registry of named signals
+
+   * anonymous signals
+
+   * custom name registries
+
+   * permanently or temporarily connected receivers
+
+   * automatically disconnected receivers via weak referencing
+
+   * sending arbitrary data payloads
+
+   * collecting return values from signal receivers
+
+   * thread safety
+
+Blinker was written by Jason Kirtand and is provided under the MIT
+License. The library supports Python 2.4 or later; Python 3.0 or
+later; or Jython 2.5 or later; or PyPy 1.6 or later.
+
+
+Decoupling With Named Signals
+=============================
+
+Named signals are created with "signal()":
+
+   >>> from blinker import signal
+   >>> initialized = signal('initialized')
+   >>> initialized is signal('initialized')
+   True
+
+Every call to "signal('name')" returns the same signal object,
+allowing unconnected parts of code (different modules, plugins,
+anything) to all use the same signal without requiring any code
+sharing or special imports.
+
+
+Subscribing to Signals
+======================
+
+"Signal.connect()" registers a function to be invoked each time the
+signal is emitted.  Connected functions are always passed the object
+that caused the signal to be emitted.
+
+   >>> def subscriber(sender):
+   ...     print("Got a signal sent by %r" % sender)
+   ...
+   >>> ready = signal('ready')
+   >>> ready.connect(subscriber)
+   <function subscriber at 0x...>
+
+
+Emitting Signals
+================
+
+Code producing events of interest can "Signal.send()" notifications to
+all connected receivers.
+
+Below, a simple "Processor" class emits a "ready" signal when it's
+about to process something, and "complete" when it is done.  It passes
+"self" to the "send()" method, signifying that that particular
+instance was responsible for emitting the signal.
+
+   >>> class Processor:
+   ...    def __init__(self, name):
+   ...        self.name = name
+   ...
+   ...    def go(self):
+   ...        ready = signal('ready')
+   ...        ready.send(self)
+   ...        print("Processing.")
+   ...        complete = signal('complete')
+   ...        complete.send(self)
+   ...
+   ...    def __repr__(self):
+   ...        return '<Processor %s>' % self.name
+   ...
+   >>> processor_a = Processor('a')
+   >>> processor_a.go()
+   Got a signal sent by <Processor a>
+   Processing.
+
+Notice the "complete" signal in "go()"?  No receivers have connected
+to "complete" yet, and that's a-ok.  Calling "send()" on a signal with
+no receivers will result in no notifications being sent, and these no-
+op sends are optimized to be as inexpensive as possible.
+
+
+Subscribing to Specific Senders
+===============================
+
+The default connection to a signal invokes the receiver function when
+any sender emits it.  The "Signal.connect()" function accepts an
+optional argument to restrict the subscription to one specific sending
+object:
+
+   >>> def b_subscriber(sender):
+   ...     print("Caught signal from processor_b.")
+   ...     assert sender.name == 'b'
+   ...
+   >>> processor_b = Processor('b')
+   >>> ready.connect(b_subscriber, sender=processor_b)
+   <function b_subscriber at 0x...>
+
+This function has been subscribed to "ready" but only when sent by
+"processor_b":
+
+   >>> processor_a.go()
+   Got a signal sent by <Processor a>
+   Processing.
+   >>> processor_b.go()
+   Got a signal sent by <Processor b>
+   Caught signal from processor_b.
+   Processing.
+
+
+Sending and Receiving Data Through Signals
+==========================================
+
+Additional keyword arguments can be passed to "send()". These will in
+turn be passed to the connected functions:
+
+   >>> send_data = signal('send-data')
+   >>> @send_data.connect
+   ... def receive_data(sender, **kw):
+   ...     print("Caught signal from %r, data %r" % (sender, kw))
+   ...     return 'received!'
+   ...
+   >>> result = send_data.send('anonymous', abc=123)
+   Caught signal from 'anonymous', data {'abc': 123}
+
+The return value of "send()" collects the return values of each
+connected function as a list of ("receiver function", "return value")
+pairs:
+
+   >>> result
+   [(<function receive_data at 0x...>, 'received!')]
+
+
+Anonymous Signals
+=================
+
+Signals need not be named.  The "Signal" constructor creates a unique
+signal each time it is invoked.  For example, an alternative
+implementation of the Processor from above might provide the
+processing signals as class attributes:
+
+   >>> from blinker import Signal
+   >>> class AltProcessor:
+   ...    on_ready = Signal()
+   ...    on_complete = Signal()
+   ...
+   ...    def __init__(self, name):
+   ...        self.name = name
+   ...
+   ...    def go(self):
+   ...        self.on_ready.send(self)
+   ...        print("Alternate processing.")
+   ...        self.on_complete.send(self)
+   ...
+   ...    def __repr__(self):
+   ...        return '<AltProcessor %s>' % self.name
+   ...
+
+
+"connect" as a Decorator
+========================
+
+You may have noticed the return value of "connect()" in the console
+output in the sections above.  This allows "connect" to be used as a
+decorator on functions:
+
+   >>> apc = AltProcessor('c')
+   >>> @apc.on_complete.connect
+   ... def completed(sender):
+   ...     print "AltProcessor %s completed!" % sender.name
+   ...
+   >>> apc.go()
+   Alternate processing.
+   AltProcessor c completed!
+
+While convenient, this form unfortunately does not allow the "sender"
+or "weak" arguments to be customized for the connected function.  For
+this, "connect_via()" can be used:
+
+   >>> dice_roll = signal('dice_roll')
+   >>> @dice_roll.connect_via(1)
+   ... @dice_roll.connect_via(3)
+   ... @dice_roll.connect_via(5)
+   ... def odd_subscriber(sender):
+   ...     print("Observed dice roll %r." % sender)
+   ...
+   >>> result = dice_roll.send(3)
+   Observed dice roll 3.
+
+
+Optimizing Signal Sending
+=========================
+
+Signals are optimized to send very quickly, whether receivers are
+connected or not.  If the keyword data to be sent with a signal is
+expensive to compute, it can be more efficient to check to see if any
+receivers are connected first by testing the "receivers" property:
+
+   >>> bool(signal('ready').receivers)
+   True
+   >>> bool(signal('complete').receivers)
+   False
+   >>> bool(AltProcessor.on_complete.receivers)
+   True
+
+Checking for a receiver listening for a particular sender is also
+possible:
+
+   >>> signal('ready').has_receivers_for(processor_a)
+   True
+
+
+Documenting Signals
+===================
+
+Both named and anonymous signals can be passed a "doc" argument at
+construction to set the pydoc help text for the signal.  This
+documentation will be picked up by most documentation generators (such
+as sphinx) and is nice for documenting any additional data parameters
+that will be sent down with the signal.
+
+See the documentation of the "receiver_connected" built-in signal for
+an example.
+
+
+API Documentation
+=================
+
+All public API members can (and should) be imported from "blinker":
+
+   from blinker import ANY, signal
+
+
+Basic Signals
+-------------
+
+blinker.base.ANY = ANY
+
+   Token for "any sender".
+
+blinker.base.receiver_connected = <blinker.base.Signal object at 0x1041516d0>
+
+   Sent by a "Signal" after a receiver connects.
+
+   Argument :
+      the Signal that was connected to
+
+   Parameters:
+      * **receiver_arg** -- the connected receiver
+
+      * **sender_arg** -- the sender to connect to
+
+      * **weak_arg** -- true if the connection to receiver_arg is a
+        weak reference
+
+   Deprecated since version 1.2.
+
+   As of 1.2, individual signals have their own private
+   "receiver_connected" and "receiver_disconnected" signals with a
+   slightly simplified call signature.  This global signal is planned
+   to be removed in 1.6.
+
+class class blinker.base.Signal(doc=None)
+
+   A notification emitter.
+
+   Parameters:
+      **doc** -- optional.  If provided, will be assigned to the
+      signal's __doc__ attribute.
+
+   ANY = ANY
+
+      An "ANY" convenience synonym, allows "Signal.ANY" without an
+      additional import.
+
+   receiver_connected
+
+      Emitted after each "connect()".
+
+      The signal sender is the signal instance, and the "connect()"
+      arguments are passed through: *receiver*, *sender*, and *weak*.
+
+      New in version 1.2.
+
+   receiver_disconnected
+
+      Emitted after "disconnect()".
+
+      The sender is the signal instance, and the "disconnect()"
+      arguments are passed through: *receiver* and *sender*.
+
+      Note, this signal is emitted **only** when "disconnect()" is
+      called explicitly.
+
+      The disconnect signal can not be emitted by an automatic
+      disconnect (due to a weakly referenced receiver or sender going
+      out of scope), as the receiver and/or sender instances are no
+      longer available for use at the time this signal would be
+      emitted.
+
+      An alternative approach is available by subscribing to
+      "receiver_connected" and setting up a custom weakref cleanup
+      callback on weak receivers and senders.
+
+      New in version 1.2.
+
+   receivers = None
+
+      A mapping of connected receivers.
+
+      The values of this mapping are not meaningful outside of the
+      internal "Signal" implementation, however the boolean value of
+      the mapping is useful as an extremely efficient check to see if
+      any receivers are connected to the signal.
+
+   connect(receiver, sender=ANY, weak=True)
+
+      Connect *receiver* to signal events sent by *sender*.
+
+      Parameters:
+         * **receiver** -- A callable.  Will be invoked by "send()"
+           with *sender=* as a single positional argument and any
+           **kwargs that were provided to a call to "send()".
+
+         * **sender** -- Any object or "ANY", defaults to "ANY".
+           Restricts notifications delivered to *receiver* to only
+           those "send()" emissions sent by *sender*.  If "ANY", the
+           receiver will always be notified.  A *receiver* may be
+           connected to multiple *sender* values on the same Signal
+           through multiple calls to "connect()".
+
+         * **weak** -- If true, the Signal will hold a weakref to
+           *receiver* and automatically disconnect when *receiver*
+           goes out of scope or is garbage collected.  Defaults to
+           True.
+
+   connect_via(sender, weak=False)
+
+      Connect the decorated function as a receiver for *sender*.
+
+      Parameters:
+         * **sender** -- Any object or "ANY".  The decorated
+           function will only receive "send()" emissions sent by
+           *sender*.  If "ANY", the receiver will always be notified.
+           A function may be decorated multiple times with differing
+           *sender* values.
+
+         * **weak** -- If true, the Signal will hold a weakref to
+           the decorated function and automatically disconnect when
+           *receiver* goes out of scope or is garbage collected.
+           Unlike "connect()", this defaults to False.
+
+      The decorated function will be invoked by "send()" with
+         *sender=* as a single positional argument and any **kwargs
+         that were provided to the call to "send()".
+
+      New in version 1.1.
+
+   connected_to(*args, **kwds)
+
+      Execute a block with the signal temporarily connected to
+      *receiver*.
+
+      Parameters:
+         * **receiver** -- a receiver callable
+
+         * **sender** -- optional, a sender to filter on
+
+      This is a context manager for use in the "with" statement.  It
+      can be useful in unit tests.  *receiver* is connected to the
+      signal for the duration of the "with" block, and will be
+      disconnected automatically when exiting the block:
+
+         with on_ready.connected_to(receiver):
+            # do stuff
+            on_ready.send(123)
+
+      New in version 1.1.
+
+   disconnect(receiver, sender=ANY)
+
+      Disconnect *receiver* from this signal's events.
+
+      Parameters:
+         * **receiver** -- a previously "connected" callable
+
+         * **sender** -- a specific sender to disconnect from, or
+           "ANY" to disconnect from all senders.  Defaults to "ANY".
+
+   has_receivers_for(sender)
+
+      True if there is probably a receiver for *sender*.
+
+      Performs an optimistic check only.  Does not guarantee that all
+      weakly referenced receivers are still alive.  See
+      "receivers_for()" for a stronger search.
+
+   receivers_for(sender)
+
+      Iterate all live receivers listening for *sender*.
+
+   send(*sender, **kwargs)
+
+      Emit this signal on behalf of *sender*, passing on **kwargs.
+
+      Returns a list of 2-tuples, pairing receivers with their return
+      value. The ordering of receiver notification is undefined.
+
+      Parameters:
+         * ***sender** -- Any object or "None".  If omitted,
+           synonymous with "None".  Only accepts one positional
+           argument.
+
+         * ****kwargs** -- Data to be sent to receivers.
+
+   temporarily_connected_to(receiver, sender=ANY)
+
+      An alias for "connected_to()".
+
+      Parameters:
+         * **receiver** -- a receiver callable
+
+         * **sender** -- optional, a sender to filter on
+
+      New in version 0.9.
+
+      Changed in version 1.1: Renamed to "connected_to()".
+      "temporarily_connected_to" was deprecated in 1.2 and will be
+      removed in a subsequent version.
+
+
+Named Signals
+-------------
+
+blinker.base.signal(name, doc=None)
+
+   Return the "NamedSignal" *name*, creating it if required.
+
+   Repeated calls to this function will return the same signal object.
+   Signals are created in a global "Namespace".
+
+class class blinker.base.NamedSignal(name, doc=None)
+
+   Bases: "blinker.base.Signal"
+
+   A named generic notification emitter.
+
+   name = None
+
+      The name of this signal.
+
+class class blinker.base.Namespace
+
+   Bases: "dict"
+
+   A mapping of signal names to signals.
+
+   signal(name, doc=None)
+
+      Return the "NamedSignal" *name*, creating it if required.
+
+      Repeated calls to this function will return the same signal
+      object.
+
+class class blinker.base.WeakNamespace(*args, **kw)
+
+   Bases: "weakref.WeakValueDictionary"
+
+   A weak mapping of signal names to signals.
+
+   Automatically cleans up unused Signals when the last reference goes
+   out of scope.  This namespace implementation exists for a measure
+   of legacy compatibility with Blinker <= 1.2, and may be dropped in
+   the future.
+
+   New in version 1.3.
+
+   signal(name, doc=None)
+
+      Return the "NamedSignal" *name*, creating it if required.
+
+      Repeated calls to this function will return the same signal
+      object.
+
+
+Blinker Changelog
+*****************
+
+
+Version 1.4
+===========
+
+Released July 23, 2015
+
+* Verified Python 3.4 support (no changes needed)
+
+* Additional bookkeeping cleanup for non-ANY connections at
+  disconnect time.
+
+* Added Signal._cleanup_bookeeping() to prune stale bookkeeping on
+  demand
+
+
+Version 1.3
+===========
+
+Released July 3, 2013
+
+* The global signal stash behind blinker.signal() is now backed by a
+  regular name-to-Signal dictionary. Previously, weak references were
+  held in the mapping and ephermal usage in code like
+  "signal('foo').connect(...)" could have surprising program behavior
+  depending on import order of modules.
+
+* blinker.Namespace is now built on a regular dict. Use
+  blinker.WeakNamespace for the older, weak-referencing behavior.
+
+* Signal.connect('text-sender') uses an alterate hashing strategy to
+  avoid sharp edges in text identity.
+
+
+Version 1.2
+===========
+
+Released October 26, 2011
+
+* Added Signal.receiver_connected and Signal.receiver_disconnected
+  per-Signal signals.
+
+* Deprecated the global 'receiver_connected' signal.
+
+* Verified Python 3.2 support (no changes needed!)
+
+
+Version 1.1
+===========
+
+Released July 21, 2010
+
+* Added "@signal.connect_via(sender)" decorator
+
+* Added "signal.connected_to" shorthand name for the
+  "temporarily_connected_to" context manager.
+
+
+Version 1.0
+===========
+
+Released March 28, 2010
+
+* Python 3.0 and 3.1 compatibility
+
+
+Version 0.9
+===========
+
+Released February 26, 2010
+
+* Added "Signal.temporarily_connected_to" context manager
+
+* Docs!  Sphinx docs, project web site.
+
+
+Version 0.8
+===========
+
+Released February 14, 2010
+
+* Initial release
+
+* Extracted from flatland.util.signals
+
+* Added Python 2.4 compatibility
+
+* Added nearly functional Python 3.1 compatibility (everything
+  except connecting to instance methods seems to work.)

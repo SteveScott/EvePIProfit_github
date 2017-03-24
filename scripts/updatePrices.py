@@ -12,7 +12,7 @@ sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 
 def fetchSellPrice(thisSystem, thisItem):
-    request = Request('http://api.eve-central.com/api/marketstat?' +
+    request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
                       'typeid=' + str(thisItem) +
                       '&usesystem=' + str(thisSystem))
     try:
