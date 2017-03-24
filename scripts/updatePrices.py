@@ -12,9 +12,11 @@ sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 
 def fetchSellPrice(thisSystem, thisItem):
+    print("fetching sell price")
     request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
                       'typeid=' + str(thisItem) +
                       '&usesystem=' + str(thisSystem))
+    print("price fetched")
     try:
         response = urllib.request.urlopen(request)
         data = response.read()
@@ -28,7 +30,10 @@ def fetchSellPrice(thisSystem, thisItem):
 #print datetime.datetime.now()
 def main():
     ###Establish connection
-    con = connection.establish_connection()
+    try:
+        con = connection.establish_connection()
+    except():
+        print("couldn't establish connection")
 
     ###clear the database
     cur = con.cursor()
@@ -52,7 +57,11 @@ def main():
     i = 30000142
     cur = con.cursor()
     print('truncating TEMP_JITA')
-    cur.execute('TRUNCATE TABLE TEMP_JITA')
+    try:
+        cur.execute('TRUNCATE TABLE TEMP_JITA')
+        print("Jita truncated")
+    except:
+        print("Jita not truncated")
     cur.close()
 
     for j in eveLists.itemList:
