@@ -92,10 +92,19 @@ jumbotron h1 {
 }
 
 .btn {
+    font-size: 10px;
+}
+
+@media screen and (min-width:480) {
+.btn {
     font-size: 15px;
+    }
 }
 
 
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display:none;
+}
 
 
 
