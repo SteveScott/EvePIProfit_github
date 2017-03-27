@@ -103,7 +103,7 @@ def main():
     i = 30002659
     cur = con.cursor()
     print("Truncating Dodixie")
-    cur.execute('TRUNCATE TABLE TEMP_DODIXIE;");')
+    cur.execute('TRUNCATE TABLE TEMP_DODIXIE;')
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
