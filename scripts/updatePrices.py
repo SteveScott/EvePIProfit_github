@@ -12,14 +12,14 @@ sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 
 def fetchSellPrice(thisSystem, thisItem):
-    print("fetching sell price")
+    #print("fetching sell price")
 
     request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
                       'typeid=' + str(thisItem) +
                       '&usesystem=' + str(thisSystem))
 
     try:
-        response = request#urllib.request.urlopen(request)
+        response = request #urllib.request.urlopen(request)
         data = response.read()
         root = ET.fromstring(data)
         return root[0][0][1][6].text
@@ -39,7 +39,7 @@ def main():
     ###clear the database
     cur = con.cursor()
     print('truncating PRICE_TEMP')
-    cur.execute('TRUNCATE TABLE PRICE_TEMP')
+    cur.execute('TRUNCATE TABLE PRICE_TEMP;')
     cur.close()
     con.commit()
 
@@ -59,7 +59,7 @@ def main():
     cur = con.cursor()
     print('truncating TEMP_JITA')
     try:
-        cur.execute('TRUNCATE TABLE TEMP_JITA')
+        cur.execute('TRUNCATE TABLE TEMP_JITA;')
         print("Jita truncated")
     except:
         print("Jita not truncated")
@@ -67,21 +67,22 @@ def main():
 
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
-        print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
         con.commit()
 
     i = 30002187
     cur = con.cursor()
-    cur.execute('TRUNCATE TABLE TEMP_AMARR')
+    print("Truncating TEMP_AMARR")
+    cur.execute('TRUNCATE TABLE TEMP_AMARR;')
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
-        print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
         con.commit()
 
@@ -91,9 +92,9 @@ def main():
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
-        print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
         con.commit()
 
@@ -103,14 +104,15 @@ def main():
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
-        print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
         cur.close()
         con.commit
 
 
 
-    if con:
-        con.commit()
-        con.close()
+
+    print("updatePrices complete")
+    con.commit()
+    con.close()

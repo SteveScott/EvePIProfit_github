@@ -75,7 +75,7 @@ def CalculateProfit(system1, item1) :
             con.commit
             con.close()
         except:
-            print('exception')
+            print('exception ')
 
 def ClearTemp():
     con = connection.establish_connection()
@@ -100,6 +100,8 @@ def main():
         cur.close()
         con.commit()
 
+        print("Calculating Profit")
+
         for j in eveLists.itemList:
             CalculateProfit(i, j)
 
@@ -107,6 +109,7 @@ def main():
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
         cur.execute('DROP TABLE {0}'.format(databaseName))
         cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP'.format(databaseName))
+        print("calculateMargins complete")
         cur.close()
         con.commit()
         con.close()
