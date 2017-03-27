@@ -59,7 +59,7 @@ def CalculateProfit(system1, item1) :
             netProfit = 0
             percentProfit = 0
             #print('zero division error, default to 0')
-        print(item1)
+        #print(item1)
         cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;', (netProfit, percentProfit, item1))
         con.commit()
         cur.close()
@@ -88,8 +88,7 @@ def ClearTemp():
 
 ###Main###
 def main():
-
-
+    print("Calculating Profit")
     for i in eveLists.systemList:
         ClearTemp()
         databaseName = eveLists.DatabaseDict[i]
@@ -100,7 +99,7 @@ def main():
         cur.close()
         con.commit()
 
-        print("Calculating Profit")
+
 
         for j in eveLists.itemList:
             CalculateProfit(i, j)
