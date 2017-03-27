@@ -7,6 +7,7 @@ import urllib.parse
 import eveLists
 import connection
 import sys
+import atexit
 
 sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
@@ -88,7 +89,8 @@ def main():
 
     i = 30002510
     cur = con.cursor()
-    cur.execute('TRUNCATE TABLE TEMP_RENS')
+    print("Truncating Temp_Rens")
+    cur.execute('TRUNCATE TABLE TEMP_RENS;')
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
@@ -100,7 +102,8 @@ def main():
 
     i = 30002659
     cur = con.cursor()
-    cur.execute('TRUNCATE TABLE TEMP_DODIXIE')
+    print("Truncating Dodixie")
+    cur.execute('TRUNCATE TABLE TEMP_DODIXIE;");')
     cur.close()
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i,j)
@@ -116,3 +119,5 @@ def main():
     print("updatePrices complete")
     con.commit()
     con.close()
+
+

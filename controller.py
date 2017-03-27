@@ -20,6 +20,7 @@ from flask_mail import Message, Mail
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
+import atexit
 
 ###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -149,3 +150,7 @@ if __name__ == "__main__":
     app.run(debug=True, port=os.environ.get('PORT', 5000), use_reloader=False)
     #app.run(debug=True)
 
+while con:
+    atexit.register(
+        con.close
+)

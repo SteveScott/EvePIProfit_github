@@ -9,7 +9,7 @@ import connection
 
 def LookupPrice(item, con):
     cur = con.cursor()
-    cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s', [item])
+    cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
     cur.close()
 
@@ -24,7 +24,7 @@ def LookupPrice(item, con):
 def CalculateProfit(system1, item1) :
     con = connection.establish_connection()
     cur = con.cursor()
-    cur.execute('SELECT * FROM recipe WHERE ID = %s', [item1])
+    cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
     id = 0
     q0 = 1
@@ -54,13 +54,13 @@ def CalculateProfit(system1, item1) :
             salePrice = LookupPrice(item1, con)
             netProfit = salePrice - netCost
             percentProfit = ((salePrice - netCost) * 100) / netCost
-            print(item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0))
+            #print(item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0))
         except :
             netProfit = 0
             percentProfit = 0
-            print('zero division error, default to 0')
+            #print('zero division error, default to 0')
         print(item1)
-        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s', (netProfit, percentProfit, item1))
+        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;', (netProfit, percentProfit, item1))
         con.commit()
         cur.close()
         con.close()
@@ -70,8 +70,8 @@ def CalculateProfit(system1, item1) :
             netProfit = 0
             percentProfit = 0
             cur = con.cursor()
-            print('len(tempList) = 0')
-            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s", (netProfit, percentProfit, item1))
+            #print('len(tempList) = 0')
+            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;", (netProfit, percentProfit, item1))
             con.commit
             con.close()
         except:
@@ -80,7 +80,7 @@ def CalculateProfit(system1, item1) :
 def ClearTemp():
     con = connection.establish_connection()
     cur = con.cursor()
-    cur.execute('TRUNCATE TABLE price_temp')
+    cur.execute('TRUNCATE TABLE price_temp;')
     cur.close()
     con.commit()
     con.close()
@@ -107,8 +107,8 @@ def main():
 
         cur = con.cursor()
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
-        cur.execute('DROP TABLE {0}'.format(databaseName))
-        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP'.format(databaseName))
+        cur.execute('DROP TABLE {0};'.format(databaseName))
+        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP;'.format(databaseName))
         print("calculateMargins complete")
         cur.close()
         con.commit()
