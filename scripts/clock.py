@@ -6,7 +6,7 @@ import time
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler(timezone="Iceland")
 
-#'''
+'''
 @scheduler.scheduled_job('cron', hour='0,3,6,9,12,15,18')
 def print_date_time():
     print('Updating Tables')
@@ -16,8 +16,8 @@ def print_date_time():
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
-#'''
 '''
+#'''
 @scheduler.scheduled_job('interval', minutes = 6)
 def timed_job():
     print('Updating Tables')
@@ -28,7 +28,7 @@ def timed_job():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     return 0
-'''
+#'''
 '''
 scheduler.add_job(
     func=print_date_time, # your function here
