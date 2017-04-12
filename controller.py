@@ -134,14 +134,13 @@ def contact():
             return render_template('contact.html', form=form)
         else:
             try:
-            send_mail(app.config["MAIL_USERNAME"],
+                send_mail(app.config["MAIL_USERNAME"],
                       form.email.data,
                       form.subject.data,
                       form.message.data)
                 return render_template('posted.html')
-            except:
-                requests.exceptions.RequestException as e:
-                    flash(e)
+            except requests.exceptions.RequestException as e:
+                flash(e)
 
 
 
