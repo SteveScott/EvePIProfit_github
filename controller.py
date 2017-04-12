@@ -133,10 +133,14 @@ def contact():
             flash('All fields are required.')
             return render_template('contact.html', form=form)
         else:
+            try:
             send_mail(app.config["MAIL_USERNAME"],
                       form.email.data,
                       form.subject.data,
                       form.message.data)
+            except:
+                requests.exceptions.RequestException as e:
+                    flash(e)
 
 
 
