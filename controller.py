@@ -138,13 +138,14 @@ def contact():
                       form.email.data,
                       form.subject.data,
                       form.message.data)
+                return render_template('posted.html')
             except:
                 requests.exceptions.RequestException as e:
                     flash(e)
 
 
 
-            return render_template('posted.html')
+
     elif request.method == 'GET':
         return render_template('contact.html', form = form)
 
