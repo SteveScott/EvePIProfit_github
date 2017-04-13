@@ -51,6 +51,7 @@ def CalculateProfit(system1, item1) :
     if len(tempList) > 0:
         try:
             marginalCost = ((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
+            #print(marginalCost)
             salePrice = LookupPrice(item1, con)
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
@@ -58,9 +59,14 @@ def CalculateProfit(system1, item1) :
         except :
             marginalProfit = 0
             percentProfit = 0
+            marginalCost = 0
             #print('zero division error, default to 0')
         #print(item1)
-        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, item1))
+        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (
+                                                                                                           marginalProfit,
+                                                                                                           percentProfit,
+                                                                                                           marginalCost,
+                                                                                                           item1))
         con.commit()
         cur.close()
         con.close()
@@ -69,9 +75,10 @@ def CalculateProfit(system1, item1) :
         try:
             marginalProfit = 0
             percentProfit = 0
+            marginalCost = 0
             cur = con.cursor()
             #print('len(tempList) = 0')
-            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, item1))
+            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, item1))
             con.commit
             con.close()
         except:
@@ -107,8 +114,8 @@ def main():
         cur = con.cursor()
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
         cur.execute('DROP TABLE {0};'.format(databaseName))
-        cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP;'.format(databaseName))
-
+        cur.execute('CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost FROM PRICE_TEMP;'.format(databaseName))
+        print("creating table {0}".format(i))
         cur.close()
         con.commit()
         con.close()
