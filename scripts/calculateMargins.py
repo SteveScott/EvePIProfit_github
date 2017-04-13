@@ -108,9 +108,9 @@ def main():
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
         cur.execute('DROP TABLE {0};'.format(databaseName))
         cur.execute('CREATE TABLE {0} AS SELECT itemid, mysystem, price, profitmargin,mydate,mytime,profit FROM PRICE_TEMP;'.format(databaseName))
-        print("calculateMargins complete")
+
         cur.close()
         con.commit()
         con.close()
-
+    print("calculateMargins complete")
 
