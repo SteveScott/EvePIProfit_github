@@ -50,28 +50,28 @@ def CalculateProfit(system1, item1) :
 
     if len(tempList) > 0:
         try:
-            netCost = ((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
+            marginalCost = ((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
             salePrice = LookupPrice(item1, con)
-            netProfit = salePrice - netCost
-            percentProfit = ((salePrice - netCost) * 100) / netCost
+            marginalProfit = salePrice - marginalCost
+            percentProfit = ((marginalProfit) * 100) / salePrice
             #print(item1, LookupPrice(item1, con),((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0))
         except :
-            netProfit = 0
+            marginalProfit = 0
             percentProfit = 0
             #print('zero division error, default to 0')
         #print(item1)
-        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;', (netProfit, percentProfit, item1))
+        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, item1))
         con.commit()
         cur.close()
         con.close()
 
     else:
         try:
-            netProfit = 0
+            marginalProfit = 0
             percentProfit = 0
             cur = con.cursor()
             #print('len(tempList) = 0')
-            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;", (netProfit, percentProfit, item1))
+            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, item1))
             con.commit
             con.close()
         except:
