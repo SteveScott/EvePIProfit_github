@@ -119,5 +119,6 @@ def main():
     print("updatePrices complete")
     con.commit()
     con.close()
+    return 0
 
 

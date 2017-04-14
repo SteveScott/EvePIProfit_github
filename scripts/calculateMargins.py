@@ -120,4 +120,5 @@ def main():
         con.commit()
         con.close()
     print("calculateMargins complete")
+    return 0
 
