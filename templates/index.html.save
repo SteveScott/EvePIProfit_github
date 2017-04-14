@@ -1,0 +1,125 @@
+<!doctype html>
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Eve PI Profits</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+
+
+        <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+		<link href="https://fonts.googleapis.com/css?family=Racing+Sans+One|Righteous|Quicksand" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+                font-family: "Quicksand";
+            }
+        </style>
+    </head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-3044363631644079",
+    enable_page_level_ads: true
+  });
+    </script>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+         <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+      {% block title %}
+        <h1>EVE PI Profits</h1>
+        <p>Planetary interaction profitability across New Eden</p>
+          <p></p>
+          <p>Select a system above to view profitability.  Profit is the sell price of the commodity minus the sell cost of the construction materials. Profit margin is the marginal profit divided by the sale price.Mar  A negative profit margin means that the materials are worth more unassembled than as a finished good, and you lose money if you assembled the product.</p>
+      {% endblock %}
+
+
+      </div>
+    </div>
+    <div class="container">
+         {% block content %}{% endblock %}
+    </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div>
+        <div class="navbar-header">
+            <!--
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            -->
+            <div>
+                <a id="navbar-brand" href="{{url_for('index')}}">EvePIProfits.com</a>
+            </div>
+            <style media="screen and (max-width: 460px)">@media screen and (min-width:480) {
+                    .btn {font-size: 15px;}
+            </style>
+           <div class="btn"><a href="{{url_for('jita')}}">Jita</a></div>
+           <div class="btn"><a href="{{url_for('amarr')}}">Amarr</a></div>
+           <div class="btn"><a href="{{url_for('rens')}}">Rens</a></div>
+           <div class="btn"><a href="{{url_for('dodixie')}}">Dodixie</a></div>
+           <div class="btn"><a href="{{url_for('contact')}}">Contact</a></div>
+        </div>
+      </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+          
+        </div><!--/.navbar-collapse -->
+       
+
+    </nav>
+
+
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+      <p>
+
+       </p>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Wm. Stephen Scott 2017</p>
+      </footer>
+    </div>
+
+        <script src="../static/js/vendor/jquery-3.1.1.js"></script>
+        <script src="../static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script src="../static/js/vendor/bootstrap.min.js"></script>
+        <script src="../static/js/vendor/jquery.dataTables.min.js"></script>
+        <script src="../static/js/vendor/main.js"></script>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-97231238-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>

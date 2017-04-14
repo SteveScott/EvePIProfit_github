@@ -16,6 +16,9 @@ def print_date_time():
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+    myJobs = apscheduler.get_jobs()
+    for i in myJobs:
+        scheduler.remove_job(i)
     proc.terminate()
 #'''
 '''
