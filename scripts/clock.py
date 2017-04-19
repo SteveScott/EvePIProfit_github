@@ -16,7 +16,7 @@ def print_date_time():
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
-    proc.terminate()
+    #proc.terminate()
 #'''
 '''
 @scheduler.scheduled_job('interval', minutes = 6)
