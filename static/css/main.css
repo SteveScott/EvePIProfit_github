@@ -105,7 +105,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 #paypal {
     position: absolute;
-    margin-right: 10px;
+    right: 10px;
 }
 
 
