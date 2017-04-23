@@ -28,7 +28,11 @@ def CalculateProfit(system1, item1) :
     cur = con.cursor()
     cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
-    id = 0
+
+    i0 = 0
+    i1 = 0
+    i2 = 0
+    i3 = 0
     q0 = 1
     p1 = 0
     q1 = 0
@@ -38,7 +42,7 @@ def CalculateProfit(system1, item1) :
     q3 = 0
 
     if (len(tempList) > 0):
-        id = tempList[0][0]
+        i0 = tempList[0][0]
         q0 = tempList[0][1]
         i1 = tempList[0][2]
         q1 = tempList[0][3]
@@ -46,7 +50,7 @@ def CalculateProfit(system1, item1) :
         q2 = tempList[0][5]
         i3 = tempList[0][6]
         q3 = tempList[0][7]
-        p0 = LookupPrice(id, con)
+        p0 = LookupPrice(i0, con)
         p1 = LookupPrice(i1, con)
         p2 = LookupPrice(i2, con)
         p3 = LookupPrice(i3, con)
@@ -54,33 +58,22 @@ def CalculateProfit(system1, item1) :
     #produced = # [tempList[1]
 
 
-    if len(tempList) > 0:
         if ((p0 == 0) or (q1 > 0 and p1 == 0) or (q2 > 0 and p2 == 0) or (q3 > 0 and p3 == 0)):
-            print(id + "no price found for one of the commodities")
-            print(i1, p0, q0, p1, q1, p2, q2, p3, q3)
+            print(str(i0) + " no price found for one of the commodities")
+
             marginalProfit = 0
             percentProfit = 0
             marginalCost = 0
-        else:
-            try:
-                #marginalCost = ((LookupPrice(p1, con)*q1 + LookupPrice(p2, con)*q2 + LookupPrice(p3, con)*q3) / q0)
-                marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
-                salePrice = LookupPrice(item1, con)
-                marginalProfit = salePrice - marginalCost
-                percentProfit = ((marginalProfit) * 100) / salePrice
-                print(i1, p0, q0, p1, q1, p2, q2,p3, q3)
-            except ZeroDivisionError:
-                marginalProfit = 0
-                percentProfit = 0
-                marginalCost = 0
-                print('Zero Division error, default to 0')
-        #print(item1)
 
-        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (
-                                                                                                            marginalProfit,
-                                                                                                            percentProfit,
-                                                                                                            marginalCost,
-                                                                                                            item1))
+        else:
+
+            marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
+            salePrice = LookupPrice(item1, con)
+            marginalProfit = salePrice - marginalCost
+            percentProfit = ((marginalProfit) * 100) / salePrice
+
+        #print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
+        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, marginalCost, item1))
         con.commit()
         cur.close()
         con.close()
