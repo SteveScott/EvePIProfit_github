@@ -61,7 +61,7 @@ def main():
     print('truncating TEMP_JITA')
     try:
         cur.execute('TRUNCATE TABLE TEMP_JITA;')
-        print("Jita truncated")
+        #print("Jita truncated")
     except:
         print("Jita not truncated")
     cur.close()
