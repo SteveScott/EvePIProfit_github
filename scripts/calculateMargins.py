@@ -84,7 +84,7 @@ def CalculateProfit(system1, item1) :
             percentProfit = 0
             marginalCost = 0
             cur = con.cursor()
-            print('len(tempList) = 0')
+            #print('len(tempList) = 0')
             cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, item1))
             con.commit
             con.close()
