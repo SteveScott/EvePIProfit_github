@@ -62,6 +62,10 @@ app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
 def index():
     return render_template('index.html')
 
+@app.route('/thank_you')
+def thank_you():
+    return render_template('thank_you.html')
+
 @app.route('/jita')
 def jita():
     cur = con.cursor()
