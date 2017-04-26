@@ -8,6 +8,7 @@
 <table id="mainTable" class="table table-striped">
     <thead>
     <tr>
+        <th>Level</th>
         <th>Name</th>
         <th>Price</th>
         <th>Cost</th>
@@ -19,6 +20,7 @@
     <tbody>
     {% for entry in entries %}
     <tr>
+        <td>{{entry[6]}}</td>
         <td>{{entry[0]}}</td>
         <td>{{entry[1]}}</td>
         <td>{{entry[5]}}</td>
