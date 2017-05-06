@@ -3,12 +3,14 @@ import calculateMargins
 import updatePrices
 import PushToPerm
 import time
+
+
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler(timezone="Iceland")
 
 #'''
 @scheduler.scheduled_job('cron', hour='0,3,6,9,12,15,18')
-def print_date_time():
+def clock_scheduled_commands():
     print('Updating Tables')
     updatePrices.main()
     print('Updating Margins')
@@ -16,7 +18,6 @@ def print_date_time():
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
-    #proc.terminate()
 #'''
 '''
 @scheduler.scheduled_job('interval', minutes = 6)

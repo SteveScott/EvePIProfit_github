@@ -89,7 +89,7 @@ def main():
 
     i = 30002510
     cur = con.cursor()
-    print("Truncating Temp_Rens")
+    print("Truncating TEMP_RENS")
     cur.execute('TRUNCATE TABLE TEMP_RENS;')
     cur.close()
     for j in eveLists.itemList:
@@ -102,7 +102,7 @@ def main():
 
     i = 30002659
     cur = con.cursor()
-    print("Truncating Dodixie")
+    print("Truncating TEMP_DODIXIE")
     cur.execute('TRUNCATE TABLE TEMP_DODIXIE;')
     cur.close()
     for j in eveLists.itemList:
