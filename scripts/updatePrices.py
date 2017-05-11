@@ -13,23 +13,23 @@ sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 
 def fetchSellPrice(thisSystem, thisItem):
-    #print("fetching sell price")
+    # print("fetching sell price")
 
     request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
-                      'typeid=' + str(thisItem) +
-                      '&usesystem=' + str(thisSystem))
+                                     'typeid=' + str(thisItem) +
+                                     '&usesystem=' + str(thisSystem))
 
     try:
-        response = request #urllib.request.urlopen(request)
+        response = request  # urllib.request.urlopen(request)
         data = response.read()
         root = ET.fromstring(data)
         return root[0][0][1][6].text
     except:
         print("error fetching sell price")
 
-#print thisItem
-#print fetchSellPrice(thisSystem,thisItem)
-#print datetime.datetime.now()
+# print thisItem
+# print fetchSellPrice(thisSystem,thisItem)
+# print datetime.datetime.now()
 def main():
     ###Establish connection
     try:
@@ -39,86 +39,145 @@ def main():
 
     ###clear the database
     cur = con.cursor()
-    print('truncating PRICE_TEMP')
-    cur.execute('TRUNCATE TABLE PRICE_TEMP;')
-    cur.close()
-    con.commit()
 
+    # get each price and put it in the database
 
-
-    #get each price and put it in the database
-    '''
-    for i in eveLists.systemList:
-        for j in eveLists.itemList:
-            tempPrice = fetchSellPrice(i,j)
-            #print datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice
-            cur = con.cursor()
-            cur.execute('INSERT INTO PRICE_TEMP VALUES (%s, %s, %s, NULL, %s, %s, NULL)', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
-    '''
-
+    #for i in eveLists.systemList:
     i = 30000142
-    cur = con.cursor()
+    print("inserting into ", eveLists.systemDictReverse[i])
+    for j in eveLists.itemList:
+        tempPrice = fetchSellPrice(i, j)
+        #database_name = eveLists.DatabaseDict[i]
+        now = datetime.datetime.utcnow()
+        now = str(now)
+
+        cur.execute("INSERT INTO temp_jita VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [#database_name,
+                                                                                str(i),
+                                                                                str(j),
+                                                                                float(tempPrice),
+                                                                                datetime.date.today(),
+                                                                                now
+                                                                                ])
+    i = 30002187
+    print("inserting into ", eveLists.systemDictReverse[i])
+    for j in eveLists.itemList:
+        tempPrice = fetchSellPrice(i, j)
+        # database_name = eveLists.DatabaseDict[i]
+        now = datetime.datetime.utcnow()
+        now = str(now)
+
+        cur.execute("INSERT INTO temp_amarr VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
+                                                                                            str(i),
+                                                                                            str(j),
+                                                                                            float(tempPrice),
+                                                                                            datetime.date.today(),
+                                                                                            now
+                                                                                        ])
+
+    i = 30002510
+    print("inserting into ", eveLists.systemDictReverse[i])
+    for j in eveLists.itemList:
+        tempPrice = fetchSellPrice(i, j)
+        # database_name = eveLists.DatabaseDict[i]
+        now = datetime.datetime.utcnow()
+        now = str(now)
+
+        cur.execute("INSERT INTO temp_rens VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
+                                                                                            str(i),
+                                                                                            str(j),
+                                                                                            float(tempPrice),
+                                                                                            datetime.date.today(),
+                                                                                            now
+                                                                                        ])
+
+    ii = 30002659
+    print("inserting into ", eveLists.systemDictReverse[i])
+    for j in eveLists.itemList:
+        tempPrice = fetchSellPrice(i, j)
+        # database_name = eveLists.DatabaseDict[i]
+        now = datetime.datetime.utcnow()
+        now = str(now)
+
+        cur.execute("INSERT INTO temp_dodixie VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
+                                                                                            str(i),
+                                                                                            str(j),
+                                                                                            float(tempPrice),
+                                                                                            datetime.date.today(),
+                                                                                            now
+                                                                                        ])
+
+    con.commit()
+    print("updatePrices complete")
+    cur.close()
+    con.close()
+
+
+
+
+
+'''
+    i = 30000142
     print('truncating TEMP_JITA')
     try:
         cur.execute('TRUNCATE TABLE TEMP_JITA;')
-        #print("Jita truncated")
+        print("Jita truncated")
     except:
         print("Jita not truncated")
-    cur.close()
 
     for j in eveLists.itemList:
-        tempPrice = fetchSellPrice(i,j)
-        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        tempPrice = fetchSellPrice(i, j)
+        # print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
-        cur.close()
-        con.commit()
+        try:
+            cur.execute('INSERT INTO TEMP_JITA VALUES (%s, %s, %s, NULL, %s, %s, NULL);',
+                        (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        except:
+            print('Cannot insert values into TEMP_JITA')
+            cur.close()
+            con.commit()
 
-    i = 30002187
-    cur = con.cursor()
-    print("Truncating TEMP_AMARR")
-    cur.execute('TRUNCATE TABLE TEMP_AMARR;')
-    cur.close()
-    for j in eveLists.itemList:
-        tempPrice = fetchSellPrice(i,j)
-        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        i = 30002187
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        print("Truncating TEMP_AMARR")
+        cur.execute('TRUNCATE TABLE TEMP_AMARR;')
         cur.close()
-        con.commit()
+        for j in eveLists.itemList:
+            tempPrice = fetchSellPrice(i, j)
+            # print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+            cur = con.cursor()
+            cur.execute('INSERT INTO TEMP_AMARR VALUES (%s, %s, %s, NULL, %s, %s, NULL);',
+                        (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+            cur.close()
+            con.commit()
 
-    i = 30002510
-    cur = con.cursor()
-    print("Truncating TEMP_RENS")
-    cur.execute('TRUNCATE TABLE TEMP_RENS;')
-    cur.close()
-    for j in eveLists.itemList:
-        tempPrice = fetchSellPrice(i,j)
-        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        i = 30002510
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        print("Truncating TEMP_RENS")
+        cur.execute('TRUNCATE TABLE TEMP_RENS;')
         cur.close()
-        con.commit()
+        for j in eveLists.itemList:
+            tempPrice = fetchSellPrice(i, j)
+            # print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+            cur = con.cursor()
+            cur.execute('INSERT INTO TEMP_RENS VALUES (%s, %s, %s, NULL, %s, %s, NULL);',
+                        (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+            cur.close()
+            con.commit()
 
-    i = 30002659
-    cur = con.cursor()
-    print("Truncating TEMP_DODIXIE")
-    cur.execute('TRUNCATE TABLE TEMP_DODIXIE;')
-    cur.close()
-    for j in eveLists.itemList:
-        tempPrice = fetchSellPrice(i,j)
-        #print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+        i = 30002659
         cur = con.cursor()
-        cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL);', (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+        print("Truncating TEMP_DODIXIE")
+        cur.execute('TRUNCATE TABLE TEMP_DODIXIE;')
         cur.close()
-        con.commit
+        for j in eveLists.itemList:
+            tempPrice = fetchSellPrice(i, j)
+            # print(datetime.date.today(), datetime.datetime.utcnow().time(), i, " ", j, " ", tempPrice)
+            cur = con.cursor()
+            cur.execute('INSERT INTO TEMP_DODIXIE VALUES (%s, %s, %s, NULL, %s, %s, NULL);',
+                        (str(j), str(i), float(tempPrice), datetime.date.today(), datetime.datetime.utcnow()))
+            cur.close()
+            con.commit
+'''
 
-
-
-
-    print("updatePrices complete")
-    con.commit()
-    con.close()
-    return 0
 
 
