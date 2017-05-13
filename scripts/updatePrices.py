@@ -2,12 +2,14 @@ from urllib import request, error, request
 import xml.etree.ElementTree as ET
 import datetime
 import psycopg2
+from psycopg2 import sql
 import os
 import urllib.parse
 import eveLists
 import connection
 import sys
 import atexit
+from psycopg2.extensions import AsIs, quote_ident
 
 sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
@@ -42,23 +44,22 @@ def main():
 
     # get each price and put it in the database
 
-    #for i in eveLists.systemList:
-    i = 30000142
-    print("inserting into ", eveLists.systemDictReverse[i])
-    for j in eveLists.itemList:
-        tempPrice = fetchSellPrice(i, j)
-        #database_name = eveLists.DatabaseDict[i]
-        now = datetime.datetime.utcnow()
-        now = str(now)
+    for i in eveLists.systemList:
+        print("inserting into ", eveLists.systemDictReverse[i])
+        for j in eveLists.itemList:
+            tempPrice = fetchSellPrice(i, j)
+            database_name = eveLists.databaseDict[i]
+            now = datetime.datetime.utcnow()
+            now = str(now)
 
-        cur.execute("INSERT INTO temp_jita VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [#database_name,
-                                                                                str(i),
-                                                                                str(j),
-                                                                                float(tempPrice),
-                                                                                datetime.date.today(),
-                                                                                now
-                                                                                ])
-
+            cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL);").format(sql.Identifier(database_name)),[
+                                                                                    str(i),
+                                                                                    str(j),
+                                                                                    float(tempPrice),
+                                                                                    datetime.date.today(),
+                                                                                    now
+                                                                                    ])
+    '''
     i = 30002187
     print("inserting into ", eveLists.systemDictReverse[i])
     for j in eveLists.itemList:
@@ -106,7 +107,7 @@ def main():
                                                                                             datetime.date.today(),
                                                                                             now
                                                                                         ])
-
+'''
     con.commit()
     print("updatePrices complete")
     cur.close()

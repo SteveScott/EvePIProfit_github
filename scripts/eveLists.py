@@ -98,7 +98,7 @@ systemDictReverse = {
     30002659: 'Dodixie'
 }
 
-DatabaseDict = {
+databaseDict = {
     30000142: 'temp_jita',
     30002187: 'temp_amarr',
     30002510: 'temp_rens',

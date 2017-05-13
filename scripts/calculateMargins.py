@@ -99,7 +99,7 @@ def main():
     print("Calculating Profit")
     for i in eveLists.systemList:
         ClearTemp()
-        databaseName = eveLists.DatabaseDict[i]
+        databaseName = eveLists.databaseDict[i]
     ###added after broke. need to repoppulate price_temp with system data
 
         cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
@@ -116,7 +116,7 @@ def main():
 
         cur.execute('DROP TABLE {0};'.format(databaseName))
         cur.execute('CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost FROM PRICE_TEMP;'.format(databaseName))
-        print("creating table {0}".format(i))
+        print("creating table {0}".format(eveLists.databaseDict[i]))
     cur.close()
     con.commit()
     con.close()
