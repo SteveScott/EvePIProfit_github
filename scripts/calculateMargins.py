@@ -88,9 +88,11 @@ def CalculateProfit(system1, item1) :
             print('exception ')
 
 def ClearTemp():
-
-    cur.execute('TRUNCATE TABLE price_temp;')
+    global cur
+    print("truncating table price_temp")
+    cur.execute('TRUNCATE TABLE price_temp')
     con.commit()
+    print("price_temp truncated")
 
 
 
