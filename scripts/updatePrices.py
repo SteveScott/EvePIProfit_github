@@ -14,8 +14,9 @@ from psycopg2.extensions import AsIs, quote_ident
 sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
 
 
+
+
 def fetchSellPrice(thisSystem, thisItem):
-    # print("fetching sell price")
 
     request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
                                      'typeid=' + str(thisItem) +
@@ -29,37 +30,72 @@ def fetchSellPrice(thisSystem, thisItem):
     except:
         print("error fetching sell price")
 
-# print thisItem
-# print fetchSellPrice(thisSystem,thisItem)
-# print datetime.datetime.now()
+
 def main():
     ###Establish connection
-    try:
-        con = connection.establish_connection()
-    except():
-        print("couldn't establish connection")
-
-    ###clear the database
+    print("establishing connection")
+    con = connection.establish_connection()
+    con.autocommit = True
     cur = con.cursor()
 
-    # get each price and put it in the database
+
 
     for i in eveLists.systemList:
+        database_name = eveLists.databaseDict[i]
+        #'''
+        #clear the database
+
+        #print (sql.SQL("TRUNCATE TABLE {};").format(sql.Identifier(database_name)))
+        try:
+            #cur.execute('TRUNCATE TABLE temp_jita;')
+            cur.execute(sql.SQL('TRUNCATE TABLE {};').format(sql.Identifier(database_name)))
+            print(("Table {} truncated").format(database_name))
+        except:
+            print(("failed to truncate table {}.").format(database_name))
+        #cur.execute("TRUNCATE TABLE temp_jita;")
+        #print("table truncated")
+        #'''
+        #insert into the database
         print("inserting into ", eveLists.systemDictReverse[i])
         for j in eveLists.itemList:
             tempPrice = fetchSellPrice(i, j)
-            database_name = eveLists.databaseDict[i]
-            now = datetime.datetime.utcnow()
-            now = str(now)
 
-            cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL);").format(sql.Identifier(database_name)),[
-                                                                                    str(i),
-                                                                                    str(j),
-                                                                                    float(tempPrice),
-                                                                                    datetime.date.today(),
-                                                                                    now
-                                                                                    ])
+            now = str(datetime.datetime.utcnow())
+            try:
+                cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL);").format(sql.Identifier(database_name)),[
+                                                                                        str(j),
+                                                                                        str(i),
+                                                                                        float(tempPrice),
+                                                                                        datetime.date.today(),
+                                                                                        now])
+                #print( j, "Executed")
+            except:
+                print("Cannot insert")
+
+    con.commit()
+    print("updatePrices complete")
+    cur.close()
+    con.close()
+
+
     '''
+    # get each price and put it in the database
+    i = 30000142
+    print("inserting into ", eveLists.systemDictReverse[i])
+    for j in eveLists.itemList:
+        tempPrice = fetchSellPrice(i, j)
+        # database_name = eveLists.DatabaseDict[i]
+        now = datetime.datetime.utcnow()
+        now = str(now)
+
+        cur.execute("INSERT INTO temp_jita VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
+            str(i),
+            str(j),
+            float(tempPrice),
+            datetime.date.today(),
+            now
+        ])
+
     i = 30002187
     print("inserting into ", eveLists.systemDictReverse[i])
     for j in eveLists.itemList:
@@ -69,12 +105,12 @@ def main():
         now = str(now)
 
         cur.execute("INSERT INTO temp_amarr VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
-                                                                                            str(i),
-                                                                                            str(j),
-                                                                                            float(tempPrice),
-                                                                                            datetime.date.today(),
-                                                                                            now
-                                                                                        ])
+            str(i),
+            str(j),
+            float(tempPrice),
+            datetime.date.today(),
+            now
+        ])
 
     i = 30002510
     print("inserting into ", eveLists.systemDictReverse[i])
@@ -85,14 +121,14 @@ def main():
         now = str(now)
 
         cur.execute("INSERT INTO temp_rens VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
-                                                                                            str(i),
-                                                                                            str(j),
-                                                                                            float(tempPrice),
-                                                                                            datetime.date.today(),
-                                                                                            now
-                                                                                        ])
+            str(i),
+            str(j),
+            float(tempPrice),
+            datetime.date.today(),
+            now
+        ])
 
-    ii = 30002659
+    i = 30002659
     print("inserting into ", eveLists.systemDictReverse[i])
     for j in eveLists.itemList:
         tempPrice = fetchSellPrice(i, j)
@@ -101,18 +137,13 @@ def main():
         now = str(now)
 
         cur.execute("INSERT INTO temp_dodixie VALUES (%s, %s, %s, NULL, %s, %s, NULL);", [  # database_name,
-                                                                                            str(i),
-                                                                                            str(j),
-                                                                                            float(tempPrice),
-                                                                                            datetime.date.today(),
-                                                                                            now
-                                                                                        ])
-'''
-    con.commit()
-    print("updatePrices complete")
-    cur.close()
-    con.close()
-
+            str(i),
+            str(j),
+            float(tempPrice),
+            datetime.date.today(),
+            now
+        ])
+    '''
 
 
 

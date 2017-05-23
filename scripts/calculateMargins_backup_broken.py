@@ -70,7 +70,7 @@ def CalculateProfit(system1, item1):
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
 
-        #print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
+        print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
         cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, marginalCost, item1))
         con.commit()
 

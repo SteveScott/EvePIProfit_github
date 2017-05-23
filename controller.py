@@ -3,6 +3,7 @@ import os
 import time
 import requests
 import urllib
+
 try:
     from urllib.parse import urlparse
 except ImportError:
@@ -20,6 +21,7 @@ from flask_mail import Message, Mail
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
+from scripts import connection
 import atexit
 
 ###scheduler
@@ -37,7 +39,7 @@ logging.basicConfig(level=10)
 os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
 url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-
+'''
 con = psycopg2.connect(
     database=url.path[1:],
     user=url.username,
@@ -45,7 +47,7 @@ con = psycopg2.connect(
     host=url.hostname,
     port=url.port
 )
-
+'''
 mail = Mail()
 
 app = Flask(__name__)
@@ -68,6 +70,7 @@ def thank_you():
 
 @app.route('/jita')
 def jita():
+    con = connection.establish_connection()
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_jita WHERE itemid = id;")
@@ -83,21 +86,29 @@ def jita():
             "profitmargin": entry[1],
             "mytime": str(entry[2])
         })
-
+    cur.close()
+    con.close()
     return render_template('jita.html',entries=entries, chart=json.dumps(chart))
 
 @app.route('/amarr')
 def amarr():
+    con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_amarr WHERE itemid = id;")
     entries = cur.fetchall()
+    cur.close()
+    con.close()
     return render_template('amarr.html',entries=entries)
+
 
 @app.route('/rens')
 def rens():
+    con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_rens WHERE itemid = id;")
     entries = cur.fetchall()
+    cur.close()
+    con.close()
     return render_template('rens.html',entries=entries)
 
 
@@ -107,10 +118,14 @@ def rens():
 
 @app.route('/dodixie')
 def dodixie():
+    con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_dodixie WHERE itemid = id;")
     entries = cur.fetchall()
+    cur.close()
+    con.close()
     return render_template('dodixie.html',entries=entries)
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
