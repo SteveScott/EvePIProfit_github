@@ -89,8 +89,22 @@ def CalculateProfit(system1, item1):
 
 def ClearTemp():
     global cur
+    global con
     #print("truncating table price_temp")
-    cur.execute('TRUNCATE TABLE price_temp')
+    try:
+        cur.execute('TRUNCATE TABLE price_temp')
+    except Exception as e:
+        print(e.message)
+        print("trying again")
+        try:
+            con = connection.establish_connection()
+            cur = con.cursor()
+            cur.execute('TRUNCATE TABLE price_temp;')
+
+        except Exception as e:
+            print(e.message)
+            print("failed to connect a second time.")
+
     con.commit()
     #print("price_temp truncated")
 
