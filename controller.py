@@ -154,9 +154,9 @@ def contact():
         else:
             try:
                 send_mail(app.config["MAIL_USERNAME"],
-                      form.email.data,
-                      form.subject.data,
-                      form.message.data)
+                          form.email.data,
+                          form.subject.data,
+                          form.message.data)
                 return render_template('posted.html')
             except requests.exceptions.RequestException as e:
                 flash(e)
@@ -165,7 +165,7 @@ def contact():
 
 
     elif request.method == 'GET':
-        return render_template('contact.html', form = form)
+        return render_template('contact.html', form=form)
 
 
 if __name__ == "__main__":

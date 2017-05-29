@@ -57,7 +57,7 @@ def CalculateProfit(system1, item1):
 
 
         if ((p0 == 0) or (q1 > 0 and p1 == 0) or (q2 > 0 and p2 == 0) or (q3 > 0 and p3 == 0)):
-            print(str(i0) + " no price found for one of the commodities")
+            #print(str(i0) + " no price found for one of the commodities")
 
             marginalProfit = 0
             percentProfit = 0
@@ -89,7 +89,7 @@ def CalculateProfit(system1, item1):
 
 def ClearTemp():
     global cur
-    print("truncating table price_temp")
+    #print("truncating table price_temp")
     cur.execute('TRUNCATE TABLE price_temp')
     con.commit()
     #print("price_temp truncated")
