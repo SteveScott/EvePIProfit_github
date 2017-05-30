@@ -6,11 +6,11 @@ import os
 import eveLists
 import connection
 
-con = connection.establish_connection()
-cur = con.cursor()
+con = 0
+cur = 0
 
 def LookupPrice(item):
-
+    global cur
     cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
 
@@ -23,7 +23,7 @@ def LookupPrice(item):
 
 
 def CalculateProfit(system1, item1):
-    global cur
+
     cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
 
@@ -94,7 +94,7 @@ def ClearTemp():
     try:
         cur.execute('TRUNCATE TABLE price_temp')
     except Exception as e:
-        print(e.message)
+        print(e)
         print("trying again")
         try:
             con = connection.establish_connection()
@@ -112,6 +112,10 @@ def ClearTemp():
 
 ###Main###
 def main():
+    global con
+    con = connection.establish_connection()
+    global cur
+    cur = con.cursor()
     print("Calculating Profit")
     for i in eveLists.systemList:
         ClearTemp()
