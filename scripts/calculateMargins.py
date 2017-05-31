@@ -6,11 +6,8 @@ import os
 import eveLists
 import connection
 
-con = 0
-cur = 0
 
-def LookupPrice(item):
-    global cur
+def LookupPrice(item, cur):
     cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
 
@@ -22,7 +19,7 @@ def LookupPrice(item):
         return 0
 
 
-def CalculateProfit(system1, item1):
+def CalculateProfit(system1, item1, cur, con):
 
     cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
@@ -48,10 +45,10 @@ def CalculateProfit(system1, item1):
         q2 = tempList[0][5]
         i3 = tempList[0][6]
         q3 = tempList[0][7]
-        p0 = LookupPrice(i0)
-        p1 = LookupPrice(i1)
-        p2 = LookupPrice(i2)
-        p3 = LookupPrice(i3)
+        p0 = LookupPrice(i0, cur)
+        p1 = LookupPrice(i1, cur)
+        p2 = LookupPrice(i2, cur)
+        p3 = LookupPrice(i3, cur)
 
     #produced = # [tempList[1]
 
@@ -66,7 +63,7 @@ def CalculateProfit(system1, item1):
         else:
 
             marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
-            salePrice = LookupPrice(item1)
+            salePrice = LookupPrice(item1, cur)
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
 
@@ -80,16 +77,14 @@ def CalculateProfit(system1, item1):
             marginalProfit = 0
             percentProfit = 0
             marginalCost = 0
-            cur = con.cursor()
             #print('len(tempList) = 0')
             cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, item1))
 
         except:
             print('exception ')
 
-def ClearTemp():
-    global cur
-    global con
+def ClearTemp(cur, con):
+
     #print("truncating table price_temp")
     try:
         cur.execute('TRUNCATE TABLE price_temp')
@@ -104,7 +99,6 @@ def ClearTemp():
         except Exception as e:
             print(e.message)
             print("failed to connect a second time.")
-
     con.commit()
     #print("price_temp truncated")
 
@@ -112,13 +106,11 @@ def ClearTemp():
 
 ###Main###
 def main():
-    global con
     con = connection.establish_connection()
-    global cur
     cur = con.cursor()
     print("Calculating Profit")
     for i in eveLists.systemList:
-        ClearTemp()
+        ClearTemp(cur, con)
         databaseName = eveLists.databaseDict[i]
     ###added after broke. need to repoppulate price_temp with system data
 
@@ -128,7 +120,7 @@ def main():
 
 
         for j in eveLists.itemList:
-            CalculateProfit(i, j)
+            CalculateProfit(i, j, cur, con)
 
 
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
