@@ -49,3 +49,6 @@ Temporary Items
 #virtual environment
 /venv
 /gitIgnore .env
+
+#passwords
+/gitIgnore/passwords.py
