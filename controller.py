@@ -11,7 +11,7 @@ except ImportError:
 import sys
 import logging
 import json
-from gitIgnore import passwords
+
 
 import psycopg2
 
@@ -52,13 +52,12 @@ con = psycopg2.connect(
 mail = Mail()
 
 app = Flask(__name__)
-app.secret_key = passwords.flaskSecretKey()
+app.secret_key = app.config["FLASK_SECRET_KEY"]
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
-app.config["MAIL_PASSWORD"] = passwords.email()
-app.config['MAILGUN_KEY'] = passwords.mailgunKey()
+app.config['MAILGUN_KEY'] = MAILGUN_KEY
 app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
 @app.route('/')
 @app.route('/index')
@@ -141,7 +140,7 @@ def contact():
 
 
         request = requests.post("https://api.mailgun.net/v2/%s/messages" % app.config['MAILGUN_DOMAIN'],
-             auth=("api", app.config['MAILGUN_KEY']),
+             auth=("api", app.config['MAILGUN_API_KEY']),
              data={
                  "from": from_address,
                  "to": to_address,
