@@ -5,6 +5,18 @@
 {% endblock %}
 {% block content %}
 <h1>Jita</h1>
+<div>
+    <h3>Tax Rate:</h3>
+    <form method="POST" action="{{url_for('jita')}}">
+        <label for="tax_rate">Tax Rate:</label>
+        <input type="number" name ="tax_rate" step=".25" value="0" />
+        <input type="submit"/>
+    </form>
+</div>
+<div>
+    <h3>{{tax}}</h3>
+</div>
+
 <table id="mainTable" class="table table-striped">
     <thead>
     <tr>

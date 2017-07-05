@@ -17,6 +17,7 @@ import psycopg2
 
 from flask import Flask, render_template, request, flash
 from forms import ContactForm
+from flask_wtf import Form
 from flask_mail import Message, Mail
 from scripts import updatePrices
 from scripts import calculateMargins
@@ -68,13 +69,15 @@ def index():
 def thank_you():
     return render_template('thank_you.html')
 
-@app.route('/jita')
+@app.route('/jita', methods=['GET', 'POST'])
 def jita():
     con = connection.establish_connection()
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_jita WHERE itemid = id;")
     entries = cur.fetchall()
+    tax = 0 #request.form['tax_rate']
+
     cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
     persistentData = cur.fetchall()
 
@@ -88,7 +91,10 @@ def jita():
         })
     cur.close()
     con.close()
-    return render_template('jita.html',entries=entries, chart=json.dumps(chart))
+    if request.method == 'GET':
+        return render_template('jita.html', entries=entries, chart=json.dumps(chart), tax=tax)
+    if request.method == 'POST':
+        return render_template('jita.html', entries=entries, chart=json.dumps(chart), tax=tax)
 
 @app.route('/amarr')
 def amarr():
