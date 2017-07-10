@@ -50,5 +50,8 @@ Temporary Items
 /venv
 /gitIgnore .env
 
+#env configuration
+.env
+
 #passwords
 /gitIgnore/passwords.py

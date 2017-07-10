@@ -5,12 +5,10 @@ import psycopg2
 import os
 import eveLists
 import connection
-import boto
 
 
 
-parse.uses_netloc.append("postgres")
-url = parse.urlparse(os.environ["DATABASE_URL"])
+
 
 con = psycopg2.connect(
     database=os.environ['URI'],

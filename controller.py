@@ -37,9 +37,9 @@ logging.basicConfig(level=10)
 
 ###end scheduler
 
-os.environ['DATABASE_URL']='postgres://lojyjajvpwaaci:4ya_0u6olTZ2taL68me6Goa1HD@ec2-54-243-199-161.compute-1.amazonaws.com:5432/deaek2i6u7a13g'
 
-url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+
+#url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 '''
 con = psycopg2.connect(
     database=url.path[1:],
