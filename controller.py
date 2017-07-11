@@ -52,7 +52,7 @@ con = psycopg2.connect(
 mail = Mail()
 
 app = Flask(__name__)
-app.secret_key = app.config["FLASK_SECRET_KEY"]
+app.secret_key = os.environ["FLASK_SECRET_KEY"]
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
