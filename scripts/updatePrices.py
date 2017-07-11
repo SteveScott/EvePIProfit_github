@@ -12,6 +12,7 @@ import atexit
 from psycopg2.extensions import AsIs, quote_ident
 
 sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
+sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github/scripts")
 
 
 
