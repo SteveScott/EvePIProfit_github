@@ -94,9 +94,9 @@ def jita():
     cur.close()
     con.close()
     if request.method == 'GET':
-        return render_template('jita.html', entries=entries, chart=json.dumps(chart), tax=tax)
+        return render_template('jita.html', entries=entries, chart=json.dumps(chart))
     if request.method == 'POST':
-        return render_template('jita.html', entries=entries, chart=json.dumps(chart), tax=tax)
+        return render_template('jita.html', entries=entries, chart=json.dumps(chart))
 
 @app.route('/amarr')
 def amarr():
