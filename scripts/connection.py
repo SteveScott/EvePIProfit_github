@@ -5,7 +5,7 @@ import os
 
 #parse.uses_netloc.append("postgres")
 url = parse.urlparse(os.environ["DATABASE_URL"])
-
+print("host:" + url.hostname)
 def establish_connection():
     try:
         con = psycopg2.connect(
