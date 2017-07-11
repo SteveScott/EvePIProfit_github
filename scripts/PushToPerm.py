@@ -9,15 +9,6 @@ import connection
 
 
 
-
-con = psycopg2.connect(
-    database=str(os.environ['URI']),
-    user=os.environ["DATABASE_USER"],
-    password=os.environ["DATABASE_PASSWORD"],
-    host=os.environ["DATABASE_HOST"],
-    port=5432
-)
-
 def main():
     con = connection.establish_connection()
     cur = con.cursor()
