@@ -11,11 +11,11 @@ import connection
 
 
 con = psycopg2.connect(
-    database=os.environ['URI'],
+    database=str(os.environ['URI']),
     user=os.environ["DATABASE_USER"],
     password=os.environ["DATABASE_PASSWORD"],
     host=os.environ["DATABASE_HOST"],
-    port=os.environ["PORT"]
+    port=5432
 )
 
 def main():
