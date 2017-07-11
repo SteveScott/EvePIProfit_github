@@ -1,5 +1,6 @@
 import atexit
 import os
+import sys
 import time
 import requests
 import urllib
@@ -8,7 +9,6 @@ try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
-import sys
 import logging
 import json
 
@@ -23,6 +23,7 @@ from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
 from scripts import connection
+from scripts import eveLists
 import atexit
 
 ###scheduler
@@ -31,7 +32,9 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 logging.basicConfig(level=10)
 
-
+current_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                            "")
+sys.path.append(current_path)
 
 
 
@@ -57,7 +60,7 @@ app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
-app.config['MAILGUN_KEY'] = MAILGUN_KEY
+app.config['MAILGUN_API_KEY'] = os.environ["MAILGUN_API_KEY"]
 app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
 @app.route('/')
 @app.route('/index')
