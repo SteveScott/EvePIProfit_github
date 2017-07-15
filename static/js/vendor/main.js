@@ -9,15 +9,60 @@ $(document).ready(function() {
 } );
 */
 
-
 $(document).ready(function() {
     $('#mainTable').dataTable( {
         stateSave: true,
         "iDisplayLength": 100,
-        "aaSorting": [[ 4, "asc" ]]
+        "aaSorting": [[ 4, "asc" ]],
+        "columns": [ {"data": "Level"},
+                    {"data": "Name"},
+            {
+                //"data": "Price"
+
+                 render: function (data, row, meta) {
+                 var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                 return num;
+                 }
+
+
+            },
+                    {render: function (data, row, meta) {
+                 var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                 return num;
+                 }},
+                    {render: function (data, row, meta) {
+                 var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
+                 return '\u01B5 ' + num;
+                 }},
+                    {"data": "Profit-Margin"},
+                    {"data": "Datetime"}
+
+
+                   ]
     } );
 
 } );
+
+/*
+$(document).ready(function() {
+    $('#mainTable').dataTable({
+        stateSave: true,
+        "iDisplayLength": 100,
+        "aaSorting": [[4, "asc"]],
+        'columns': [{
+            render: function (data, type, row, meta) {
+                if (type === 'currency') {
+                    var num = $.fn.dataTable.render.number(',', '.', 2, '$').display(data);
+                    return num;
+                }
+            }
+        }
+        ]
+    })
+});
+
+
+
 /*
 var h = 100;
 var w = 200;

@@ -3,23 +3,60 @@
 <title>Jita</title>
 {% endblock %}
 
+{% block scripts %}
+<script>
+
+    // annonymous func = closure func = lambda func
+
+    $(document).ready(function() {
+        // CSS selector
+        $("input[name=tax_rate]").on('input', function() {
+            var taxRate = parseFloat($(this).val()) / 100.0;
+
+            // corner case
+            if (isNaN(taxRate))
+                taxRate = 0;
+
+            $("#mainTable tbody tr").each(function () {
+                var level = $(this).children(":first").text();
+
+                // level == "P0"/"P1"/"P2"
+                if (level == "P0") {
+                    //console.log("foo");
+                } else if (level == "P1") {
+                    //
+                } else if (level == "P2") {
+                    //
+                }
+
+                var priceTd = $(this).find(".price").first();
+
+                var originalPrice = $(priceTd).data("original");
+                var newPrice = originalPrice * (1+taxRate);
+
+                var newPriceString = "Ƶ " + newPrice.toLocaleString();
+
+                $(priceTd).text(newPriceString);
+            });
+        });
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <h1>Jita</h1>
 
-<!--
 <div>
     <h3>Tax Rate:</h3>
-    <form method="POST" action="{{url_for('jita')}}">
         <label for="tax_rate">Tax Rate:</label>
-        <input type="number" name ="tax_rate" step=".25" value="0" />
-        <input type="submit"/>
+        <input type="number" name="tax_rate" step=".25" value="0" />
     </form>
 </div>
 <div>
     <h3>{{tax}}</h3>
 </div>
--->
-<table id="mainTable" class="table table-striped">
+
+<table id="mainTable" class="table table-striped display">
     <thead>
     <tr>
         <th>Level</th>
@@ -36,7 +73,7 @@
     <tr>
         <td>{{entry[6]}}</td>
         <td>{{entry[0]}}</td>
-        <td>{{entry[1]}}</td>
+        <td class="price" data-original="{{entry[1]}}">{{entry[1]}}</td> <!-- Price -->
         <td>{{entry[5]}}</td>
         <td>{{entry[2]}}</td>
         <td>{{entry[3]}}</td>

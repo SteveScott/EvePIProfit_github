@@ -1,6 +1,7 @@
 import atexit
 import os
 import sys
+#sys.path.insert(0, "~/Dropbox/1programming2/EVE/EvePIProfit_github/scripts")
 import time
 import requests
 import urllib
@@ -19,6 +20,8 @@ from flask import Flask, render_template, request, flash
 from forms import ContactForm
 from flask_wtf import Form
 from flask_mail import Message, Mail
+from scripts import eveLists
+from scripts import connection
 from scripts import updatePrices
 from scripts import calculateMargins
 from scripts import PushToPerm
@@ -35,7 +38,6 @@ logging.basicConfig(level=10)
 current_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                             "")
 sys.path.append(current_path)
-
 
 
 ###end scheduler
@@ -62,6 +64,8 @@ app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
 app.config['MAILGUN_API_KEY'] = os.environ["MAILGUN_API_KEY"]
 app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -178,6 +182,6 @@ def contact():
 
 if __name__ == "__main__":
     print('launching app.run')
-    app.run(debug=True, port=os.environ.get('PORT', 5000), use_reloader=False)
+    app.run(debug=True, port=os.environ.get('PORT', 5000), use_reloader=True)
     #app.run(debug=True)
 

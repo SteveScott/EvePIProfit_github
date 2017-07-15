@@ -2,17 +2,19 @@ from urllib import request, error, request
 import xml.etree.ElementTree as ET
 import datetime
 import psycopg2
+import sys
+print("sys.path:")
+print(sys.path)
 from psycopg2 import sql
 import os
 import urllib.parse
-import eveLists
-import connection
-import sys
+#import eveLists
+#import connection
 import atexit
 from psycopg2.extensions import AsIs, quote_ident
 
-sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
-sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github/scripts")
+#sys.path.append("~/Dropbox/1programming2/EVE/EvePIProfit_github")
+
 
 
 
