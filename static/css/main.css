@@ -107,8 +107,11 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     float: right;
     padding: 10px;
 }
+/* Tax bars */
 
-
+#filter{
+    float: right;
+}
 
 
 

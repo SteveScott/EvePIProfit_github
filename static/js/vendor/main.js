@@ -12,28 +12,30 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#mainTable').dataTable( {
         stateSave: true,
+        "dom":'<<"#filter"f><"#lenght_field"l>r<t>ip>',
         "iDisplayLength": 100,
         "aaSorting": [[ 4, "asc" ]],
-        "columns": [ {"data": "Level"},
+        "columns": [{"data": "Level"},
                     {"data": "Name"},
-            {
-                //"data": "Price"
+                    {
+                        //"data": "Price"
 
-                 render: function (data, row, meta) {
-                 var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
-                 return num;
-                 }
+                         render: function (data, row, meta) {
+                         var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                         return num;
+                         }
 
 
-            },
+                    },
                     {render: function (data, row, meta) {
-                 var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
-                 return num;
-                 }},
+                        var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                        return num;
+                     }},
                     {render: function (data, row, meta) {
-                 var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
-                 return '\u01B5 ' + num;
-                 }},
+                        var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
+                        return '\u01B5 ' + num;
+                        }
+                    },
                     {"data": "Profit-Margin"},
                     {"data": "Datetime"}
 

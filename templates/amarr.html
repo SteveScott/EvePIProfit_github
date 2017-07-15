@@ -1,34 +1,14 @@
-{% extends "index.html"%}
+{% extends "jita.html"%}
 {% block title %}
 <title>Amarr</title>
+{% endblock title %}
 
-{% endblock %}
+{% block scripts %}
+    {{ super()}}
+{% endblock scripts %}
 {% block content %}
-<h1>Amarr</h1>
-<table id="mainTable" class="table table-striped">
-    <thead>
-    <tr>
-        <th>Level</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Cost</th>
-        <th>Profit</th>
-        <th>Profit Margin</th>
-        <th>Datetime (UTC)</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for entry in entries %}
-    <tr>
-        <td>{{entry[6]}}</td>
-        <td>{{entry[0]}}</td>
-        <td>{{entry[1]}}</td>
-        <td>{{entry[5]}}</td>
-        <td>{{entry[2]}}</td>
-        <td>{{entry[3]}}</td>
-        <td>{{entry[4]}}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    {{ super() }}
+   {% block headline %}
+    <h1>Amarr</h1>
+    {% endblock %}
 {% endblock %}

@@ -38,6 +38,7 @@
          <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
+
       {% block title %}
         <h1>EVE PI Profits</h1>
         <p>Planetary interaction profitability across New Eden</p>
@@ -124,8 +125,46 @@
         <script src="../static/js/vendor/jquery.dataTables.min.js"></script>
         <script src="../static/js/vendor/main.js"></script>
         <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="../static/js/vendor/garlic.min.js"></script>
 
         {% block scripts %}
+        <script>
+
+            // annonymous func = closure func = lambda func
+
+            $(document).ready(function() {
+                // CSS selector
+                $("input[name=tax_rate]").on('input', function() {
+                    var taxRate = parseFloat($(this).val()) / 100.0;
+
+                    // corner case
+                    if (isNaN(taxRate))
+                        taxRate = 0;
+
+                    $("#mainTable tbody tr").each(function () {
+                        var level = $(this).children(":first").text();
+
+                        // level == "P0"/"P1"/"P2"
+                        if (level == "P0") {
+                            //console.log("foo");
+                        } else if (level == "P1") {
+                            //
+                        } else if (level == "P2") {
+                            //
+                        }
+
+                        var priceTd = $(this).find(".price").first();
+
+                        var originalPrice = $(priceTd).data("original");
+                        var newPrice = originalPrice * (1+taxRate);
+
+                        var newPriceString = "Ƶ " + newPrice.toLocaleString();
+
+                        $(priceTd).text(newPriceString);
+                    });
+                });
+            });
+        </script>
         {% endblock %}
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
