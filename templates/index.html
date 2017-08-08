@@ -6,8 +6,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-	<meta name="google" content="notranslate">
-	<meta http-equiv="Content-Language" content="en">
+	    <meta name="google" content="notranslate">
+	    <meta http-equiv="Content-Language" content="en">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	    <link rel="shortcut icon" href="../static/img/favicon.ico">
         <title>Eve PI Profits</title>
@@ -130,7 +130,9 @@
         {% block scripts %}
         <script>
 
-            // annonymous func = closure func = lambda func
+            function roundMe (number) {
+                return Math.round((number * 100)) / 100;
+            }
 
             $(document).ready(function() {
                 // CSS selector
@@ -142,25 +144,83 @@
                         taxRate = 0;
 
                     $("#mainTable tbody tr").each(function () {
-                        var level = $(this).children(":first").text();
-
+                        var newCost = -9999999999999;
+                        var level = $(this).find(".level").text()
+                        //var level = $(this).children(":first").text();
+                        var sellPriceTd = $(this).find(".price").first();
+                        //var priceTd = $(this).find(".cost").first();
+                        var costTd = $(this).find(".cost").first();
+                        var profitTd = $(this).find(".profit").first();
+                        var marginTd = $(this).find(".margin").first();
+                        var cmdtyName = $(this).children(":nth-child(2)").text();
+                        var originalPrice = $(costTd).data("original");
+                        originalPrice = Number(originalPrice);
+                        var sellPrice = $(sellPriceTd).data("original");
                         // level == "P0"/"P1"/"P2"
                         if (level == "P0") {
-                            //console.log("foo");
+                            newCost = (5 * taxRate);
                         } else if (level == "P1") {
-                            //
+                            newCost = originalPrice + (400.0 * taxRate);
                         } else if (level == "P2") {
-                            //
+                            newCost = originalPrice + (10400.0 * taxRate);
+                        } else if (level == "P3") {
+                            if (cmdtyName == "Biotech Research Reports"
+                                || cmdtyName == "Cryoprotectant Solutions"
+                                || cmdtyName == "Gel-Matrix Biopaste"
+                                || cmdtyName == "Hazmat Detection Systems"
+                                || cmdtyName == "Planetary Vehicles"
+                                || cmdtyName == "Supercomputers") {
+                                newCost = originalPrice + (168000.0 * taxRate);
+                            } else if (    cmdtyName == "Camera Drones"
+                                        || cmdtyName == "Condensates"
+                                        || cmdtyName == "Data Chips"
+                                        || cmdtyName == "Guidance Systems"
+                                        || cmdtyName == "Hermetic Membranes"
+                                        || cmdtyName == "High-Tech Transmitters"
+                                        || cmdtyName == "Industrial Explosives"
+                                        || cmdtyName == "Neocoms"
+                                        || cmdtyName == "Nuclear Reactors"
+                                        || cmdtyName == "Robotics"
+                                        || cmdtyName == "Smartfab Units"
+                                        || cmdtyName == "Synthetic Synapses"
+                                        || cmdtyName == "Transcranial Microcontrollers"
+                                        || cmdtyName == "Ukomi Superconductors"
+                                        || cmdtyName == "Vaccines") {
+                                newCost = originalPrice + (84000.0 * taxRate);
+                            } else {
+                                newCost = -99999999;
+                                    }
+                        } else if (level == "P4"){
+                            if (cmdtyName == "Broadcast Node"
+                                || cmdtyName == "Integrity Response Drones"
+                                || cmdtyName == "Recursive Computing Module"
+                                || cmdtyName == "Self-Harmonizing Power Core"
+                                || cmdtyName == "Wetware Mainframe") {
+                                newCost = originalPrice + (1740000.0 * taxRate);
+                            } else if (cmdtyName == "Nano-Factory"
+                                       || cmdtyName == "Organic Mortar Applicators"
+                                       || cmdtyName == "Sterile Conduits") {
+                                      newCost = originalPrice + (1704000.0 * taxRate);
+                            } else {
+                                newCost = -9999999999;
+                            }
                         }
 
-                        var priceTd = $(this).find(".price").first();
+                        var profit = sellPrice - newCost;
+                        var profitMargin = profit / sellPrice * 100;
+                        //document.write(typeof(originalPrice));
+                        //document.write(typeof(sellPrice));
+                        //document.write(typeof(newCost));
+                        //document.write(typeof(profit));
+                        //document.write(typeof(profitMargin));
+                        //document.write(typeof(level));
+                        var profitString =  "Ƶ " + roundMe(profit).toLocaleString();
+                        var newCostString = "Ƶ " + roundMe(newCost).toLocaleString();
+                        var profitMarginString = roundMe(profitMargin).toLocaleString() + " %";
 
-                        var originalPrice = $(priceTd).data("original");
-                        var newPrice = originalPrice * (1+taxRate);
-
-                        var newPriceString = "Ƶ " + newPrice.toLocaleString();
-
-                        $(priceTd).text(newPriceString);
+                        $(costTd).text(newCostString);
+                        $(profitTd).text(profitString);
+                        $(marginTd).text(profitMarginString);
                     });
                 });
             });
