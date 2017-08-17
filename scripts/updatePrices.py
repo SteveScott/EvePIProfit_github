@@ -35,10 +35,10 @@ def fetchSellPrice(thisSystem, thisItem):
         print("error fetching sell price")
 
 
-def main(connection):
+def main(con):
     ###Establish connection
     print("establishing connection")
-    con = connection.establish_connection()
+    #con = connection.establish_connection()
     con.autocommit = True
     cur = con.cursor()
 
@@ -79,7 +79,7 @@ def main(connection):
     con.commit()
     print("updatePrices complete")
     cur.close()
-    con.close()
+    #con.close()
 
 
     '''

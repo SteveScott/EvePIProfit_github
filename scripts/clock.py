@@ -12,13 +12,15 @@ scheduler = BlockingScheduler(timezone="Iceland")
 #'''
 @scheduler.scheduled_job('cron', hour='0,3,6,9,12,15,18')
 def clock_scheduled_commands():
+    con = connection.establish_connection()
     print('Updating Tables')
-    updatePrices.main(connection)
+    updatePrices.main(con)
     print('Updating Margins')
-    calculateMargins.main()
+    calculateMargins.main(con)
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+    con.close()
 #'''
 '''
 @scheduler.scheduled_job('interval', minutes = 6)

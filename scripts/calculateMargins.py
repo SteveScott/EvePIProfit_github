@@ -105,8 +105,8 @@ def ClearTemp(cur, con):
 
 
 ###Main###
-def main(connection):
-    con = connection.establish_connection()
+def main(con):
+    #con = connection.establish_connection()
     cur = con.cursor()
     print("Calculating Profit")
     for i in eveLists.systemList:
@@ -131,7 +131,7 @@ def main(connection):
         print("creating table {0}".format(eveLists.databaseDict[i]))
     cur.close()
     con.commit()
-    con.close()
+    #con.close()
     print("calculateMargins complete")
     return 0
 
