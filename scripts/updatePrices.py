@@ -7,6 +7,7 @@ print("sys.path:")
 print(sys.path)
 from psycopg2 import sql
 import os
+import os.path
 import urllib.parse
 #import eveLists
 #import connection
@@ -34,7 +35,7 @@ def fetchSellPrice(thisSystem, thisItem):
         print("error fetching sell price")
 
 
-def main():
+def main(connection):
     ###Establish connection
     print("establishing connection")
     con = connection.establish_connection()

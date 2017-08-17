@@ -105,7 +105,7 @@ def ClearTemp(cur, con):
 
 
 ###Main###
-def main():
+def main(connection):
     con = connection.establish_connection()
     cur = con.cursor()
     print("Calculating Profit")
