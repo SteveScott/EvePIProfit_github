@@ -9,8 +9,8 @@ from psycopg2 import sql
 import os
 import os.path
 import urllib.parse
-#import eveLists
-#import connection
+import eveLists
+import connection
 import atexit
 from psycopg2.extensions import AsIs, quote_ident
 
@@ -35,10 +35,10 @@ def fetchSellPrice(thisSystem, thisItem):
         print("error fetching sell price")
 
 
-def main(con):
+def main():
     ###Establish connection
     print("establishing connection")
-    #con = connection.establish_connection()
+    con = connection.establish_connection()
     con.autocommit = True
     cur = con.cursor()
 
@@ -79,7 +79,7 @@ def main(con):
     con.commit()
     print("updatePrices complete")
     cur.close()
-    #con.close()
+    con.close()
 
 
     '''
