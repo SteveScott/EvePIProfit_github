@@ -146,7 +146,7 @@ def contact():
     def send_mail(to_address, from_address, subject, plaintext):
 
 
-        request = requests.post("https://api.mailgun.net/v2/%s/messages" % app.config['MAILGUN_DOMAIN'],
+        request = requests.post("https://api.mailgun.net/v3/%s/messages" % app.config['MAILGUN_DOMAIN'],
              auth=("api", app.config['MAILGUN_API_KEY']),
              data={
                  "from": from_address,
