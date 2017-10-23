@@ -69,7 +69,8 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    #return render_template('index.html')
+    return render_template('maintenance.html')
 
 @app.route('/thank_you')
 def thank_you():

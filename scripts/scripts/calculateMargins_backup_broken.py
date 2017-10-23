@@ -3,12 +3,14 @@ import xml.etree.ElementTree as ET
 import datetime
 import psycopg2
 import os
-
 import eveLists
 import connection
 
+con = connection.establish_connection()
+cur = con.cursor()
 
-def LookupPrice(item, cur):
+def LookupPrice(item):
+
     cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
 
@@ -20,8 +22,8 @@ def LookupPrice(item, cur):
         return 0
 
 
-def CalculateProfit(system1, item1, cur, con):
-
+def CalculateProfit(system1, item1):
+    global cur
     cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
 
@@ -46,16 +48,16 @@ def CalculateProfit(system1, item1, cur, con):
         q2 = tempList[0][5]
         i3 = tempList[0][6]
         q3 = tempList[0][7]
-        p0 = LookupPrice(i0, cur)
-        p1 = LookupPrice(i1, cur)
-        p2 = LookupPrice(i2, cur)
-        p3 = LookupPrice(i3, cur)
+        p0 = LookupPrice(i0)
+        p1 = LookupPrice(i1)
+        p2 = LookupPrice(i2)
+        p3 = LookupPrice(i3)
 
     #produced = # [tempList[1]
 
 
         if ((p0 == 0) or (q1 > 0 and p1 == 0) or (q2 > 0 and p2 == 0) or (q3 > 0 and p3 == 0)):
-            #print(str(i0) + " no price found for one of the commodities")
+            print(str(i0) + " no price found for one of the commodities")
 
             marginalProfit = 0
             percentProfit = 0
@@ -64,11 +66,11 @@ def CalculateProfit(system1, item1, cur, con):
         else:
 
             marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
-            salePrice = LookupPrice(item1, cur)
+            salePrice = LookupPrice(item1)
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
 
-        #print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
+        print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
         cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, marginalCost, item1))
         con.commit()
 
@@ -78,28 +80,17 @@ def CalculateProfit(system1, item1, cur, con):
             marginalProfit = 0
             percentProfit = 0
             marginalCost = 0
+            cur = con.cursor()
             #print('len(tempList) = 0')
             cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, item1))
 
         except:
             print('exception ')
 
-def ClearTemp(cur, con):
-
-    #print("truncating table price_temp")
-    try:
-        cur.execute('TRUNCATE TABLE price_temp')
-    except Exception as e:
-        print(e)
-        print("trying again")
-        try:
-            con = connection.establish_connection()
-            cur = con.cursor()
-            cur.execute('TRUNCATE TABLE price_temp;')
-
-        except Exception as e:
-            print(e.message)
-            print("failed to connect a second time.")
+def ClearTemp():
+    global cur
+    print("truncating table price_temp")
+    cur.execute('TRUNCATE TABLE price_temp')
     con.commit()
     #print("price_temp truncated")
 
@@ -107,11 +98,9 @@ def ClearTemp(cur, con):
 
 ###Main###
 def main():
-    con = connection.establish_connection()
-    cur = con.cursor()
     print("Calculating Profit")
     for i in eveLists.systemList:
-        ClearTemp(cur, con)
+        ClearTemp()
         databaseName = eveLists.databaseDict[i]
     ###added after broke. need to repoppulate price_temp with system data
 
@@ -121,7 +110,7 @@ def main():
 
 
         for j in eveLists.itemList:
-            CalculateProfit(i, j, cur, con)
+            CalculateProfit(i, j)
 
 
         cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
