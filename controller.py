@@ -63,7 +63,7 @@ app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
 app.config['MAILGUN_API_KEY'] = os.environ["MAILGUN_API_KEY"]
-app.config['MAILGUN_DOMAIN'] = 'evepiprofits.com'
+app.config['MAILGUN_DOMAIN'] = os.environ["MAILGUN_DOMAIN"]
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.route('/')
@@ -78,6 +78,7 @@ def thank_you():
 
 @app.route('/jita', methods=['GET', 'POST'])
 def jita():
+    return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
@@ -105,6 +106,7 @@ def jita():
 
 @app.route('/amarr')
 def amarr():
+    return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_amarr WHERE itemid = id;")
@@ -116,6 +118,7 @@ def amarr():
 
 @app.route('/rens')
 def rens():
+    return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_rens WHERE itemid = id;")
@@ -131,6 +134,7 @@ def rens():
 
 @app.route('/dodixie')
 def dodixie():
+    return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_dodixie WHERE itemid = id;")
@@ -170,6 +174,12 @@ def contact():
                           form.email.data,
                           form.subject.data,
                           form.message.data)
+
+                send_mail(form.email.data,
+                          "no-reply@" + app.config["MAILGUN_DOMAIN"],
+                          "Message sent to EVE PI Profits",
+                          "Your message has been received, and we will get back to you promptly.")
+
                 return render_template('posted.html')
             except requests.exceptions.RequestException as e:
                 flash(e)
