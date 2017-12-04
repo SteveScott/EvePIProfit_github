@@ -69,8 +69,8 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 @app.route('/index')
 def index():
-    #return render_template('index.html')
-    return render_template('maintenance.html')
+    return render_template('index.html')
+    #return render_template('maintenance.html')
 
 @app.route('/thank_you')
 def thank_you():
@@ -78,7 +78,7 @@ def thank_you():
 
 @app.route('/jita', methods=['GET', 'POST'])
 def jita():
-    return render_template('maintenance.html')
+    #return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     #cur.execute("SELECT * FROM temp_jita")
@@ -106,7 +106,7 @@ def jita():
 
 @app.route('/amarr')
 def amarr():
-    return render_template('maintenance.html')
+    #return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_amarr WHERE itemid = id;")
@@ -118,7 +118,7 @@ def amarr():
 
 @app.route('/rens')
 def rens():
-    return render_template('maintenance.html')
+   # return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_rens WHERE itemid = id;")
@@ -134,7 +134,7 @@ def rens():
 
 @app.route('/dodixie')
 def dodixie():
-    return render_template('maintenance.html')
+   # return render_template('maintenance.html')
     con = connection.establish_connection()
     cur = con.cursor()
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_dodixie WHERE itemid = id;")

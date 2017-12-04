@@ -1,47 +1,48 @@
-import xml.etree.ElementTree as ET
+import atexit
 import datetime
-import psycopg2
-import sys
 import os
 import os.path
+import psycopg2
+import sys
 import urllib.parse
-
-from urllib import request, error, request
+import xml.etree.ElementTree as ET
 from psycopg2 import sql
 from psycopg2.extensions import AsIs, quote_ident
+from urllib import request, error, request
 
-import eveLists
-import connection
-import atexit
+import scripts.connection
+import scripts.eveLists
+import fetchPrices
+
 
 def fetchSellPrice(thisSystem, thisItem):
-
-    request = urllib.request.urlopen('http://api.eve-central.com/api/marketstat?' +
-                                     'typeid=' + str(thisItem) +
-                                     '&usesystem=' + str(thisSystem))
-
-    try:
-        response = request  # urllib.request.urlopen(request)
-        data = response.read()
-        root = ET.fromstring(data)
-        return root[0][0][1][6].text
-    except:
-        print("error fetching sell price")
+    #print("")
+    #print("thisSystem = " + str(thisSystem) + " thisItem = " + str(thisItem))
+    systemName = scripts.eveLists.systemDictReverse[thisSystem]
+    station = scripts.eveLists.systemToStation[systemName]
+    #print(station)
+    region = scripts.eveLists.systemToRegion[systemName]
+    #print(region)
+    region_id = scripts.eveLists.regionId[region]
+    #print(region_id)
+    answer = fetchPrices.find_price("sell", thisItem, region_id, station)
+    #print(answer)
+    return answer
 
 def main():
     ###Establish connection
     print("establishing connection")
-    con = connection.establish_connection()
+    con = scripts.connection.establish_connection()
     con.autocommit = True
     cur = con.cursor()
 
 
 
-    for i in eveLists.systemList:
-        database_name = eveLists.databaseDict[i]
+    for i in scripts.eveLists.systemList:
+        database_name = scripts.eveLists.databaseDict[i]
         #'''
         #clear the database
-
+        print(database_name)
         #print (sql.SQL("TRUNCATE TABLE {};").format(sql.Identifier(database_name)))
         try:
             #cur.execute('TRUNCATE TABLE temp_jita;')
@@ -53,8 +54,8 @@ def main():
         #print("table truncated")
         #'''
         #insert into the database
-        print("inserting into ", eveLists.systemDictReverse[i])
-        for j in eveLists.itemList:
+        print("inserting into ", scripts.eveLists.systemDictReverse[i])
+        for j in scripts.eveLists.itemList:
             tempPrice = fetchSellPrice(i, j)
 
             now = str(datetime.datetime.utcnow())

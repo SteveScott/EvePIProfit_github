@@ -88,7 +88,7 @@ systemDict = {
     'Jita': 30000142,
     'Amarr': 30002187,
     'Rens': 30002510,
-    'Dodixie':30002659
+    'Dodixie': 30002659
     }
 
 systemDictReverse = {
@@ -111,6 +111,19 @@ systemList = [30000142,
               30002659
               ]
 
+stationList = [60003760,
+               60008494,
+               60004594,
+               60011866
+               ]
+
+systemToStation = {
+    'Jita': 60003760,
+    'Amarr': 60008494,
+    'Rens': 60004594,
+    'Dodixie': 60011866
+}
+
 taxBasis = {
     'p0': 5,
     'p1': 400,
@@ -119,4 +132,21 @@ taxBasis = {
     'p4': 1200000
 }
 
+regionId = {
+    'Domain': 10000043,
+    'The Forge': 10000002,
+    'Heimatar': 10000030,
+    'Sinq Laison': 10000032,
+    'Essence': 10000064,
+    'Metropolis': 10000042,
+    'Providence': 10000047
+}
+
+systemToRegion = {
+    'Jita': 'The Forge',
+    'Amarr': 'Domain',
+    'Rens': 'Heimatar',
+    'Dodixie': 'Sinq Laison'
+
+}
 

@@ -1,9 +1,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-import updatePrices
 import PushToPerm
-#import timerom
 import connection
+import updatePrices
 
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler(timezone="Iceland")
@@ -22,7 +21,7 @@ def clock_scheduled_commands():
     con.close()
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes = 6)
+@scheduler.scheduled_job('interval', minutes = 1)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()
