@@ -33,7 +33,7 @@ def main():
     ###Establish connection
     print("establishing connection")
     con = scripts.connection.establish_connection()
-    con.autocommit = True
+    con.autocommit = False
     cur = con.cursor()
 
 

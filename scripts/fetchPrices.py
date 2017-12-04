@@ -9,14 +9,15 @@ import json
 #region_id = 10000002
 #station = 60003760
 
+app = App.create(url="https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility")
+client = EsiClient(
+    retry_request=True,
+    header={'User-Agent': 'Fetch Prices'},
+    raw_body_only=False)
+
 
 def fetch_orders(buy_sell, item, region):
-    app = App.create(url="https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility")
-    client = EsiClient(
-        retry_request=True,
-        header={'User-Agent': 'Fetch Prices'},
-        raw_body_only=False)
-
+    global app
     market_price_operation = app.op['get_markets_region_id_orders'](
         order_type=buy_sell,
         region_id=region,
@@ -24,6 +25,7 @@ def fetch_orders(buy_sell, item, region):
     )
 
     #returns a list of orders
+    global client
     response = client.request(market_price_operation)
     return response
 

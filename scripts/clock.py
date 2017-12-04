@@ -3,12 +3,14 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import PushToPerm
 import connection
 import updatePrices
+import calculateMargins
+import time
 
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler(timezone="Iceland")
 
 #'''
-@scheduler.scheduled_job('cron', hour='0,3,6,9,12,15,18')
+@scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
 def clock_scheduled_commands():
     con = connection.establish_connection()
     print('Updating Tables')
@@ -21,11 +23,11 @@ def clock_scheduled_commands():
     con.close()
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes = 1)
+@scheduler.scheduled_job('interval', minutes = 6)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()
-    print('Updating Margins')
+    print('Calculating Margins')
     calculateMargins.main()
     #print('Pushing to Perm')
     #PushToPerm.main()
