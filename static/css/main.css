@@ -81,6 +81,16 @@ jumbotron h1 {
     margin: 10%;
 }
 
+tr{height:30px;}
+
+.table{
+   display: hover;
+}
+
+#mainTable tr:hover{
+    background-color:black;
+}
+
 
 #navbar-brand {
     width: 100%;
@@ -88,15 +98,36 @@ jumbotron h1 {
     font-family: "Righteous";
 }
 
-.btn {
-    font-size: 10px;
-}
 
 @media screen and (min-width:480px) {
 .btn {
     font-size: 15px;
     }
+
 }
+
+@media screen and (max-width:480px){
+    #mainTable{
+    font-size: 9px;
+    }
+    #filter{
+    float: left !important;
+    clear: left;
+
+    }
+
+    #filter input{
+    margin-left:15px;
+    }
+
+    tr{
+    height:10px;
+    margin: 0;
+    }
+}
+
+
+
 
 
 ul.nav li.dropdown:hover > ul.dropdown-menu {
