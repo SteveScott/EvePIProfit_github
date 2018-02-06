@@ -1,15 +1,20 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+
+import os
+
 import PushToPerm
 import connection
 import updatePrices
 import calculateMargins
 import time
 
+
+
 #changed BackgroundScheduler to BlockingScheduler
 scheduler = BlockingScheduler(timezone="Iceland")
 
-#'''
+'''
 @scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
 def clock_scheduled_commands():
     con = connection.establish_connection()
@@ -21,7 +26,7 @@ def clock_scheduled_commands():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     con.close()
-#'''
+'''
 '''
 @scheduler.scheduled_job('interval', minutes = 6)
 def timed_job():
