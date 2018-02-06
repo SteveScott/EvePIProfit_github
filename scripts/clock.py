@@ -27,8 +27,8 @@ def clock_scheduled_commands():
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     con.close()
 '''
-'''
-@scheduler.scheduled_job('interval', minutes = 6)
+#'''
+@scheduler.scheduled_job('interval', minutes = 3)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()
@@ -38,7 +38,7 @@ def timed_job():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     return 0
-'''
+#'''
 '''
 scheduler.add_job(
     func=print_date_time, # your function here
