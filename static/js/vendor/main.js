@@ -15,12 +15,21 @@ $(document).ready(function() {
         "dom":'<<"#filter"f><"#lenght_field"l>r<t>ip>',
         "iDisplayLength": 100,
         "aaSorting": [[ 4, "asc" ]],
+        "columnDefs":[
+            {"type": "string"},
+            {"type": "string"},
+            {"type": "num-fmt"},
+            {"type": "num-fmt"},
+            {"type": "num-fmt"},
+            {"type": "num-fmt"},
+            {"type": "date"}
+            ],
         "columns": [{"data": "Level"},
                     {"data": "Name"},
-           /* {"data": "Price"},
+           /*{"data": "Price"},
             {"data": "Cost"},
             {"data": "Profit"},
-            */
+*/
            /*\u01B5*/
 
                     {
@@ -42,6 +51,7 @@ $(document).ready(function() {
                         return num;
                         }
                     },
+
                     {"data": "Profit-Margin"},
                     {"data": "Datetime"}
 
