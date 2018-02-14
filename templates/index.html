@@ -44,7 +44,7 @@
         <p>Planetary interaction profitability across New Eden for the online computer game EVE Online.</p>
           <p></p>
           <p>Select a system above to view profitability. Marginal profit is the sell price of the commodity minus the sell cost of the construction materials. Profit margin is the marginal profit divided by the sale price.  A negative profit margin means that the materials are worth more unassembled than as a finished good, and you lose money if you assembled the product.</p>
-	  <p>Market data now updated every thirty minutes from CCP (bless you EveCentral).</p>
+	  <p>Market data now updated every two hours on the hour.  You may experience delays when it updates. Data from from CCP (bless you EveCentral).</p>
       {% endblock %}
 
 
@@ -214,13 +214,20 @@
                         //document.write(typeof(profit));
                         //document.write(typeof(profitMargin));
                         //document.write(typeof(level));
-                        var profitString =  "Ƶ " + roundMe(profit).toLocaleString();
+                        /*var profitString =  "Ƶ " + roundMe(profit).toLocaleString();
                         var newCostString = "Ƶ " + roundMe(newCost).toLocaleString();
                         var profitMarginString = roundMe(profitMargin).toLocaleString() + " %";
 
                         $(costTd).text(newCostString);
                         $(profitTd).text(profitString);
                         $(marginTd).text(profitMarginString);
+                        */
+
+                        $(sellPriceTd).val(roundMe(sellPrice));
+                        $(costTd).val(roundMe(newCost));
+                        $(profitTd).val(roundMe(profit));
+                        $(marginTd).val(roundMe(profitMargin));
+
                     });
                 });
             });

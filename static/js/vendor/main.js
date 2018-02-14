@@ -17,23 +17,29 @@ $(document).ready(function() {
         "aaSorting": [[ 4, "asc" ]],
         "columns": [{"data": "Level"},
                     {"data": "Name"},
+           /* {"data": "Price"},
+            {"data": "Cost"},
+            {"data": "Profit"},
+            */
+           /*\u01B5*/
+
                     {
                         //"data": "Price"
 
                          render: function (data, row, meta) {
-                         var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                         var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
                          return num;
                          }
 
 
                     },
                     {render: function (data, row, meta) {
-                        var num = $.fn.dataTable.render.number(',', '.', 2, '\u01B5 ').display(data);
+                        var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
                         return num;
                      }},
                     {render: function (data, row, meta) {
                         var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
-                        return '\u01B5 ' + num;
+                        return num;
                         }
                     },
                     {"data": "Profit-Margin"},
