@@ -137,7 +137,7 @@
             $(document).ready(function() {
                 // CSS selector
                 $("input[name=tax_rate]").on('input', function() {
-                    var t = $('#mainTable').dataTable();
+
                     var taxRate = parseFloat($(this).val()) / 100.0;
 
                     // corner case
@@ -221,27 +221,50 @@
                         var newCostString = roundMe(newCost).toLocaleString();
                         var profitMarginString = roundMe(profitMargin).toLocaleString();
 
-                        /*
-                        var priceString = roundMe(sellPrice);
-                        var profitString =  roundMe(profit);
-                        var newCostString = roundMe(newCost);
-                        var profitMarginString = roundMe(profitMargin);
-                        */
+
+                        var price2 = roundMe(sellPrice);
+                        var profit2 =  roundMe(profit);
+                        var newCost2 = roundMe(newCost);
+                        var profitMargin2 = roundMe(profitMargin);
+
+
+
 
                         $(sellPriceTd).text(priceString);
+                        $(sellPriceTd).data('sort', sellPrice.toString());
+
+
                         $(costTd).text(newCostString);
+                        $(costTd).data('sort', newCost.toString());
+
+
                         $(profitTd).text(profitString);
+                        $(profitTd).data('sort', profit.toString());
+
+
                         $(marginTd).text(profitMarginString);
+                        $(marginTd).data('sort', profitMargin.toString());
+
+
+                     /*
+                         $(sellPriceTd).val(priceString);
+                        $(costTd).val(newCostString);
+                        $(profitTd).val(profitString);
+                        $(marginTd).val(profitMarginString);
+                        */
+                    /* var html = '<tr>';
+                             html += '<td class="level">' + level + '</td>>';
+                        html += '<td class="level">' + cmdtyName + '</td>';
+                        html += '<td class="price" data-original=' + originalPrice + '>'+ priceString + '</td>'; <!-- Price -->'
+                        html +='<td class="cost">' + newCostString + '</td>';
+                        html +='<td class="profit" >' + profitString +  '</td>';
+                        html +='<td>' + profitMarginString + '</td>';
+                        html +='<tr>';
+
+                        this.append(html);
+                     */
 
 /*
-                        t.row.edit([
-                                level,
-                                cmdtyName,
-                                price,
-                                profit,
-                                newCost,
-                                null
-                        ])
 */
                     });
                 });

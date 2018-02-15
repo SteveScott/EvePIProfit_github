@@ -29,7 +29,7 @@ def clock_scheduled_commands():
     con.close()
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes=6)
+@scheduler.scheduled_job('interval', minutes=10)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()
