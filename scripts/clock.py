@@ -12,7 +12,8 @@ import time
 
 
 #changed BackgroundScheduler to BlockingScheduler
-scheduler = BlockingScheduler(timezone="Iceland")
+#scheduler = BlockingScheduler(timezone="Iceland")
+scheduler = BlockingScheduler()
 
 #'''
 @scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
@@ -28,7 +29,7 @@ def clock_scheduled_commands():
     con.close()
 #'''
 '''
-scheduler.scheduled_job('interval', minutes = 30)
+@scheduler.scheduled_job('interval', minutes=6)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()

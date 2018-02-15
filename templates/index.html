@@ -137,6 +137,7 @@
             $(document).ready(function() {
                 // CSS selector
                 $("input[name=tax_rate]").on('input', function() {
+                    var t = $('#mainTable').dataTable();
                     var taxRate = parseFloat($(this).val()) / 100.0;
 
                     // corner case
@@ -214,17 +215,34 @@
                         //document.write(typeof(profit));
                         //document.write(typeof(profitMargin));
                         //document.write(typeof(level));
+
                         var priceString = roundMe(sellPrice).toLocaleString();
                         var profitString =  roundMe(profit).toLocaleString();
                         var newCostString = roundMe(newCost).toLocaleString();
                         var profitMarginString = roundMe(profitMargin).toLocaleString();
+
                         /*
+                        var priceString = roundMe(sellPrice);
+                        var profitString =  roundMe(profit);
+                        var newCostString = roundMe(newCost);
+                        var profitMarginString = roundMe(profitMargin);
+                        */
+
                         $(sellPriceTd).text(priceString);
                         $(costTd).text(newCostString);
                         $(profitTd).text(profitString);
                         $(marginTd).text(profitMarginString);
-                        */
 
+/*
+                        t.row.edit([
+                                level,
+                                cmdtyName,
+                                price,
+                                profit,
+                                newCost,
+                                null
+                        ])
+*/
                     });
                 });
             });
