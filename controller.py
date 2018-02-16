@@ -84,25 +84,26 @@ def jita():
     #cur.execute("SELECT * FROM temp_jita")
     cur.execute("SELECT name, price, profit, ROUND(profitmargin), mytime, cost, p_level FROM name, temp_jita WHERE itemid = id;")
     entries = cur.fetchall()
-    tax = 0 #request.form['tax_rate']
+   # tax = 0 #request.form['tax_rate']
 
-    cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
-    persistentData = cur.fetchall()
+   # cur.execute('SELECT itemid, ROUND(profitmargin), mytime FROM perm_jita;')
+   # persistentData = cur.fetchall()
 
-    chart = []
+   # chart = []
 
-    for entry in persistentData:
-        chart.append({
-            "itemid": entry[0],
-            "profitmargin": entry[1],
-            "mytime": str(entry[2])
-        })
+   # for entry in persistentData:
+   #     chart.append({
+   #         "itemid": entry[0],
+   #         "profitmargin": entry[1],
+   #         "mytime": str(entry[2])
+   #     })
     cur.close()
     con.close()
-    if request.method == 'GET':
-        return render_template('jita.html', entries=entries, chart=json.dumps(chart))
-    if request.method == 'POST':
-        return render_template('jita.html', entries=entries, chart=json.dumps(chart))
+    return render_template('jita.html', entries=entries)
+   # if request.method == 'GET':
+   #     return render_template('jita.html', entries=entries, chart=json.dumps(chart))
+   # if request.method == 'POST':
+   #     return render_template('jita.html', entries=entries, chart=json.dumps(chart))
 
 @app.route('/amarr')
 def amarr():

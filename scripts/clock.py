@@ -16,7 +16,7 @@ import time
 scheduler = BlockingScheduler()
 
 
-#'''
+'''
 @scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
 def clock_scheduled_commands():
     con = connection.establish_connection()
@@ -28,10 +28,11 @@ def clock_scheduled_commands():
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     con.close()
-#'''
 '''
+#'''
 @scheduler.scheduled_job('interval', minutes=6)
 def timed_job():
+    con = connection.establish_connection()
     print('Updating Tables')
     updatePrices.main()
     print('Calculating Margins')
@@ -39,8 +40,9 @@ def timed_job():
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+    con.close()
     return 0
-'''
+#'''
 '''
 scheduler.add_job(
     func=print_date_time, # your function here
