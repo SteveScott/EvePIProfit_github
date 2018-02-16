@@ -15,6 +15,7 @@ import time
 #scheduler = BlockingScheduler(timezone="Iceland")
 scheduler = BlockingScheduler()
 
+
 #'''
 @scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
 def clock_scheduled_commands():
@@ -22,14 +23,14 @@ def clock_scheduled_commands():
     print('Updating Tables')
     updatePrices.main()
     print('Updating Margins')
-    main()
+    calculateMargins.main()
     #print('Pushing to Perm')
     #PushToPerm.main()
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     con.close()
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes=10)
+@scheduler.scheduled_job('interval', minutes=6)
 def timed_job():
     print('Updating Tables')
     updatePrices.main()

@@ -216,6 +216,9 @@
                         //document.write(typeof(profitMargin));
                         //document.write(typeof(level));
 
+                        // NOTE: test case w
+                        //profit = Math.abs(profit);
+
                         var priceString = roundMe(sellPrice).toLocaleString();
                         var profitString =  roundMe(profit).toLocaleString();
                         var newCostString = roundMe(newCost).toLocaleString();
@@ -228,22 +231,20 @@
                         var profitMargin2 = roundMe(profitMargin);
 
 
-
-
                         $(sellPriceTd).text(priceString);
-                        $(sellPriceTd).data('sort', sellPrice.toString());
+                        $(sellPriceTd).attr('data-sort', price2.toString());
 
 
                         $(costTd).text(newCostString);
-                        $(costTd).data('sort', newCost.toString());
+                        $(costTd).attr('data-sort', newCost2.toString());
 
 
                         $(profitTd).text(profitString);
-                        $(profitTd).data('sort', profit.toString());
+                        $(profitTd).attr('data-sort', profit2.toString());
 
 
                         $(marginTd).text(profitMarginString);
-                        $(marginTd).data('sort', profitMargin.toString());
+                        $(marginTd).attr('data-sort', profitMargin2.toString());
 
 
                      /*
