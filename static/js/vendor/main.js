@@ -8,6 +8,9 @@ $(document).ready(function() {
     } );
 } );
 */
+function roundMe (number) {
+                return Math.round((number * 100)) / 100;
+            }
 
 $(document).ready(function() {
     $('#mainTable').dataTable( {
@@ -18,18 +21,42 @@ $(document).ready(function() {
         "columnDefs":[
             {"type": "string"},
             {"type": "string"},
-            {"type": "num-fmt"},
-            {"type": "num-fmt"},
-            {"type": "num-fmt"},
-            {"type": "num-fmt"},
+            {
+                targets:[3],
+                data:{
+                    _: "3.display",
+                    type: "3.@data-order",
+                    sort: "3.@data-order"
+                }
+            },
+            {
+                targets:[4],
+                data:{
+                _: "4.display",
+                  type: "4.@data-order",
+                sort : "4.@data-order"
+                }
+            },
+            {
+                targets: [5],
+                data: {
+                   _: "5.display",
+                         type: "5.@data-order",
+                    sort: "5.@data-order"
+                }
+            },
+            {targets:[6],
+            data: {
+                _: "6.display",
+                      type: "5.@data-order",
+                 sort : "6.@data-order"
+            }},
             {"type": "date"}
             ],
         "columns": [{"data": "Level"},
                     {"data": "Name"},
-           /*{"data": "Price"},
-            {"data": "Cost"},
-            {"data": "Profit"},
-*/
+
+
            /*\u01B5*/
                     {
                         //"data": "Price"
@@ -52,6 +79,116 @@ $(document).ready(function() {
                    ]
     } );
 
+
+
+            $(document).ready(function() {
+                // CSS selector
+                $("input[name=tax_rate]").on('input', function() {
+
+                    var taxRate = parseFloat($(this).val()) / 100.0;
+
+                    // corner case
+                    if (isNaN(taxRate))
+                        taxRate = 0;
+
+                    $("#mainTable tbody tr").each(function () {
+                        var newCost = -9999999999999;
+                        var level = $(this).find(".level").text()
+                        //var level = $(this).children(":first").text();
+                        var sellPriceTd = $(this).find(".price").first();
+                        //var priceTd = $(this).find(".cost").first();
+                        var costTd = $(this).find(".cost").first();
+                        var profitTd = $(this).find(".profit").first();
+                        var marginTd = $(this).find(".margin").first();
+                        var cmdtyName = $(this).children(":nth-child(2)").text();
+                        var originalPrice = $(costTd).data("original");
+                        originalPrice = Number(originalPrice);
+                        var sellPrice = $(sellPriceTd).data("original");
+                        // level == "P0"/"P1"/"P2"
+                        if (level == "P0") {
+                            newCost = (5 * taxRate);
+                        } else if (level == "P1") {
+                            newCost = originalPrice + (400.0 * taxRate);
+                        } else if (level == "P2") {
+                            newCost = originalPrice + (10400.0 * taxRate);
+                        } else if (level == "P3") {
+                            if (cmdtyName == "Biotech Research Reports"
+                                || cmdtyName == "Cryoprotectant Solutions"
+                                || cmdtyName == "Gel-Matrix Biopaste"
+                                || cmdtyName == "Hazmat Detection Systems"
+                                || cmdtyName == "Planetary Vehicles"
+                                || cmdtyName == "Supercomputers") {
+                                newCost = originalPrice + (168000.0 * taxRate);
+                            } else if (    cmdtyName == "Camera Drones"
+                                        || cmdtyName == "Condensates"
+                                        || cmdtyName == "Data Chips"
+                                        || cmdtyName == "Guidance Systems"
+                                        || cmdtyName == "Hermetic Membranes"
+                                        || cmdtyName == "High-Tech Transmitters"
+                                        || cmdtyName == "Industrial Explosives"
+                                        || cmdtyName == "Neocoms"
+                                        || cmdtyName == "Nuclear Reactors"
+                                        || cmdtyName == "Robotics"
+                                        || cmdtyName == "Smartfab Units"
+                                        || cmdtyName == "Synthetic Synapses"
+                                        || cmdtyName == "Transcranial Microcontrollers"
+                                        || cmdtyName == "Ukomi Superconductors"
+                                        || cmdtyName == "Vaccines") {
+                                newCost = originalPrice + (84000.0 * taxRate);
+                            } else {
+                                newCost = -99999999;
+                                    }
+                        } else if (level == "P4"){
+                            if (cmdtyName == "Broadcast Node"
+                                || cmdtyName == "Integrity Response Drones"
+                                || cmdtyName == "Recursive Computing Module"
+                                || cmdtyName == "Self-Harmonizing Power Core"
+                                || cmdtyName == "Wetware Mainframe") {
+                                newCost = originalPrice + (1740000.0 * taxRate);
+                            } else if (cmdtyName == "Nano-Factory"
+                                       || cmdtyName == "Organic Mortar Applicators"
+                                       || cmdtyName == "Sterile Conduits") {
+                                      newCost = originalPrice + (1704000.0 * taxRate);
+                            } else {
+                                newCost = -9999999999;
+                            }
+                        }
+
+                        var profit = sellPrice - newCost;
+                        var profitMargin = profit / sellPrice * 100;
+                        var priceString = roundMe(sellPrice).toLocaleString();
+                        var profitString =  roundMe(profit).toLocaleString();
+                        var newCostString = roundMe(newCost).toLocaleString();
+                        var profitMarginString = roundMe(profitMargin).toLocaleString();
+
+
+                        var price2 = roundMe(sellPrice);
+                        var profit2 =  roundMe(profit);
+                        var newCost2 = roundMe(newCost);
+                        var profitMargin2 = roundMe(profitMargin);
+
+                        $(sellPriceTd).text(priceString);
+                        $(sellPriceTd).attr('data-order', price2);
+                        $('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
+
+
+                        $(costTd).text(newCostString);
+                        $(costTd).attr('data-order', newCost2);
+                        $('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
+
+
+                        $(profitTd).text(profitString);
+                        $(profitTd).attr('data-order', profit2);
+                        $('#mainTable').DataTable().cell($(profitTd)).invalidate().draw();
+
+
+                        $(marginTd).text(profitMarginString);
+                        $(marginTd).attr('data-order', profitMargin2);
+                        $('#mainTable').DataTable().cell($(marginTd)).invalidate().draw();
+                        
+                    });
+                });
+            });
 } );
 
 /*
@@ -74,7 +211,7 @@ $(document).ready(function() {
 
 
 
-/*
+/* //Some D3 waiting to be implemented
 var h = 100;
 var w = 200;
 
