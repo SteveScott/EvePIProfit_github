@@ -14,7 +14,7 @@ import logging
 import json
 
 
-#import psycopg2 #You shouldn't be using psycopg2. Use SqlAlchemy
+import psycopg2 #You shouldn't be using psycopg2. Use SqlAlchemy
 
 from flask import Flask, render_template, request, flash
 from forms import ContactForm
