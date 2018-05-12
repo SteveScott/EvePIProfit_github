@@ -1,13 +1,3 @@
-/*
-$(document).ready(function() {
-    $('#mainTable').DataTable( {
-        paging:   true,
-        ordering: true,
-        info:     true,
-        aaSorting: [[4, "asc"]]
-    } );
-} );
-*/
 function roundMe (number) {
                 return Math.round((number * 100)) / 100;
             }
@@ -185,7 +175,7 @@ $(document).ready(function() {
                         $(marginTd).text(profitMarginString);
                         $(marginTd).attr('data-order', profitMargin2);
                         $('#mainTable').DataTable().cell($(marginTd)).invalidate().draw();
-                        
+
                     });
                 });
             });

@@ -14,7 +14,7 @@ import logging
 import json
 
 
-import psycopg2
+#import psycopg2 #You shouldn't be using psycopg2. Use SqlAlchemy
 
 from flask import Flask, render_template, request, flash
 from forms import ContactForm
@@ -28,6 +28,8 @@ from scripts import PushToPerm
 from scripts import connection
 from scripts import eveLists
 import atexit
+
+from flask_sqlalchemy import SQLAlchemy
 
 ###scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -65,6 +67,10 @@ app.config["MAIL_USERNAME"] = 'evepiprofits@gmail.com'
 app.config['MAILGUN_API_KEY'] = os.environ["MAILGUN_API_KEY"]
 app.config['MAILGUN_DOMAIN'] = os.environ["MAILGUN_DOMAIN"]
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+db = SQLAlchemy(app)
+
+
 
 @app.route('/')
 @app.route('/index')
