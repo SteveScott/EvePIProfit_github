@@ -29,6 +29,15 @@ def fetchSellPrice(thisSystem, thisItem):
     #print(answer)
     return answer
 
+def fetchBuyPrice(thisSystem, thisItem):
+    systemName = scripts.eveLists.systemDictReverse[thisSystem]
+    station = scripts.eveLists.systemToStation[systemName]
+    region = scripts.eveLists.systemToRegion[systemName]
+    region_id = scripts.eveLists.regionId[region]
+    answer = fetchPrices.find_price("buy", thisItem, region_id, station)
+    return answer
+
+
 def main():
     ###Establish connection
     print("establishing connection")
@@ -56,16 +65,20 @@ def main():
         #insert into the database
         print("inserting into ", scripts.eveLists.systemDictReverse[i])
         for j in scripts.eveLists.itemList:
-            tempPrice = fetchSellPrice(i, j)
-
+            tempSellPrice = fetchSellPrice(i, j)
+            tempBuyPrice = fetchBuyPrice(i, j)
+            print(tempBuyPrice)
             now = str(datetime.datetime.utcnow())
             try:
-                cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL);").format(sql.Identifier(database_name)),[
+                cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
                                                                                         str(j),
                                                                                         str(i),
-                                                                                        float(tempPrice),
+                                                                                        float(tempSellPrice),
                                                                                         datetime.date.today(),
-                                                                                        now])
+                                                                                        now,
+                                                                                        float(tempBuyPrice)
+
+                ])
                 #print( j, "Executed")
             except:
                 print("Cannot insert")

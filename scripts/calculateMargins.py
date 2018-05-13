@@ -130,7 +130,7 @@ def main():
         cur.execute('UPDATE PRICE_TEMP SET COST = 0 WHERE COST IS NULL;')
 
         cur.execute('DROP TABLE {0};'.format(databaseName))
-        cur.execute('CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost FROM PRICE_TEMP;'.format(databaseName))
+        cur.execute('CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost,buy_price, buy_cost FROM PRICE_TEMP;'.format(databaseName))
         print("creating table {0}".format(eveLists.databaseDict[i]))
     cur.close()
     con.commit()
