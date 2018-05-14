@@ -48,13 +48,13 @@ def find_price(order_type, type_id, region_id, station):
         try:
             return max(prices)
         except ValueError:
-            print("No value found")
+            print("No buy value found")
             return
     else:
         try:
             return min(prices)
         except ValueError:
-            print("No value found")
+            print("No sell value found")
             return
 
 #print(find_price(order_type, type_id, region_id, station))

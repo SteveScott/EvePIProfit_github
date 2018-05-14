@@ -35,6 +35,7 @@ def fetchBuyPrice(thisSystem, thisItem):
     region = scripts.eveLists.systemToRegion[systemName]
     region_id = scripts.eveLists.regionId[region]
     answer = fetchPrices.find_price("buy", thisItem, region_id, station)
+    print(("Buy Price {0}").format(answer) or "Buy Price null")
     return answer
 
 
@@ -67,7 +68,6 @@ def main():
         for j in scripts.eveLists.itemList:
             tempSellPrice = fetchSellPrice(i, j)
             tempBuyPrice = fetchBuyPrice(i, j)
-            print(tempBuyPrice)
             now = str(datetime.datetime.utcnow())
             try:
                 cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
@@ -76,10 +76,8 @@ def main():
                                                                                         float(tempSellPrice),
                                                                                         datetime.date.today(),
                                                                                         now,
-                                                                                        float(tempBuyPrice)
-
-                ])
-                #print( j, "Executed")
+                                                                                        float(tempBuyPrice)])
+                print(j, "Executed")
             except:
                 print("Cannot insert")
 
