@@ -89,7 +89,7 @@ def main():
                                                                                         float(tempBuyPrice)])
                # print(j, "Executed")
             except:
-               # print("Cannot insert")
+                print("Error cannot insert")
 
     con.commit()
     print("updatePrices complete")

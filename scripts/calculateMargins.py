@@ -21,6 +21,16 @@ def LookupPrice(item, cur):
         #print('the answer has length 0.')
         return 0
 
+def lookup_buy_price(item, cur):
+    cur.execute('SELECT buy_price FROM PRICE_TEMP WHERE itemid = %s;', [item])
+    answer = cur.fetchall()
+
+    if len(answer) > 0:
+        # print('The lookup price answer is %s', answer[0][0])
+        return answer[0][0]
+    else:
+        # print('the answer has length 0.')
+        return 0
 
 def CalculateProfit(system1, item1, cur, con):
 
