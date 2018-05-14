@@ -77,7 +77,7 @@ def main():
                 tempBuyPrice = float(tempBuyPrice)
             except:
                 tempBuyPrice = 0
-                
+
             now = str(datetime.datetime.utcnow())
             try:
                 cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
