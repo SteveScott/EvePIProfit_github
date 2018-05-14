@@ -73,13 +73,13 @@ def main():
                 cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
                                                                                         str(j),
                                                                                         str(i),
-                                                                                        float(tempSellPrice),
+                                                                                        float(tempSellPrice) or 0,
                                                                                         datetime.date.today(),
                                                                                         now,
-                                                                                        float(tempBuyPrice)])
-                print(j, "Executed")
+                                                                                        float(tempBuyPrice) or 0])
+               # print(j, "Executed")
             except:
-                print("Cannot insert")
+               # print("Cannot insert")
 
     con.commit()
     print("updatePrices complete")
