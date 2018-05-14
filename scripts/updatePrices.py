@@ -67,16 +67,26 @@ def main():
         print("inserting into ", scripts.eveLists.systemDictReverse[i])
         for j in scripts.eveLists.itemList:
             tempSellPrice = fetchSellPrice(i, j)
+            try:
+                tempSellPrice = float(tempSellPrice)
+            except:
+                tempSellPrice = 0
+
             tempBuyPrice = fetchBuyPrice(i, j)
+            try:
+                tempBuyPrice = float(tempBuyPrice)
+            except:
+                tempBuyPrice = 0
+                
             now = str(datetime.datetime.utcnow())
             try:
                 cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
                                                                                         str(j),
                                                                                         str(i),
-                                                                                        float(tempSellPrice) or 0,
+                                                                                        float(tempSellPrice) ,
                                                                                         datetime.date.today(),
                                                                                         now,
-                                                                                        float(tempBuyPrice) or 0])
+                                                                                        float(tempBuyPrice)])
                # print(j, "Executed")
             except:
                # print("Cannot insert")
