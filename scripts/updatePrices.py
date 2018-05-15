@@ -35,7 +35,7 @@ def fetchBuyPrice(thisSystem, thisItem):
     region = scripts.eveLists.systemToRegion[systemName]
     region_id = scripts.eveLists.regionId[region]
     answer = fetchPrices.find_price("buy", thisItem, region_id, station)
-    print(("Buy Price {0}").format(answer) or "Buy Price null")
+    #print(("Buy Price {0}").format(answer) or "Buy Price null")
     return answer
 
 
