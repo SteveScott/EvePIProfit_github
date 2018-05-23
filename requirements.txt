@@ -25,3 +25,5 @@ rq==0.10.0
 pyswagger==0.8.36
 swagger-parser==1.0.0
 swagger-spec-validator==2.1.0
+EsiPy==0.2.0
+WTForms==2.1
