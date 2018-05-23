@@ -21,16 +21,16 @@ from worker import conn
 q=Queue(connection=conn)
 
 
-'''
-@scheduler.scheduled_job('cron', hour='0,2,4,6,8,10,12,14,16,18,20,22')
+#'''
+@scheduler.scheduled_job('cron', hour='0,4,8,12,16,20')
 def clock_scheduled_commands():
     print('Updating Tables')
     job = q.enqueue_call(func=updatePrices.main, timeout='6m')
     print('Updating Margins')
     job = q.enqueue_call(func=calculateMargins.main, timeout='6m')
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
-'''
 #'''
+'''
 @scheduler.scheduled_job('interval', minutes=5)
 def timed_job():
     #con = connection.establish_connection()
@@ -43,7 +43,7 @@ def timed_job():
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
     #con.close()
     return 0
-#'''
+'''
 
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
