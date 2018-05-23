@@ -22,9 +22,9 @@ from flask_wtf import Form
 from flask_mail import Message, Mail
 from scripts import eveLists
 from scripts import connection
-from scripts import updatePrices
-from scripts import calculateMargins
-from scripts import PushToPerm
+#from scripts import updatePrices
+#from scripts import calculateMargins
+#from scripts import PushToPerm
 from scripts import connection
 from scripts import eveLists
 import atexit

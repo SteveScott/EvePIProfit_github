@@ -1,7 +1,13 @@
 import pyswagger
+from pyswagger import App
+from pyswagger.primitives import MimeCodec
+from pyswagger.primitives.codec import PlainCodec
 from esipy import App
 from esipy import EsiClient
 import json
+
+mime_codec = MimeCodec()
+mime_codec.register('text/html', PlainCodec())
 
 
 #order_type = 'sell'
