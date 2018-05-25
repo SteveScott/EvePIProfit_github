@@ -5,6 +5,7 @@ import psycopg2
 import os
 import eveLists
 import connection
+import simplejson
 
 
 def LookupPrice(item, con):
