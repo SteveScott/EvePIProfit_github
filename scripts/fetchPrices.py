@@ -52,7 +52,7 @@ def extract_prices(response, station):
             return price_list
 
 def find_price(order_type, type_id, region_id, station):
-    order_list = fetch_orders(order_type, type_id, region_id)
+    order_list =  fetch_orders(order_type, type_id, region_id)
     prices = extract_prices(order_list, station)
     if order_type == "buy":
         try:

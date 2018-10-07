@@ -5,12 +5,15 @@ import psycopg2
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import asyncio
 
 import eveLists
 import connection
 
+con = connection.establish_connection()
+cur = con.cursor()
 
-def LookupPrice(item, cur):
+async def LookupPrice(item, cur):
     cur.execute('SELECT price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
 
@@ -32,7 +35,7 @@ def lookup_buy_price(item, cur):
         # print('the answer has length 0.')
         return 0
 
-def CalculateProfit(system1, item1, cur, con):
+async def CalculateProfit(system1, item1, cur, con):
 
     cur.execute('SELECT * FROM recipe WHERE ID = %s;', [item1])
     tempList = cur.fetchall()
@@ -58,10 +61,10 @@ def CalculateProfit(system1, item1, cur, con):
         q2 = tempList[0][5]
         i3 = tempList[0][6]
         q3 = tempList[0][7]
-        p0 = LookupPrice(i0, cur)
-        p1 = LookupPrice(i1, cur)
-        p2 = LookupPrice(i2, cur)
-        p3 = LookupPrice(i3, cur)
+        p0 = await LookupPrice(i0, cur)
+        p1 = await LookupPrice(i1, cur)
+        p2 = await LookupPrice(i2, cur)
+        p3 = await LookupPrice(i3, cur)
 
     #produced = # [tempList[1]
 
@@ -76,7 +79,7 @@ def CalculateProfit(system1, item1, cur, con):
         else:
 
             marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
-            salePrice = LookupPrice(item1, cur)
+            salePrice = await LookupPrice(item1, cur)
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
 
@@ -115,33 +118,36 @@ def ClearTemp(cur, con):
     con.commit()
     #print("price_temp truncated")
 
+async def mainLoop():
 
-
-###Main###
-def main():
-    con = connection.establish_connection()
-    cur = con.cursor()
-    print("Calculating Profit")
     for i in eveLists.systemList:
         ClearTemp(cur, con)
         databaseName = eveLists.databaseDict[i]
-    ###added after broke. need to repoppulate price_temp with system data
+        ###added after broke. need to repoppulate price_temp with system data
 
         cur.execute("INSERT INTO PRICE_TEMP SELECT * FROM {0};".format(databaseName))
         con.commit()
+        try:
+            for j in eveLists.itemList:
+                await CalculateProfit(i, j, cur, con)
+        finally:
 
+            cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
+            cur.execute('UPDATE PRICE_TEMP SET COST = 0 WHERE COST IS NULL;')
 
+            cur.execute('DROP TABLE {0};'.format(databaseName))
+            cur.execute(
+                'CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost,buy_price, buy_cost FROM PRICE_TEMP;'.format(
+                    databaseName))
+            print("creating table {0}".format(eveLists.databaseDict[i]))
 
-        for j in eveLists.itemList:
-            CalculateProfit(i, j, cur, con)
+###Main###
+def main():
 
-
-        cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
-        cur.execute('UPDATE PRICE_TEMP SET COST = 0 WHERE COST IS NULL;')
-
-        cur.execute('DROP TABLE {0};'.format(databaseName))
-        cur.execute('CREATE TABLE {0} AS SELECT itemid,mysystem,price,profitmargin,mydate,mytime,profit,cost,buy_price, buy_cost FROM PRICE_TEMP;'.format(databaseName))
-        print("creating table {0}".format(eveLists.databaseDict[i]))
+    print("Calculating Profit")
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(mainLoop())
+    loop.close()
     cur.close()
     con.commit()
     con.close()

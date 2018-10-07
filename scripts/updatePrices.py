@@ -5,6 +5,7 @@ import os.path
 import psycopg2
 import sys
 import urllib.parse
+import asyncio
 import xml.etree.ElementTree as ET
 from psycopg2 import sql
 from psycopg2.extensions import AsIs, quote_ident
@@ -13,6 +14,13 @@ from urllib import request, error, request
 import scripts.connection
 import scripts.eveLists
 import fetchPrices
+from concurrent.futures import ThreadPoolExecutor
+
+con = scripts.connection.establish_connection()
+con.autocommit = False
+cur = con.cursor()
+_executor = ThreadPoolExecutor(2)
+loop = asyncio.get_event_loop()
 
 
 def fetchSellPrice(thisSystem, thisItem):
@@ -38,17 +46,14 @@ def fetchBuyPrice(thisSystem, thisItem):
     #print(("Buy Price {0}").format(answer) or "Buy Price null")
     return answer
 
+def closeConnection():
+    con.commit()
+    print("updatePrices complete")
+    cur.close()
+    con.close()
 
-def main():
-    ###Establish connection
-    print("establishing connection")
-    con = scripts.connection.establish_connection()
-    con.autocommit = False
-    cur = con.cursor()
+async def mainLoop(i):
 
-
-
-    for i in scripts.eveLists.systemList:
         database_name = scripts.eveLists.databaseDict[i]
         #'''
         #clear the database
@@ -83,7 +88,7 @@ def main():
                 cur.execute(sql.SQL("INSERT INTO {} VALUES (%s, %s, %s, NULL, %s, %s, NULL, NULL, %s, NULL);").format(sql.Identifier(database_name)), [
                                                                                         str(j),
                                                                                         str(i),
-                                                                                        float(tempSellPrice) ,
+                                                                                        float(tempSellPrice),
                                                                                         datetime.date.today(),
                                                                                         now,
                                                                                         float(tempBuyPrice)])
@@ -91,10 +96,23 @@ def main():
             except:
                 print("Error cannot insert")
 
-    con.commit()
-    print("updatePrices complete")
-    cur.close()
-    con.close()
+
+
+
+def main():
+    ###Establish connection
+    for i in scripts.eveLists.systemList:
+        loop.run_until_complete(mainLoop(i))
+    loop.close()
+    closeConnection()
+    print("establishing connection")
+
+
+
+
+
+
+
 
 
     '''
