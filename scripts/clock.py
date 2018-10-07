@@ -2,7 +2,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 import os
-
+import atexit
 import PushToPerm
 import connection
 import updatePrices
