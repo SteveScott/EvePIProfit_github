@@ -12,7 +12,7 @@ import time
 
 
 #changed BackgroundScheduler to BlockingScheduler
-#scheduler = BlockingScheduler(timezone="Iceland")
+#scheduler = BlockingScheduler(timezone="UTC")
 scheduler = BlockingScheduler()
 from rq import Queue
 from rq.job import Job
@@ -20,7 +20,15 @@ from worker import conn
 
 q=Queue(connection=conn)
 
-
+'''
+@scheduler.scheduled_job('interval', minutes=30)
+def clock_scheduled_commands():
+    print('Updating Tables')
+    job = q.enqueue_call(func=updatePrices.main, timeout='10m')
+    print('Updating Margins')
+    job = q.enqueue_call(func=calculateMargins.main, timeout='10m')
+    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
+'''
 #'''
 @scheduler.scheduled_job('cron', hour='0,4,8,12,16,20')
 def clock_scheduled_commands():
@@ -31,7 +39,7 @@ def clock_scheduled_commands():
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes=1)
+@scheduler.scheduled_job('interval', minutes=5)
 def timed_job():
     #con = connection.establish_connection()
     print('Updating Tables')

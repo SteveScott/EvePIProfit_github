@@ -24,7 +24,7 @@ async def LookupPrice(item, cur):
         #print('the answer has length 0.')
         return 0
 
-def lookup_buy_price(item, cur):
+async def lookup_buy_price(item, cur):
     cur.execute('SELECT buy_price FROM PRICE_TEMP WHERE itemid = %s;', [item])
     answer = cur.fetchall()
 
@@ -65,26 +65,32 @@ async def CalculateProfit(system1, item1, cur, con):
         p1 = await LookupPrice(i1, cur)
         p2 = await LookupPrice(i2, cur)
         p3 = await LookupPrice(i3, cur)
+        p0b = await lookup_buy_price(i0, cur)
+        p1b = await lookup_buy_price(i1, cur)
+        p2b = await lookup_buy_price(i2, cur)
+        p3b = await LookupPrice(i3, cur)
 
     #produced = # [tempList[1]
 
 
-        if ((p0 == 0) or (q1 > 0 and p1 == 0) or (q2 > 0 and p2 == 0) or (q3 > 0 and p3 == 0)):
+        if ((p0 == 0 or p0b == 0) or (q1 > 0 and (p1 == 0 or p1b == 0)) or (q2 > 0 and (p2 == 0 or p2b == 0)) or (q3 > 0 and (p3 == 0 or p3b == 0))):
             #print(str(i0) + " no price found for one of the commodities")
 
             marginalProfit = 0
             percentProfit = 0
             marginalCost = 0
+            marginal_buy_cost = 0
 
         else:
 
             marginalCost = (p1 * q1 + p2 * q2 + p3 * q3) / q0
+            marginal_buy_cost = ((p1b * q1 + p2b * q2 + p3b * q3)/ q0)
             salePrice = await LookupPrice(item1, cur)
             marginalProfit = salePrice - marginalCost
             percentProfit = ((marginalProfit) * 100) / salePrice
 
         #print("updating", i0, p0, p1, q1, p2, q2, p3, q3)
-        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, marginalCost, item1))
+        cur.execute('UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s, BUY_COST = %s WHERE ITEMID = %s;', (marginalProfit, percentProfit, marginalCost, marginal_buy_cost, item1))
         con.commit()
 
 
@@ -93,8 +99,9 @@ async def CalculateProfit(system1, item1, cur, con):
             marginalProfit = 0
             percentProfit = 0
             marginalCost = 0
+            marginal_buy_cost = 0
             #print('len(tempList) = 0')
-            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, item1))
+            cur.execute("UPDATE PRICE_TEMP SET PROFIT = %s, PROFITMARGIN = %s, COST = %s, BUY_COST = %s WHERE ITEMID = %s;", (marginalProfit, percentProfit, marginalCost, marginal_buy_cost, item1))
 
         except:
             print('exception ')
@@ -134,6 +141,7 @@ async def mainLoop():
 
             cur.execute('UPDATE PRICE_TEMP SET PROFITMARGIN = 0, PROFIT = 0 WHERE PROFIT IS NULL;')
             cur.execute('UPDATE PRICE_TEMP SET COST = 0 WHERE COST IS NULL;')
+            cur.execute('UPDATE PRICE_TEMP SET BUY_COST = 0 WHERE BUY_COST IS NULL;')
 
             cur.execute('DROP TABLE {0};'.format(databaseName))
             cur.execute(
