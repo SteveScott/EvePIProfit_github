@@ -55,9 +55,15 @@ $(document).ready(function() {
                 targets:[9],
                 data:{
                        type: "9.@data-order",
-                       sort: "9.@data-order",
+                       sort: "9.@data-order"
                 }
-
+            },
+            {
+                targets:[10],
+                data:{
+                    type:"10.@data-order",
+                    sort:"10.@data-order"
+                }
             },
             {"type": "date"}
         ]
@@ -83,6 +89,14 @@ $(document).ready(function() {
                         var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
                         return num;
                      }},
+                    {
+                        type:"num-fmt",
+                        name:"taxes",
+                        render: function (data, row, meta) {
+                        var num = $.fn.dataTable.render.number(',', '.', 2).display(data);
+                        return num;
+                        }
+                    },
                     {
                         type:"num-fmt",
                         name: 'sell-cost',
@@ -153,28 +167,28 @@ function roundMe (number) {
 
 function buyFromBuyAction(){
                         var table = $('#mainTable').DataTable();
-                        table.columns(4).visible(false);
-                        table.columns(5).visible(true);
+                        table.columns(5).visible(false);
+                        table.columns(6).visible(true);
 }
 
 function buyFromSellAction(){
     var table = $('#mainTable').DataTable();
-    table.columns(4).visible(true);
-    table.columns(5).visible(false);
+    table.columns(5).visible(true);
+    table.columns(6).visible(false);
 }
 
 function sellToBuyAction(){
         var table = $('#mainTable').DataTable();
-        table.columns(2).visible(true);
-        table.columns(3).visible(true);
+        //table.columns(2).visible(true);
+        //table.columns(3).visible(true);
 }
 
 
 
 function sellToSellAction() {
             var table = $('#mainTable').DataTable();
-            table.columns(2).visible(true);
-            table.columns(3).visible(true);
+            //table.columns(2).visible(true);
+            //table.columns(3).visible(true);
 }
 
 function triggerChangeEvent(){
@@ -203,6 +217,7 @@ function updateTaxes() {
         var sellCostTd = $(this).find(".cost").first();
         var buyCostTd = $(this).find(".buy-cost").first();
         //var priceTd = $(this).find(".cost").first();
+        var taxesTd = $(this).find(".taxes").first();
         var costTd = $(this).find(".cost").first();
         var spreadTd = $(this).find(".spread").first();
         var profitTd = $(this).find(".profit").first();
@@ -210,6 +225,7 @@ function updateTaxes() {
         var cmdtyName = $(this).children(":nth-child(2)").text();
         var buySpread = parseFloat($(buyPriceTd).data("original"));
         var sellSpread = parseFloat($(sellPriceTd).data("original"));
+        var taxes = 0;
 
         var originalPrice = null;
         if (document.getElementById('buy-from-buy').checked) {
@@ -231,11 +247,14 @@ function updateTaxes() {
         sellPrice = Number(sellPrice);
         // level == "P0"/"P1"/"P2"
         if (level == "P0") {
-            newCost = (5 * taxRate);
+            taxes = 5 * taxRate;
+            newCost = (taxes);
         } else if (level == "P1") {
-            newCost = originalPrice + (400.0 * taxRate);
+            taxes = (400.0 * taxRate);
+            newCost = originalPrice + taxes;
         } else if (level == "P2") {
-            newCost = originalPrice + (10400.0 * taxRate);
+            taxes = 10400.0 * taxRate;
+            newCost = originalPrice + taxes;
         } else if (level == "P3") {
             if (cmdtyName == "Biotech Research Reports"
                 || cmdtyName == "Cryoprotectant Solutions"
@@ -243,7 +262,8 @@ function updateTaxes() {
                 || cmdtyName == "Hazmat Detection Systems"
                 || cmdtyName == "Planetary Vehicles"
                 || cmdtyName == "Supercomputers") {
-                newCost = originalPrice + (168000.0 * taxRate);
+                taxes = 168000.0 * taxRate;
+                newCost = originalPrice + taxes;
             } else if (cmdtyName == "Camera Drones"
                 || cmdtyName == "Condensates"
                 || cmdtyName == "Data Chips"
@@ -259,7 +279,8 @@ function updateTaxes() {
                 || cmdtyName == "Transcranial Microcontrollers"
                 || cmdtyName == "Ukomi Superconductors"
                 || cmdtyName == "Vaccines") {
-                newCost = originalPrice + (84000.0 * taxRate);
+                taxes = 84000.0 * taxRate;
+                newCost = originalPrice + taxes;
             } else {
                 newCost = -99999999;
             }
@@ -269,13 +290,15 @@ function updateTaxes() {
                 || cmdtyName == "Recursive Computing Module"
                 || cmdtyName == "Self-Harmonizing Power Core"
                 || cmdtyName == "Wetware Mainframe") {
-                newCost = originalPrice + (1740000.0 * taxRate);
+                taxes = 1740000.0 * taxRate;
+                newCost = originalPrice + taxes;
             } else if (cmdtyName == "Nano-Factory"
                 || cmdtyName == "Organic Mortar Applicators"
                 || cmdtyName == "Sterile Conduits") {
-                newCost = originalPrice + (1704000.0 * taxRate);
+                taxes = 1704000.0 * taxRate;
+                newCost = originalPrice + taxes;
             } else {
-                newCost = -9999999999;
+                newCost = -999999999999999;
             }
         }
 
@@ -283,11 +306,18 @@ function updateTaxes() {
         var profitMargin = profit / sellPrice * 100;
         var spread = ((sellSpread - buySpread) / ((buySpread + sellSpread) / 2)) * 100
 
+        //have to reset the prices because sell price is used in all calculations. Need original sell prices
+        var sellToBuyPrice = $(buyPriceTd).data("original");
+        var sellToSellPrice = $(sellPriceTd).data("original");
+
         var priceString = roundMe(sellPrice).toLocaleString();
         var profitString = roundMe(profit).toLocaleString();
         var newCostString = roundMe(newCost).toLocaleString();
         var profitMarginString = roundMe(profitMargin).toLocaleString();
         var spreadString = roundMe(spread).toLocaleString();
+        var taxesString = roundMe(taxes).toLocaleString();
+        var sellToBuyPriceString = roundMe(sellToBuyPrice).toLocaleString();
+        var sellToSellPriceString = roundMe(sellToSellPrice).toLocaleString();
 
 
         var price2 = roundMe(sellPrice);
@@ -295,20 +325,26 @@ function updateTaxes() {
         var newCost2 = roundMe(newCost);
         var profitMargin2 = roundMe(profitMargin);
         var spread2 = roundMe(spread);
-
+        var sellToBuyPrice2 = roundMe(sellToBuyPrice);
+        var sellToSellPrice2 = roundMe(sellToSellPrice);
+        var taxes2 = roundMe(taxes);
 
         $(spreadTd).text(spreadString);
         $(spreadTd).attr('data-order', spread2);
         $('#mainTable').DataTable().cell($(spreadTd)).invalidate().draw();
 
 
-        $(sellPriceTd).text(priceString);
-        $(sellPriceTd).attr('data-order', price2);
-        $('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
+        //$(sellPriceTd).text(priceString);
+        //$(sellPriceTd).attr('data-order', price2);
+        //$('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
 
 
         $(costTd).text(newCostString);
         $(costTd).attr('data-order', newCost2);
+        $('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
+
+        $(buyCostTd).text(newCostString);
+        $(buyCostTd).attr('data-order', newCost2);
         $('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
 
 
@@ -320,6 +356,19 @@ function updateTaxes() {
         $(marginTd).text(profitMarginString);
         $(marginTd).attr('data-order', profitMargin2);
         $('#mainTable').DataTable().cell($(marginTd)).invalidate().draw();
+
+        $(sellPriceTd).text(sellToSellPriceString);
+        $(sellPriceTd).attr('data-order', sellToSellPrice2);
+        $('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
+
+
+        $(buyPriceTd).text(sellToBuyPriceString);
+        $(buyPriceTd).attr('data-order', sellToBuyPrice2);
+        $('#mainTable').DataTable().cell($(buyPriceTd)).invalidate().draw();
+
+        $(taxesTd).text(taxesString);
+        $(taxesTd).attr('data-order', taxes2);
+        $('#mainTable').DataTable().cell($(taxesTd)).invalidate().draw();
 
 
     });

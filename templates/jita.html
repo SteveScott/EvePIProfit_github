@@ -65,6 +65,7 @@
             <th>Name</th>
             <th>Sell Price</th>
             <th>Buy Price</th>
+            <th>Taxes</th>
             <th>Cost from Sell</th>
             <th>Cost from Buy</th>
             <th>Profit</th>
@@ -81,6 +82,7 @@
             <td>{{entry[0]}}</td>
             <td id="price-{{loop.index}}" class="price" data-original="{{entry[1]}}" data-order="{{entry[1]}}">{{entry[1]}}</td> <!-- Price -->
             <td id="buy-price-{{loop.index}}" class="buy-price" data-original="{{entry[7]}}" data-order="{{entry[7]}}">{{entry[7]}}</td>
+            <td id="taxes-{{loop.index}}" class="taxes" data-original=0 data-order=0>initialize</td>
             <td id="cost-{{loop.index}}" class="cost" data-original="{{entry[5]}}" data-order="{{entry[5]}}">{{entry[5]}}</td>
             <td id="buy-cost-{{loop.index}}" class="buy-cost" data-original="{{entry[8]}}" data-order="{{entry[8]}}}">{{entry[8]}}</td>
             <td id="profit-{{loop.index}}" class="profit" data-original="{{entry[2]}}" data-order="{{entry[2]}}">{{entry[2]}}</td>
