@@ -331,7 +331,7 @@ function updateTaxes() {
 
         $(spreadTd).text(spreadString);
         $(spreadTd).attr('data-order', spread2);
-        $('#mainTable').DataTable().cell($(spreadTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(spreadTd)).invalidate().draw();
 
 
         //$(sellPriceTd).text(priceString);
@@ -341,37 +341,39 @@ function updateTaxes() {
 
         $(costTd).text(newCostString);
         $(costTd).attr('data-order', newCost2);
-        $('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
 
         $(buyCostTd).text(newCostString);
         $(buyCostTd).attr('data-order', newCost2);
-        $('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(costTd)).invalidate().draw();
 
 
         $(profitTd).text(profitString);
         $(profitTd).attr('data-order', profit2);
-        $('#mainTable').DataTable().cell($(profitTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(profitTd)).invalidate().draw();
 
 
         $(marginTd).text(profitMarginString);
         $(marginTd).attr('data-order', profitMargin2);
-        $('#mainTable').DataTable().cell($(marginTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(marginTd)).invalidate().draw();
 
         $(sellPriceTd).text(sellToSellPriceString);
         $(sellPriceTd).attr('data-order', sellToSellPrice2);
-        $('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(sellPriceTd)).invalidate().draw();
 
 
         $(buyPriceTd).text(sellToBuyPriceString);
         $(buyPriceTd).attr('data-order', sellToBuyPrice2);
-        $('#mainTable').DataTable().cell($(buyPriceTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(buyPriceTd)).invalidate().draw();
 
         $(taxesTd).text(taxesString);
         $(taxesTd).attr('data-order', taxes2);
-        $('#mainTable').DataTable().cell($(taxesTd)).invalidate().draw();
+        //$('#mainTable').DataTable().cell($(taxesTd)).invalidate().draw();
 
 
     });
+
+    rows().invalidate();
 }
 
 
