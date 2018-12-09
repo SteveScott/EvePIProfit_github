@@ -23,7 +23,7 @@ _executor = ThreadPoolExecutor(2)
 loop = asyncio.get_event_loop()
 
 
-def fetchSellPrice(thisSystem, thisItem):
+async def fetchSellPrice(thisSystem, thisItem):
     #print("")
     #print("thisSystem = " + str(thisSystem) + " thisItem = " + str(thisItem))
     systemName = scripts.eveLists.systemDictReverse[thisSystem]
@@ -33,16 +33,16 @@ def fetchSellPrice(thisSystem, thisItem):
     #print(region)
     region_id = scripts.eveLists.regionId[region]
     #print(region_id)
-    answer = fetchPrices.find_price("sell", thisItem, region_id, station)
+    answer = await fetchPrices.find_price("sell", thisItem, region_id, station)
     #print(answer)
     return answer
 
-def fetchBuyPrice(thisSystem, thisItem):
+async def fetchBuyPrice(thisSystem, thisItem):
     systemName = scripts.eveLists.systemDictReverse[thisSystem]
     station = scripts.eveLists.systemToStation[systemName]
     region = scripts.eveLists.systemToRegion[systemName]
     region_id = scripts.eveLists.regionId[region]
-    answer = fetchPrices.find_price("buy", thisItem, region_id, station)
+    answer = await fetchPrices.find_price("buy", thisItem, region_id, station)
     #print(("Buy Price {0}").format(answer) or "Buy Price null")
     return answer
 
@@ -71,13 +71,13 @@ async def mainLoop(i):
         #insert into the database
         print("inserting into ", scripts.eveLists.systemDictReverse[i])
         for j in scripts.eveLists.itemList:
-            tempSellPrice = fetchSellPrice(i, j)
+            tempSellPrice = await fetchSellPrice(i, j)
             try:
                 tempSellPrice = float(tempSellPrice)
             except:
                 tempSellPrice = 0
 
-            tempBuyPrice = fetchBuyPrice(i, j)
+            tempBuyPrice = await fetchBuyPrice(i, j)
             try:
                 tempBuyPrice = float(tempBuyPrice)
             except:
