@@ -21,11 +21,7 @@
                 <label for="tax_rate">Tax Rate:</label>
                 <!--<input type="number" id="tax-rate" name="tax-rate" step=".25" value="0" data-persist="garlic" onkeydown="triggerChangeEvent();"/>-->
                 <input type="number" id="tax-rate" name="tax-rate" step=".25" value="0" data-persist="garlic" oninput="updateTaxes();"/>
-                <script>
-                    $('#tax-rate').bind('input', function(){
-                       updateTaxes();
-                    });
-                </script>
+
         </div>
 <div class="row">
     <div class="col-md-6">
