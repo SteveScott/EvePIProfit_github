@@ -19,7 +19,7 @@ mime_codec.register('text/html', PlainCodec())
 #region_id = 10000002
 #station = 60003760
 
-app = App.create(url="https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility")
+app = App.create(url="https://esi.evetech.net/latest/swagger.json?datasource=tranquility")
 client = EsiClient(
     retry_request=True,
     header={'User-Agent': 'Fetch Prices'},

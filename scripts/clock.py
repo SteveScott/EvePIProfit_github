@@ -39,7 +39,7 @@ def clock_scheduled_commands():
     print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 #'''
 '''
-@scheduler.scheduled_job('interval', minutes=1)
+@scheduler.scheduled_job('interval', minutes=5)
 def timed_job():
     #con = connection.establish_connection()
     print('Updating Tables')
