@@ -18,7 +18,7 @@ from rq import Queue
 from rq.job import Job
 from worker import conn
 
-q=Queue(connection=conn)
+q = Queue(connection=conn)
 
 '''
 @scheduler.scheduled_job('interval', minutes=30)
