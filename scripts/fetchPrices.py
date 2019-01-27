@@ -26,7 +26,7 @@ client = EsiClient(
     raw_body_only=False)
 
 
-def fetch_orders(buy_sell, item, region):
+async def fetch_orders(buy_sell, item, region):
     global app
     market_price_operation = app.op['get_markets_region_id_orders'](
         order_type=buy_sell,
@@ -51,8 +51,8 @@ def extract_prices(response, station):
         except:
             return price_list
 
-def find_price(order_type, type_id, region_id, station):
-    order_list =  fetch_orders(order_type, type_id, region_id)
+async def find_price(order_type, type_id, region_id, station):
+    order_list = await fetch_orders(order_type, type_id, region_id)
     prices = extract_prices(order_list, station)
     if order_type == "buy":
         try:
