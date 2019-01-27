@@ -373,7 +373,7 @@ function updateTaxes() {
 
     });
 
-    $('#mainTable').DataTable().rows().invalidate();
+    rows().invalidate();
 }
 
 
